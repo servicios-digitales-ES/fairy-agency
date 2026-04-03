@@ -160,6 +160,207 @@ h1 {
   color:#ffd700; 
 }
 
+.card span {
+  font-size:18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .pagina { margin:20px; padding:20px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="zona-streamer.html"><i class="fa-solid fa-house"></i>Inicio</a>
+  <a href="fairy-academy.html"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</a>
+  <a href="salsa.html"><i class="fa-solid fa-fire"></i>SALSA</a>
+  <a href="reportes-salsa.html"><i class="fa-solid fa-chart-column"></i>Reportes</a>
+  <a href="binance-streamer.html"><i class="fa-solid fa-bitcoin-sign"></i>Binance</a>
+  <a href="noticias.html"><i class="fa-solid fa-newspaper"></i>Noticias</a>
+  <a href="reglamento-interno.html"><i class="fa-solid fa-file-contract"></i>Reglamento</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- CONTENIDO -->
+<section class="pagina">
+
+  <h1>SALSA</h1>
+  <p class="sub">Panel exclusivo para streamers SALSA</p>
+
+  <div class="grid">
+
+    <a href="capacitaciones-salsa.html" class="card">
+      <i class="fa-solid fa-book-open"></i>
+      <span>Capacitaciones</span>
+    </a>
+
+    <a href="tutoriales-salsa.html" class="card">
+      <i class="fa-solid fa-circle-play"></i>
+      <span>Tutoriales</span>
+    </a>
+
+    <a href="reglas-salsa.html" class="card">
+      <i class="fa-solid fa-scroll"></i>
+      <span>Reglas SALSA</span>
+    </a>
+
+    <a href="herramientas-salsa.html" class="card">
+      <i class="fa-solid fa-screwdriver-wrench"></i>
+      <span>Herramientas SALSA</span>
+    </a>
+
+  </div>
+
+</section>
+
+<script>
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+</script>
+
+</body>
+</html>  width:85px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position:fixed;
+  top:0;
+  left:0;
+  width:260px;
+  height:100%;
+  background:#111;
+  padding:100px 18px 20px;
+  transform:translateX(-100%);
+  transition:0.3s ease;
+  z-index:2000;
+  box-shadow:5px 0 20px rgba(0,0,0,0.5);
+}
+
+.sidebar.active {
+  transform:translateX(0);
+}
+
+.sidebar a {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  color:#eaeaea;
+  text-decoration:none;
+  padding:16px 14px;
+  margin:12px 0;
+  border-radius:10px;
+  font-size:17px;
+}
+
+.sidebar a:hover {
+  background:#222;
+  color:#ffd700;
+}
+
+.sidebar i {
+  font-size:18px;
+  width:22px;
+  text-align:center;
+  color:#ffd700;
+}
+
+/* OVERLAY */
+.overlay {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:1500;
+}
+
+.overlay.active {
+  opacity:1;
+  visibility:visible;
+}
+
+/* CONTENEDOR */
+.pagina { 
+  max-width:960px; 
+  margin:40px auto; 
+  padding:30px; 
+  background:#111; 
+  border-radius:16px; 
+  position:relative;
+}
+
+/* TITULO */
+h1 { 
+  color:#ffd700; 
+  text-align:center; 
+  font-size:32px; 
+  margin:100px 0 8px;
+}
+
+.sub {
+  text-align:center; 
+  color:#aaa;
+}
+
+/* GRID */
+.grid { 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap:18px; 
+  margin-top:30px; 
+}
+
+/* CARDS */
+.card { 
+  background:#1a1a1a; 
+  border-radius:16px; 
+  text-align:center; 
+  text-decoration:none; 
+  color:#eaeaea;
+  border:2px solid #333;
+
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  justify-content:center;
+
+  height:280px;
+  gap:12px;
+  transition:0.3s;
+}
+
+.card:hover { 
+  background:#222; 
+  transform:scale(1.04); 
+  border-color:#ffd700; 
+}
+
+.card i { 
+  font-size:64px; 
+  color:#ffd700; 
+}
+
 /* S ESPECIAL */
 .salsa-s {
   font-size:48px;
