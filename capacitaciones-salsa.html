@@ -1,0 +1,159 @@
+<!-- capacitaciones-salsa.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capacitaciones SALSA — Fairy Agency</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+body{margin:0;font-family:'Georgia',serif;background:#0a0a0a;color:#eaeaea;}
+
+.header{display:flex;align-items:center;gap:10px;padding:20px;}
+.menu-btn{font-size:26px;color:#ffd700;}
+.logo{width:85px;}
+
+h1{color:#ffd700;text-align:center;font-size:32px;}
+
+.tabs{display:flex;justify-content:center;gap:40px;margin-top:20px;}
+.tab{cursor:pointer;padding:10px;border-bottom:2px solid transparent;}
+.tab.active{color:#ffd700;border-bottom:2px solid #ffd700;}
+
+.subtabs{display:flex;justify-content:center;gap:20px;margin-top:20px;}
+.subtab{background:#1a1a1a;padding:10px 20px;border-radius:10px;cursor:pointer;}
+.subtab.active{background:#ffd700;color:black;}
+
+.player{max-width:900px;margin:20px auto;}
+.player iframe{width:100%;height:220px;border-radius:12px;border:none;}
+
+.lista{max-width:900px;margin:20px auto;}
+.item{display:flex;gap:12px;padding:10px;border-radius:12px;cursor:pointer;}
+.item:hover{background:#1a1a1a;}
+
+.thumb{width:120px;height:70px;border-radius:8px;}
+.info{display:flex;flex-direction:column;justify-content:center;}
+.ver{color:#ffd700;font-size:12px;}
+
+.content{display:none;}
+.content.active{display:block;}
+
+.empty{
+  text-align:center;
+  color:#777;
+  margin:40px 0;
+  font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <i class="fa-solid fa-bars menu-btn"></i>
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
+</div>
+
+<h1>Capacitaciones SALSA</h1>
+
+<div class="tabs">
+  <div class="tab active" onclick="openMain(0)">Meet</div>
+  <div class="tab" onclick="openMain(1)">YouTube</div>
+</div>
+
+<!-- ================= YOUTUBE ================= -->
+<div id="main1" class="content active">
+
+  <div class="subtabs">
+    <div class="subtab" onclick="openSub(1,0)">Esta semana</div>
+    <div class="subtab active" onclick="openSub(1,1)">Grabadas</div>
+  </div>
+
+  <!-- ESTA SEMANA (VACÍO) -->
+  <div id="sub1-0" class="content">
+    <div class="empty">No hay capacitaciones esta semana</div>
+  </div>
+
+  <!-- GRABADAS -->
+  <div id="sub1-1" class="content active">
+
+    <div class="player">
+      <iframe id="videoPlayer" src="https://www.youtube.com/embed/LMH_0PFb0js"></iframe>
+    </div>
+
+    <div class="lista">
+
+<script>
+const videos = [
+["LMH_0PFb0js","Bienvenida al mundo Salsa"],
+["3bc5nVBUbOo","Activar cuenta y perfil"],
+["LYvvu6Sw1zw","Primera capacitación"],
+["nuEnJCT9MT4","Métodos de pago"],
+["eQNokkjNXK0","Optimizar perfil"],
+["Rz_2AQBHVa4","Calificaciones"],
+["y2X2HBlfWvo","Experiencia inolvidable"],
+["FwfqyON3Yrw","Convertir match"],
+["3Qx0lYfl-ic","Perder miedo"],
+["M4FAJjh4mAg","Cautivar usuarios"],
+["sdaxtuLsZ_U","Seduce y gana"],
+["CvW5WDb5-ZA","Interacción"],
+["xolrmcWZKZU","Lenguaje corporal"],
+["RdLM0Nba-4E","Conectar con usuarios"],
+["eGS8SdzX3GA","Experiencia avanzada"],
+["7zuikm3lPxA","Live avanzado"],
+["FtT8366nX68","Usuarios difíciles"],
+["OQ6m7vAJxX8","Recuperar confianza"],
+["pl8tnpB5r8g","Lenguaje avanzado"],
+["2HQxbzXqYTM","Persuasión"],
+["MzF1MFu8c1U","Shows"],
+["uzqAFJd_BMg","Invitada especial"],
+["zf7ifZlqxrQ","Atrapar desde inicio"],
+["xYfqJYu7Acc","Cuidar energía"],
+["9teztVItqVw","Detectar usuarios"]
+];
+
+const lista = document.currentScript.parentElement;
+
+videos.forEach(v=>{
+  const item = document.createElement("div");
+  item.className="item";
+  item.onclick=()=>play(v[0]);
+
+  item.innerHTML = `
+    <img class="thumb" src="https://img.youtube.com/vi/${v[0]}/0.jpg">
+    <div class="info">
+      <div>${v[1]}</div>
+      <div class="ver">Ver ▶</div>
+    </div>
+  `;
+
+  lista.appendChild(item);
+});
+</script>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function play(id){
+  document.getElementById("videoPlayer").src =
+  "https://www.youtube.com/embed/" + id;
+}
+
+function openMain(n){
+  document.querySelectorAll('[id^="main"]').forEach(c=>c.classList.remove('active'));
+  document.getElementById('main'+n).classList.add('active');
+}
+
+function openSub(main,sub){
+  document.querySelectorAll('#main'+main+' .content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('sub'+main+'-'+sub).classList.add('active');
+}
+</script>
+
+</body>
+</html>
