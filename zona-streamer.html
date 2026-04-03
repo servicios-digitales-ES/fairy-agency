@@ -1,0 +1,306 @@
+<!-- zona-streamer.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zona Streamer — Fairy Agency</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+body { 
+  margin:0; 
+  font-family:'Georgia',serif; 
+  background:#0a0a0a; 
+  color:#eaeaea; 
+}
+
+/* 🔥 HEADER ALINEADO */
+.header {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:absolute;
+  top:25px;
+  left:20px;
+  z-index:2001;
+}
+
+/* BOTÓN */
+.menu-btn {
+  font-size:24px;
+  color:#ffd700;
+  cursor:pointer;
+}
+
+/* LOGO */
+.logo {
+  width:85px;
+}
+
+/* 🔥 SIDEBAR */
+.sidebar {
+  position:fixed;
+  top:0;
+  left:0;
+  width:260px;
+  height:100%;
+  background:#111;
+  padding:100px 18px 20px; /* 🔥 BAJA EL MENÚ */
+  transform:translateX(-100%);
+  transition:0.3s ease;
+  z-index:2000;
+  box-shadow:5px 0 20px rgba(0,0,0,0.5);
+}
+
+.sidebar.active {
+  transform:translateX(0);
+}
+
+.sidebar a {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  color:#eaeaea;
+  text-decoration:none;
+  padding:16px 14px;
+  margin:12px 0;
+  border-radius:10px;
+  font-size:17px;
+}
+
+.sidebar a:hover {
+  background:#222;
+  color:#ffd700;
+}
+
+.sidebar i {
+  font-size:18px;
+  width:22px;
+  text-align:center;
+  color:#ffd700;
+}
+
+/* OVERLAY */
+.overlay {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.7);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:1500;
+}
+
+.overlay.active {
+  opacity:1;
+  visibility:visible;
+}
+
+/* MODAL */
+#passwordModal {
+  position:fixed; 
+  top:0; left:0; 
+  width:100%; height:100%; 
+  background:rgba(0,0,0,0.98); 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  z-index:3000;
+}
+
+.modal-content {
+  background:#111; 
+  padding:40px 30px; 
+  border-radius:20px; 
+  text-align:center; 
+  max-width:340px; 
+  width:90%;
+  box-shadow:0 0 40px rgba(255,215,0,0.3);
+}
+
+.modal-content img { width:180px; margin-bottom:20px; }
+
+h2 { 
+  color:#ffd700; 
+  font-size:24px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  gap:10px;
+}
+
+#passInput {
+  width:100%; 
+  padding:15px; 
+  background:#222; 
+  border:none; 
+  border-radius:10px; 
+  color:white; 
+  font-size:16px; 
+  margin:15px 0 8px;
+}
+
+.btn-entrar {
+  background:#ffd700; 
+  color:black; 
+  padding:13px 55px; 
+  border:none; 
+  border-radius:12px; 
+  font-weight:bold; 
+  font-size:17px;
+  cursor:pointer;
+}
+
+#errorMsg {
+  color:#ff4d4d;
+  display:none;
+}
+
+/* CONTENIDO */
+.pagina { 
+  max-width:960px; 
+  margin:40px auto; 
+  padding:30px; 
+  background:#111; 
+  border-radius:16px; 
+  position:relative; 
+  display:none; 
+}
+
+.pagina.activa { display:block; }
+
+h1 { 
+  color:#ffd700; 
+  text-align:center; 
+  font-size:32px; 
+  margin:100px 0 8px; /* 🔥 BAJA EL TÍTULO */
+}
+
+.grid { 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap:18px; 
+  margin-top:30px; 
+}
+
+.card { 
+  background:#1a1a1a; 
+  padding:38px 18px 34px; 
+  border-radius:16px; 
+  text-align:center; 
+  text-decoration:none; 
+  color:#eaeaea;
+  border:2px solid #333;
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  justify-content:center;
+  gap:6px; 
+  min-height:232px;
+}
+
+.card:hover { 
+  background:#222; 
+  transform:scale(1.04); 
+  border-color:#ffd700; 
+}
+
+.card i { 
+  font-size:58px; 
+  color:#ffd700; 
+}
+
+/* S MEJORADA */
+.salsa-s {
+  font-size:44px;
+  font-weight:900;
+  transform:scaleX(1.1);
+  color:#ffd700;
+  text-shadow:0 0 6px rgba(255,215,0,0.25);
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔥 HEADER -->
+<div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="zona-streamer.html"><i class="fa-solid fa-house"></i>Inicio</a>
+  <a href="fairy-academy.html"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</a>
+  <a href="salsa.html"><i class="fa-solid fa-fire"></i>SALSA</a>
+  <a href="reportes-salsa.html"><i class="fa-solid fa-chart-column"></i>Reportes</a>
+  <a href="binance-streamer.html"><i class="fa-solid fa-bitcoin-sign"></i>Binance</a>
+  <a href="noticias.html"><i class="fa-solid fa-newspaper"></i>Noticias</a>
+  <a href="reglamento-interno.html"><i class="fa-solid fa-file-contract"></i>Reglamento</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- MODAL -->
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
+    <h2><i class="fa-solid fa-lock"></i> Área Privada</h2>
+    <p style="color:#aaa;">Ingresa la contraseña</p>
+
+    <input type="password" id="passInput" placeholder="Contraseña">
+    <p id="errorMsg">❌ Contraseña incorrecta</p>
+
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+  </div>
+</div>
+
+<!-- CONTENIDO -->
+<section class="pagina" id="mainContent">
+
+  <h1>Zona Streamer — Fairy Agency</h1>
+  <p style="text-align:center; color:#aaa;">Campus oficial de Fairy Agency</p>
+
+  <div class="grid">
+    <a href="fairy-academy.html" class="card"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</a>
+    <a href="salsa.html" class="card"><span class="salsa-s">S</span>SALSA</a>
+    <a href="reportes-salsa.html" class="card"><i class="fa-solid fa-chart-column"></i>Reportes</a>
+    <a href="binance-streamer.html" class="card"><i class="fa-solid fa-bitcoin-sign"></i>Binance</a>
+    <a href="noticias.html" class="card"><i class="fa-solid fa-newspaper"></i>Noticias</a>
+    <a href="reglamento-interno.html" class="card"><i class="fa-solid fa-file-contract"></i>Reglamento</a>
+  </div>
+
+</section>
+
+<script>
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+const PASSWORD = "fairy2025";
+
+function checkPassword() {
+  const input = document.getElementById('passInput');
+  const error = document.getElementById('errorMsg');
+
+  if (input.value === PASSWORD) {
+    document.getElementById('passwordModal').style.display = 'none';
+    document.getElementById('mainContent').classList.add('activa');
+  } else {
+    error.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>
