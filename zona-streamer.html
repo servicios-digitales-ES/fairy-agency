@@ -134,7 +134,7 @@ h1{
   margin-top:30px;
 }
 
-/* 🔥 TARJETAS PRO */
+/* TARJETAS */
 .card{
   background:#1a1a1a;
   border:2px solid #333;
@@ -154,7 +154,6 @@ h1{
   transition:0.2s;
 }
 
-/* 🔥 ANIMACIÓN IPHONE */
 .card:active{
   transform:scale(0.92);
 }
@@ -170,6 +169,54 @@ h1{
 
 .card .salsa-s{
   font-size:42px;
+}
+
+/* 🔐 LOGIN */
+#passwordModal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.98);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:3000;
+}
+
+.modal-content{
+  background:#111;
+  padding:40px 30px;
+  border-radius:20px;
+  text-align:center;
+  max-width:340px;
+  width:90%;
+}
+
+.modal-content img{
+  width:160px;
+  margin-bottom:15px;
+}
+
+#passInput{
+  width:100%;
+  padding:14px;
+  background:#222;
+  border:none;
+  border-radius:10px;
+  color:white;
+  margin:15px 0;
+}
+
+.btn-entrar{
+  background:#ffd700;
+  color:black;
+  padding:12px 40px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -187,8 +234,7 @@ h1{
 <!-- MENU -->
 <div class="sidebar" id="sidebar">
 
-  <!-- INICIO -->
-  <div class="menu-item" onclick="toggleSub('inicio')" ondblclick="go('zona-streamer.html')">
+  <div class="menu-item" onclick="toggleSub('inicio')">
     <div class="menu-left">
       <i class="fa-solid fa-house"></i>Inicio
     </div>
@@ -204,36 +250,6 @@ h1{
     <a href="reglamento-interno.html">Reglamento</a>
   </div>
 
-  <!-- FAIRY -->
-  <div class="menu-item" onclick="toggleSub('fairy')" ondblclick="go('fairy-academy.html')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <!-- SALSA -->
-  <div class="menu-item" onclick="toggleSub('salsa')" ondblclick="go('salsa.html')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <!-- SALIR -->
   <div class="menu-item logout" onclick="logout()">
     <div class="menu-left">
       <i class="fa-solid fa-right-from-bracket"></i>Salir
@@ -243,6 +259,16 @@ h1{
 </div>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- 🔐 LOGIN -->
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
+    <h2 style="color:#ffd700;">Área Privada</h2>
+    <input type="password" id="passInput" placeholder="Contraseña">
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+  </div>
+</div>
 
 <!-- CONTENIDO -->
 <section class="pagina" id="mainContent">
@@ -271,141 +297,35 @@ function toggleSub(id){
   el.style.maxHeight=el.style.maxHeight?null:el.scrollHeight+"px";
 }
 
-function go(url){
-  window.location.href=url;
-}
-
-/* 🔥 SESIÓN CORRECTA 3H */
+/* 🔐 LOGIN GLOBAL */
+const PASSWORD="fairy2025";
 const DURACION=3*60*60*1000;
 
 window.onload=function(){
   const access=localStorage.getItem("fairyAccess");
   const time=localStorage.getItem("fairyTime");
 
-  if(!access || !time){
-    window.location.href="zona-streamer.html";
-    return;
+  if(access==="true" && time && (Date.now()-time<DURACION)){
+    entrar();
   }
+}
 
-  if(Date.now()-time > DURACION){
-    localStorage.clear();
-    window.location.href="zona-streamer.html";
-    return;
+function checkPassword(){
+  if(passInput.value===PASSWORD){
+    localStorage.setItem("fairyAccess","true");
+    localStorage.setItem("fairyTime",Date.now());
+    entrar();
   }
+}
 
+function entrar(){
+  passwordModal.style.display="none";
   mainContent.classList.add("activa");
 }
 
 function logout(){
-  localStorage.removeItem("fairyAccess");
-  localStorage.removeItem("fairyTime");
-  window.location.href="zona-streamer.html";
-}
-</script>
-
-</body>
-</html>.sidebar.active { left:0; }
-
-.menu-item {
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:18px 25px;
-  color:#ddd;
-  text-decoration:none;
-  font-size:18px;
-}
-
-.menu-item i { color:#ffd700; }
-
-/* CONTENIDO */
-.pagina {
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
-  display:none;
-}
-
-.pagina.activa { display:block; }
-
-.logo { width:85px; display:block; margin:0 auto 10px; }
-
-h1 { text-align:center; color:#ffd700; margin-top:10px; }
-
-.grid {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-  margin-top:30px;
-}
-
-.card {
-  background:#1a1a1a;
-  padding:30px;
-  border-radius:16px;
-  text-align:center;
-  text-decoration:none;
-  color:#eaeaea;
-}
-
-.card i { font-size:50px; color:#ffd700; }
-
-/* MODAL */
-#passwordModal {
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:20000;
-}
-</style>
-</head>
-
-<body>
-
-<div id="passwordModal">
-  <input type="password" id="passInput" placeholder="Contraseña">
-  <button onclick="checkPassword()">Entrar</button>
-</div>
-
-<div class="menu-btn" onclick="toggleMenu()">
-  <i class="fa-solid fa-bars"></i>
-</div>
-
-<div class="sidebar" id="menu">
-  <a href="zona-streamer.html" class="menu-item"><i class="fa-solid fa-house"></i>Inicio</a>
-  <a href="fairy-academy.html" class="menu-item"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</a>
-  <a href="salsa.html" class="menu-item"><i class="fa-solid fa-fire"></i>SALSA</a>
-  <a href="capacitaciones-salsa.html" class="menu-item"><i class="fa-solid fa-video"></i>Capacitaciones</a>
-</div>
-
-<section class="pagina" id="mainContent">
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
-  <h1>Zona Streamer — Fairy Agency</h1>
-
-  <div class="grid">
-    <a href="fairy-academy.html" class="card"><i class="fa-solid fa-graduation-cap"></i><br>Academy</a>
-    <a href="salsa.html" class="card"><i class="fa-solid fa-fire"></i><br>SALSA</a>
-  </div>
-</section>
-
-<script>
-const PASSWORD = "fairy2025";
-
-function checkPassword() {
-  if (document.getElementById('passInput').value === PASSWORD) {
-    document.getElementById('passwordModal').style.display = 'none';
-    document.getElementById('mainContent').classList.add('activa');
-  }
-}
-
-function toggleMenu() {
-  document.getElementById("menu").classList.toggle("active");
+  localStorage.clear();
+  location.reload();
 }
 </script>
 
