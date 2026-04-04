@@ -21,7 +21,7 @@ body {
   align-items:center;
   gap:12px;
   position:fixed;
-  top:20px;
+  top:25px;
   left:20px;
   z-index:2001;
 }
@@ -32,9 +32,9 @@ body {
   cursor:pointer;
 }
 
-.logo-header { 
+.logo { 
   width:85px; 
-  filter: brightness(1.15); 
+  filter: brightness(1.15);
 }
 
 /* SIDEBAR */
@@ -45,17 +45,16 @@ body {
   width:260px;
   height:100%;
   background:#111;
-  padding:90px 18px 20px;
+  padding:100px 18px 20px;
   transform:translateX(-100%);
   transition:0.3s ease;
   z-index:3000;
-  box-shadow:5px 0 20px rgba(0,0,0,0.5);
 }
 
 .sidebar.active { transform:translateX(0); }
 
-/* Logo menú */
-.logo-menu {
+/* LOGO GRANDE */
+.logo-menu{
   width:140px;
   display:block;
   margin:0 auto 30px;
@@ -84,9 +83,7 @@ body {
 .salsa-s {
   color:#ffd700 !important;
   font-size:24px;
-  font-weight:900;
-  width:24px;
-  text-align:center;
+  font-weight:bold;
 }
 
 /* SUBMENU */
@@ -99,7 +96,7 @@ body {
 
 .submenu a {
   display:block;
-  padding:8px 0;
+  padding:6px 0;
   color:#ccc;
   text-decoration:none;
 }
@@ -123,7 +120,7 @@ body {
   visibility:visible;
 }
 
-/* MODAL */
+/* MODAL PASSWORD */
 #passwordModal {
   position:fixed; 
   top:0; left:0; 
@@ -144,11 +141,7 @@ body {
   width:90%;
 }
 
-.modal-content img { 
-  width:180px; 
-  margin-bottom:25px; 
-  filter: brightness(1.15);
-}
+.modal-content img { width:180px; margin-bottom:25px; filter: brightness(1.15); }
 
 h2 { color:#ffd700; margin-bottom:15px; }
 
@@ -184,6 +177,7 @@ h2 { color:#ffd700; margin-bottom:15px; }
   border:1px solid #ffd700;
   z-index:2002;
   font-size:13px;
+  max-width:170px;
 }
 
 .titulo-reloj { 
@@ -193,9 +187,15 @@ h2 { color:#ffd700; margin-bottom:15px; }
   margin-bottom:4px; 
 }
 
-.reloj-grid { display:flex; gap:8px; }
+.reloj-grid { 
+  display:flex; 
+  gap:8px; 
+}
 
-.bloque-reloj { flex:1; text-align:center; }
+.bloque-reloj {
+  flex:1;
+  text-align:center;
+}
 
 .hora { 
   font-size:15px; 
@@ -229,10 +229,13 @@ h1 {
   color:#ffd700;
   text-align:center;
   font-size:32px;
-  margin-top:120px;
+  margin:140px 0 10px;
 }
 
-.sub { text-align:center; color:#aaa; }
+.sub { 
+  text-align:center; 
+  color:#aaa; 
+}
 
 /* GRID */
 .grid {
@@ -258,10 +261,7 @@ h1 {
   transition:0.2s;
 }
 
-.card:hover { 
-  border-color:#ffd700; 
-  transform:scale(1.05);
-}
+.card:hover { border-color:#ffd700; }
 
 .card i {
   font-size:48px;
@@ -277,7 +277,7 @@ h1 {
   <div class="menu-btn" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
   </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
 </div>
 
 <!-- SIDEBAR -->
@@ -339,7 +339,7 @@ h1 {
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<!-- MODAL -->
+<!-- MODAL PASSWORD -->
 <div id="passwordModal">
   <div class="modal-content">
     <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
@@ -446,17 +446,16 @@ function logout(){
 
 function calcularHora(){
   const ahora = new Date();
-  document.getElementById('horaColombia').textContent = 
-    ahora.toLocaleTimeString('es-CO', {timeZone: 'America/Bogota', hour:'numeric', minute:'2-digit', hour12:true});
+  document.getElementById('horaColombia').textContent =
+    ahora.toLocaleTimeString('es-CO',{timeZone:'America/Bogota',hour:'numeric',minute:'2-digit',hour12:true});
   
   const zona = document.getElementById('pais').value;
-  document.getElementById('horaLocal').textContent = 
-    ahora.toLocaleTimeString('es-CO', {timeZone: zona, hour:'numeric', minute:'2-digit', hour12:true});
+  document.getElementById('horaLocal').textContent =
+    ahora.toLocaleTimeString('es-CO',{timeZone:zona,hour:'numeric',minute:'2-digit',hour12:true});
 }
 
-setInterval(calcularHora, 60000);
+setInterval(calcularHora,60000);
 calcularHora();
-
 checkSession();
 </script>
 
