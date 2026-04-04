@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fairy Academy</title>
+<title>Fairy Academy — Fairy Agency</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-body{
-  margin:0;
-  font-family:'Georgia',serif;
-  background:#0a0a0a;
-  color:#eaeaea;
+body { 
+  margin:0; 
+  font-family:'Georgia',serif; 
+  background:#0a0a0a; 
+  color:#eaeaea; 
 }
 
 /* HEADER */
-.header{
+.header {
   display:flex;
   align-items:center;
   gap:12px;
@@ -26,540 +26,15 @@ body{
   z-index:2001;
 }
 
-.menu-btn{
+.menu-btn {
   font-size:24px;
   color:#ffd700;
   cursor:pointer;
 }
 
-.logo{ width:85px; }
+.logo { width:85px; }
 
 /* SIDEBAR */
-.sidebar{
-  position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:90px 16px 20px;
-  transform:translateX(-100%);
-  transition:0.3s ease;
-  z-index:2000;
-}
-.sidebar.active{ transform:translateX(0); }
-
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 12px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.menu-item:hover{ background:#222; }
-
-.menu-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.menu-left i{
-  color:#ffd700;
-}
-
-.salsa-s{
-  color:#ffd700;
-  font-weight:bold;
-}
-
-/* SUBMENU */
-.submenu{
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-  padding-left:28px;
-}
-
-.submenu a{
-  display:block;
-  padding:6px 0;
-  color:#ccc;
-  text-decoration:none;
-}
-
-.submenu a:hover{ color:#ffd700; }
-
-.logout{ color:#ff4d4d; }
-
-/* OVERLAY */
-.overlay{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.7);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-}
-.overlay.active{
-  opacity:1;
-  visibility:visible;
-}
-
-/* CONTENIDO */
-.pagina{
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
-  display:none;
-}
-.pagina.activa{ display:block; }
-
-h1{
-  color:#ffd700;
-  text-align:center;
-  margin-top:100px;
-}
-
-.sub{
-  text-align:center;
-  color:#aaa;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  margin-top:30px;
-}
-
-/* 🔥 TARJETAS IGUAL QUE ZONA STREAMER */
-.card{
-  background:#1a1a1a;
-  border:2px solid #333;
-  border-radius:18px;
-  text-align:center;
-  text-decoration:none;
-  color:#eaeaea;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-
-  min-height:190px;
-  gap:8px;
-
-  transition:0.2s;
-}
-
-/* ANIMACIÓN IPHONE */
-.card:active{
-  transform:scale(0.92);
-}
-
-.card:hover{
-  border-color:#ffd700;
-}
-
-.card i{
-  font-size:48px;
-  color:#ffd700;
-}
-</style>
-</head>
-
-<body>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
-</div>
-
-<!-- MENU -->
-<div class="sidebar" id="sidebar">
-
-  <!-- INICIO -->
-  <div class="menu-item" onclick="toggleSub('inicio')" ondblclick="go('zona-streamer.html')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="inicio">
-    <a href="fairy-academy.html">Fairy Academy</a>
-    <a href="salsa.html">SALSA</a>
-    <a href="reportes-salsa.html">Reportes</a>
-    <a href="binance-streamer.html">Binance</a>
-    <a href="noticias.html">Noticias</a>
-    <a href="reglamento-interno.html">Reglamento</a>
-  </div>
-
-  <!-- FAIRY -->
-  <div class="menu-item" onclick="toggleSub('fairy')" ondblclick="go('fairy-academy.html')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <!-- SALSA -->
-  <div class="menu-item" onclick="toggleSub('salsa')" ondblclick="go('salsa.html')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <!-- SALIR -->
-  <div class="menu-item logout" onclick="logout()">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<!-- CONTENIDO -->
-<section class="pagina" id="mainContent">
-
-  <h1>Fairy Academy</h1>
-  <p class="sub">Centro de formación oficial</p>
-
-  <div class="grid">
-    <a href="capacitaciones.html" class="card"><i class="fa-solid fa-book-open"></i>Capacitaciones</a>
-    <a href="tutoriales.html" class="card"><i class="fa-solid fa-circle-play"></i>Tutoriales</a>
-    <a href="tips-fairy.html" class="card"><i class="fa-solid fa-wand-magic-sparkles"></i>Tips Fairy</a>
-  </div>
-
-</section>
-
-<script>
-function toggleMenu(){
-  sidebar.classList.toggle("active");
-  overlay.classList.toggle("active");
-}
-
-function toggleSub(id){
-  const el=document.getElementById(id);
-  el.style.maxHeight=el.style.maxHeight?null:el.scrollHeight+"px";
-}
-
-function go(url){
-  window.location.href=url;
-}
-
-/* SESIÓN GLOBAL */
-const DURACION=3*60*60*1000;
-
-window.onload=function(){
-  const access=localStorage.getItem("fairyAccess");
-  const time=localStorage.getItem("fairyTime");
-
-  if(!access||Date.now()-time>DURACION){
-    logout();
-  }else{
-    mainContent.classList.add("activa");
-  }
-}
-
-function logout(){
-  localStorage.clear();
-  window.location.href="zona-streamer.html";
-}
-</script>
-
-</body>
-</html>/* SIDEBAR */
-.sidebar{
-  position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:90px 16px 20px;
-  transform:translateX(-100%);
-  transition:0.3s ease;
-  z-index:2000;
-}
-.sidebar.active{ transform:translateX(0); }
-
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 12px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.menu-item:hover{ background:#222; }
-
-.menu-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.menu-left i{
-  color:#ffd700;
-}
-
-.salsa-s{
-  color:#ffd700;
-  font-weight:bold;
-}
-
-/* SUBMENU */
-.submenu{
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-  padding-left:28px;
-}
-
-.submenu a{
-  display:block;
-  padding:6px 0;
-  color:#ccc;
-  text-decoration:none;
-}
-
-.submenu a:hover{ color:#ffd700; }
-
-.logout{ color:#ff4d4d; }
-
-/* OVERLAY */
-.overlay{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.7);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-}
-.overlay.active{
-  opacity:1;
-  visibility:visible;
-}
-
-/* CONTENIDO */
-.pagina{
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
-  display:none;
-}
-.pagina.activa{ display:block; }
-
-h1{
-  color:#ffd700;
-  text-align:center;
-  margin-top:100px;
-}
-
-.sub{
-  text-align:center;
-  color:#aaa;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  margin-top:30px;
-}
-
-/* 🔥 TARJETAS IGUAL QUE ZONA STREAMER */
-.card{
-  background:#1a1a1a;
-  border:2px solid #333;
-  border-radius:18px;
-  text-align:center;
-  text-decoration:none;
-  color:#eaeaea;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-
-  min-height:190px;
-  gap:8px;
-
-  transition:0.2s;
-}
-
-/* ANIMACIÓN IPHONE */
-.card:active{
-  transform:scale(0.92);
-}
-
-.card:hover{
-  border-color:#ffd700;
-}
-
-.card i{
-  font-size:48px;
-  color:#ffd700;
-}
-</style>
-</head>
-
-<body>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
-</div>
-
-<!-- MENU -->
-<div class="sidebar" id="sidebar">
-
-  <!-- INICIO -->
-  <div class="menu-item" onclick="toggleSub('inicio')" ondblclick="go('zona-streamer.html')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="inicio">
-    <a href="fairy-academy.html">Fairy Academy</a>
-    <a href="salsa.html">SALSA</a>
-    <a href="reportes-salsa.html">Reportes</a>
-    <a href="binance-streamer.html">Binance</a>
-    <a href="noticias.html">Noticias</a>
-    <a href="reglamento-interno.html">Reglamento</a>
-  </div>
-
-  <!-- FAIRY -->
-  <div class="menu-item" onclick="toggleSub('fairy')" ondblclick="go('fairy-academy.html')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <!-- SALSA -->
-  <div class="menu-item" onclick="toggleSub('salsa')" ondblclick="go('salsa.html')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <!-- SALIR -->
-  <div class="menu-item logout" onclick="logout()">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<!-- CONTENIDO -->
-<section class="pagina" id="mainContent">
-
-  <h1>Fairy Academy</h1>
-  <p class="sub">Centro de formación oficial</p>
-
-  <div class="grid">
-    <a href="capacitaciones.html" class="card"><i class="fa-solid fa-book-open"></i>Capacitaciones</a>
-    <a href="tutoriales.html" class="card"><i class="fa-solid fa-circle-play"></i>Tutoriales</a>
-    <a href="tips-fairy.html" class="card"><i class="fa-solid fa-wand-magic-sparkles"></i>Tips Fairy</a>
-  </div>
-
-</section>
-
-<script>
-function toggleMenu(){
-  sidebar.classList.toggle("active");
-  overlay.classList.toggle("active");
-}
-
-function toggleSub(id){
-  const el=document.getElementById(id);
-  el.style.maxHeight=el.style.maxHeight?null:el.scrollHeight+"px";
-}
-
-function go(url){
-  window.location.href=url;
-}
-
-/* SESIÓN GLOBAL */
-const DURACION=3*60*60*1000;
-
-window.onload=function(){
-  const access=localStorage.getItem("fairyAccess");
-  const time=localStorage.getItem("fairyTime");
-
-  if(!access||Date.now()-time>DURACION){
-    logout();
-  }else{
-    mainContent.classList.add("activa");
-  }
-}
-
-function logout(){
-  localStorage.clear();
-  window.location.href="zona-streamer.html";
-}
-</script>
-
-</body>
-</html>  width:85px;
-}
-
-/* 🔥 SIDEBAR */
 .sidebar {
   position:fixed;
   top:0;
@@ -570,50 +45,63 @@ function logout(){
   padding:100px 18px 20px;
   transform:translateX(-100%);
   transition:0.3s ease;
-  z-index:2000;
+  z-index:3000;
   box-shadow:5px 0 20px rgba(0,0,0,0.5);
 }
 
-.sidebar.active {
-  transform:translateX(0);
+.sidebar.active { transform:translateX(0); }
+
+.menu-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:10px;
+  cursor:pointer;
 }
 
-.sidebar a {
+.menu-item:hover { background:#222; }
+
+.menu-left {
   display:flex;
   align-items:center;
-  gap:16px;
-  color:#eaeaea;
+  gap:10px;
+}
+
+.menu-left i { color:#ffd700; }
+
+.salsa-s {
+  color:#ffd700;
+  font-weight:bold;
+}
+
+/* SUBMENU */
+.submenu {
+  max-height:0;
+  overflow:hidden;
+  transition:0.3s;
+  padding-left:28px;
+}
+
+.submenu a {
+  display:block;
+  padding:6px 0;
+  color:#ccc;
   text-decoration:none;
-  padding:16px 14px;
-  margin:12px 0;
-  border-radius:10px;
-  font-size:17px;
 }
 
-.sidebar a:hover {
-  background:#222;
-  color:#ffd700;
-}
-
-.sidebar i {
-  font-size:18px;
-  width:22px;
-  text-align:center;
-  color:#ffd700;
-}
+.submenu a:hover { color:#ffd700; }
 
 /* OVERLAY */
 .overlay {
   position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top:0; left:0;
+  width:100%; height:100%;
   background:rgba(0,0,0,0.7);
   opacity:0;
   visibility:hidden;
   transition:0.3s;
-  z-index:1500;
+  z-index:2500;
 }
 
 .overlay.active {
@@ -621,134 +109,245 @@ function logout(){
   visibility:visible;
 }
 
-/* CONTENEDOR */
-.pagina { 
-  max-width:960px; 
-  margin:40px auto; 
-  padding:30px; 
-  background:#111; 
-  border-radius:16px; 
-  position:relative;
+/* MODAL PASSWORD */
+#passwordModal {
+  position:fixed; 
+  top:0; left:0; 
+  width:100%; height:100%; 
+  background:rgba(0,0,0,0.98); 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  z-index:4000;
 }
 
-/* TITULOS */
-h1 { 
-  color:#ffd700; 
+.modal-content {
+  background:#111; 
+  padding:40px 30px; 
+  border-radius:20px; 
   text-align:center; 
-  font-size:32px; 
-  margin:100px 0 8px;
+  max-width:340px; 
+  width:90%;
+}
+
+.modal-content img { width:180px; margin-bottom:25px; }
+
+h2 { color:#ffd700; margin-bottom:15px; }
+
+#passInput {
+  width:100%; 
+  padding:15px; 
+  background:#222; 
+  border:none; 
+  border-radius:10px; 
+  color:white; 
+  margin:15px 0;
+  text-align:center;
+}
+
+.btn-entrar {
+  background:#ffd700; 
+  color:black; 
+  padding:14px 50px; 
+  border:none; 
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* CONTENIDO */
+.pagina {
+  max-width:960px;
+  margin:40px auto;
+  padding:30px;
+  background:#111;
+  border-radius:16px;
+  display:none;
+}
+
+.pagina.activa { display:block; }
+
+h1 {
+  color:#ffd700;
+  text-align:center;
+  margin-top:100px;
 }
 
 .sub {
-  text-align:center; 
+  text-align:center;
   color:#aaa;
 }
 
 /* GRID */
-.grid { 
-  display:grid; 
-  grid-template-columns: repeat(2, 1fr); 
-  gap:18px; 
-  margin-top:30px; 
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin-top:30px;
 }
 
-/* CARDS */
-.card { 
-  background:#1a1a1a; 
-  border-radius:16px; 
-  text-align:center; 
-  text-decoration:none; 
-  color:#eaeaea;
+.card {
+  background:#1a1a1a;
   border:2px solid #333;
-
-  display:flex; 
-  flex-direction:column; 
-  align-items:center; 
+  border-radius:18px;
+  text-align:center;
+  text-decoration:none;
+  color:#eaeaea;
+  display:flex;
+  flex-direction:column;
   justify-content:center;
-
-  height:280px;
-  gap:12px;
-  transition:0.3s;
+  align-items:center;
+  min-height:190px;
+  gap:8px;
+  transition:0.2s;
 }
 
-.card:hover { 
-  background:#222; 
-  transform:scale(1.04); 
-  border-color:#ffd700; 
-}
+.card:hover { border-color:#ffd700; }
 
-.card i { 
-  font-size:64px; 
-  color:#ffd700; 
-}
-
-.card span {
-  font-size:18px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .pagina { margin:20px; padding:20px; }
+.card i {
+  font-size:48px;
+  color:#ffd700;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 HEADER -->
+<!-- HEADER -->
 <div class="header">
   <div class="menu-btn" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
   </div>
-
   <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-  <a href="zona-streamer.html"><i class="fa-solid fa-house"></i>Inicio</a>
-  <a href="fairy-academy.html"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</a>
-  <a href="salsa.html"><i class="fa-solid fa-fire"></i>SALSA</a>
-  <a href="reportes-salsa.html"><i class="fa-solid fa-chart-column"></i>Reportes</a>
-  <a href="binance-streamer.html"><i class="fa-solid fa-bitcoin-sign"></i>Binance</a>
-  <a href="noticias.html"><i class="fa-solid fa-newspaper"></i>Noticias</a>
-  <a href="reglamento-interno.html"><i class="fa-solid fa-file-contract"></i>Reglamento</a>
+
+  <div class="menu-item" onclick="toggleSub('inicio')">
+    <div class="menu-left">
+      <i class="fa-solid fa-house"></i>Inicio
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="inicio">
+    <a href="fairy-academy.html">Fairy Academy</a>
+    <a href="salsa.html">SALSA</a>
+    <a href="reportes-salsa.html">Reportes</a>
+    <a href="binance-streamer.html">Binance</a>
+    <a href="noticias.html">Noticias</a>
+    <a href="reglamento-interno.html">Reglamento</a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSub('fairy')">
+    <div class="menu-left">
+      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="fairy">
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="tutoriales.html">Tutoriales</a>
+    <a href="tips-fairy.html">Tips Fairy</a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSub('salsa')">
+    <div class="menu-left">
+      <span class="salsa-s">S</span>SALSA
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="salsa">
+    <a href="capacitaciones-salsa.html">Capacitaciones</a>
+    <a href="tutoriales-salsa.html">Tutoriales</a>
+    <a href="reglas-salsa.html">Reglas SALSA</a>
+    <a href="herramientas-salsa.html">Herramientas</a>
+  </div>
+
+  <div class="menu-item logout" onclick="logout()">
+    <div class="menu-left">
+      <i class="fa-solid fa-right-from-bracket"></i>Salir
+    </div>
+  </div>
+
 </div>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
+<!-- MODAL PASSWORD -->
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
+    <h2>Área Privada</h2>
+    <input type="password" id="passInput" placeholder="Contraseña">
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+  </div>
+</div>
+
 <!-- CONTENIDO -->
-<section class="pagina">
+<section class="pagina" id="mainContent">
 
   <h1>Fairy Academy</h1>
   <p class="sub">Centro de formación oficial</p>
 
   <div class="grid">
-
-    <a href="capacitaciones.html" class="card">
-      <i class="fa-solid fa-book-open"></i>
-      <span>Capacitaciones</span>
-    </a>
-
-    <a href="tutoriales.html" class="card">
-      <i class="fa-solid fa-circle-play"></i>
-      <span>Tutoriales</span>
-    </a>
-
-    <a href="tips-fairy.html" class="card">
-      <i class="fa-solid fa-wand-magic-sparkles"></i>
-      <span>Tips Fairy</span>
-    </a>
-
+    <a href="capacitaciones.html" class="card"><i class="fa-solid fa-book-open"></i>Capacitaciones</a>
+    <a href="tutoriales.html" class="card"><i class="fa-solid fa-circle-play"></i>Tutoriales</a>
+    <a href="tips-fairy.html" class="card"><i class="fa-solid fa-wand-magic-sparkles"></i>Tips Fairy</a>
   </div>
 
 </section>
 
 <script>
-function toggleMenu() {
+// MENU
+function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
 }
+
+function toggleSub(id){
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+// SESIÓN 3 HORAS
+const PASSWORD = "fairy2025";
+const DURACION = 3 * 60 * 60 * 1000;
+
+function checkPassword(){
+  if (document.getElementById('passInput').value === PASSWORD) {
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime", Date.now());
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").classList.add("activa");
+  } else {
+    alert("Contraseña incorrecta");
+  }
+}
+
+function checkSession(){
+  const access = localStorage.getItem("fairyAccess");
+  const time = localStorage.getItem("fairyTime");
+
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    document.getElementById("passwordModal").style.display = "flex";
+    return;
+  }
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").classList.add("activa");
+}
+
+function logout(){
+  localStorage.clear();
+  window.location.href = "zona-streamer.html";
+}
+
+// Iniciar
+checkSession();
 </script>
 
 </body>
