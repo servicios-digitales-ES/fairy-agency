@@ -20,8 +20,8 @@ body {
   display:flex;
   align-items:center;
   gap:12px;
-  position:absolute;
-  top:25px;
+  position:fixed;
+  top:20px;
   left:20px;
   z-index:2001;
 }
@@ -32,7 +32,10 @@ body {
   cursor:pointer;
 }
 
-.logo { width:85px; }
+.logo-header { 
+  width:85px; 
+  filter: brightness(1.15); 
+}
 
 /* SIDEBAR */
 .sidebar {
@@ -42,14 +45,21 @@ body {
   width:260px;
   height:100%;
   background:#111;
-  padding:100px 18px 20px;
+  padding:90px 18px 20px;
   transform:translateX(-100%);
   transition:0.3s ease;
-  z-index:2000;
+  z-index:3000;
   box-shadow:5px 0 20px rgba(0,0,0,0.5);
 }
 
 .sidebar.active { transform:translateX(0); }
+
+.logo-menu {
+  width:140px;
+  display:block;
+  margin:0 auto 30px;
+  filter: brightness(1.15);
+}
 
 .menu-item {
   display:flex;
@@ -70,6 +80,14 @@ body {
 
 .menu-left i { color:#ffd700; }
 
+.salsa-s {
+  color:#ffd700 !important;
+  font-size:24px;
+  font-weight:900;
+  width:24px;
+  text-align:center;
+}
+
 /* SUBMENU */
 .submenu {
   max-height:0;
@@ -80,7 +98,7 @@ body {
 
 .submenu a {
   display:block;
-  padding:6px 0;
+  padding:8px 0;
   color:#ccc;
   text-decoration:none;
 }
@@ -96,7 +114,7 @@ body {
   opacity:0;
   visibility:hidden;
   transition:0.3s;
-  z-index:1500;
+  z-index:2500;
 }
 
 .overlay.active {
@@ -104,7 +122,7 @@ body {
   visibility:visible;
 }
 
-/* MODAL PASSWORD */
+/* MODAL */
 #passwordModal {
   position:fixed; 
   top:0; left:0; 
@@ -113,7 +131,7 @@ body {
   display:flex; 
   align-items:center; 
   justify-content:center; 
-  z-index:3000;
+  z-index:4000;
 }
 
 .modal-content {
@@ -128,12 +146,10 @@ body {
 .modal-content img { 
   width:180px; 
   margin-bottom:25px; 
+  filter: brightness(1.15); 
 }
 
-h2 { 
-  color:#ffd700; 
-  margin-bottom:15px; 
-}
+h2 { color:#ffd700; margin-bottom:15px; }
 
 #passInput {
   width:100%; 
@@ -142,7 +158,6 @@ h2 {
   border:none; 
   border-radius:10px; 
   color:white; 
-  font-size:16px;
   margin:15px 0;
   text-align:center;
 }
@@ -155,39 +170,37 @@ h2 {
   border-radius:10px;
   font-weight:bold;
   cursor:pointer;
-  font-size:17px;
 }
 
 /* CONTENIDO */
-.pagina { 
-  max-width:960px; 
-  margin:40px auto; 
-  padding:30px; 
-  background:#111; 
-  border-radius:16px; 
+.pagina {
+  max-width:960px;
+  margin:40px auto;
+  padding:30px;
+  background:#111;
+  border-radius:16px;
   display:none;
 }
 
 .pagina.activa { display:block; }
 
-h1 { 
-  color:#ffd700; 
-  text-align:center; 
-  margin-top:100px; 
+h1 {
+  color:#ffd700;
+  text-align:center;
+  margin-top:120px;
   font-size:32px;
 }
 
 /* GRID */
-.grid { 
-  display:grid; 
-  grid-template-columns:repeat(2,1fr); 
-  gap:18px; 
-  margin-top:30px; 
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  margin-top:30px;
 }
 
-/* TARJETAS */
 .card {
-  background:#1a1a1a; 
+  background:#1a1a1a;
   border:2px solid #333;
   border-radius:18px;
   text-align:center;
@@ -202,17 +215,10 @@ h1 {
   transition:0.2s;
 }
 
-.card:hover {
-  border-color:#ffd700;
-}
+.card:hover { border-color:#ffd700; }
 
 .card i {
   font-size:48px;
-  color:#ffd700;
-}
-
-.card .salsa-s {
-  font-size:42px;
   color:#ffd700;
 }
 </style>
@@ -225,20 +231,22 @@ h1 {
   <div class="menu-btn" onclick="toggleMenu()">
     <i class="fa-solid fa-bars"></i>
   </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+
   <div class="menu-item" onclick="toggleSub('inicio')">
     <div class="menu-left">
       <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
+    </div>▼
   </div>
 
   <div class="submenu" id="inicio">
+    <a href="zona-streamer.html">Zona Streamer</a>
     <a href="fairy-academy.html">Fairy Academy</a>
     <a href="salsa.html">SALSA</a>
     <a href="reportes-salsa.html">Reportes</a>
@@ -247,7 +255,32 @@ h1 {
     <a href="reglamento-interno.html">Reglamento</a>
   </div>
 
-  <div class="menu-item logout" onclick="logout()">
+  <div class="menu-item" onclick="toggleSub('fairy')">
+    <div class="menu-left">
+      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
+    </div>▼
+  </div>
+
+  <div class="submenu" id="fairy">
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="tutoriales.html">Tutoriales</a>
+    <a href="tips-fairy.html">Tips Fairy</a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSub('salsa')">
+    <div class="menu-left">
+      <span class="salsa-s">S</span>SALSA
+    </div>▼
+  </div>
+
+  <div class="submenu" id="salsa">
+    <a href="capacitaciones-salsa.html">Capacitaciones</a>
+    <a href="tutoriales-salsa.html">Tutoriales</a>
+    <a href="reglas-salsa.html">Reglas SALSA</a>
+    <a href="herramientas-salsa.html">Herramientas</a>
+  </div>
+
+  <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
     <div class="menu-left">
       <i class="fa-solid fa-right-from-bracket"></i>Salir
     </div>
@@ -257,7 +290,7 @@ h1 {
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<!-- MODAL PASSWORD -->
+<!-- MODAL -->
 <div id="passwordModal">
   <div class="modal-content">
     <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
@@ -284,7 +317,6 @@ h1 {
 </section>
 
 <script>
-// MENU
 function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
@@ -295,9 +327,8 @@ function toggleSub(id){
   el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
 }
 
-// SESIÓN - 3 HORAS
 const PASSWORD = "fairy2025";
-const DURACION = 3 * 60 * 60 * 1000;   // 3 horas
+const DURACION = 3 * 60 * 60 * 1000;
 
 function checkPassword(){
   if (document.getElementById('passInput').value === PASSWORD) {
@@ -326,10 +357,9 @@ function checkSession(){
 
 function logout(){
   localStorage.clear();
-  location.reload();
+  window.location.href = "zona-streamer.html";
 }
 
-// Iniciar
 checkSession();
 </script>
 
