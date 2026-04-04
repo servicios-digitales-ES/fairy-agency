@@ -8,15 +8,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-body{
-  margin:0;
-  font-family:'Georgia',serif;
-  background:#0a0a0a;
-  color:#eaeaea;
+body { 
+  margin:0; 
+  font-family:'Georgia',serif; 
+  background:#0a0a0a; 
+  color:#eaeaea; 
 }
 
 /* HEADER */
-.header{
+.header {
   display:flex;
   align-items:center;
   gap:12px;
@@ -26,30 +26,32 @@ body{
   z-index:2001;
 }
 
-.menu-btn{
+.menu-btn {
   font-size:24px;
   color:#ffd700;
   cursor:pointer;
 }
 
-.logo{ width:85px; }
+.logo { width:85px; }
 
 /* SIDEBAR */
-.sidebar{
+.sidebar {
   position:fixed;
   top:0;
   left:0;
   width:260px;
   height:100%;
   background:#111;
-  padding:90px 16px 20px;
+  padding:100px 18px 20px;
   transform:translateX(-100%);
   transition:0.3s ease;
   z-index:2000;
+  box-shadow:5px 0 20px rgba(0,0,0,0.5);
 }
-.sidebar.active{ transform:translateX(0); }
 
-.menu-item{
+.sidebar.active { transform:translateX(0); }
+
+.menu-item {
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -58,165 +60,160 @@ body{
   cursor:pointer;
 }
 
-.menu-item:hover{ background:#222; }
+.menu-item:hover { background:#222; }
 
-.menu-left{
+.menu-left {
   display:flex;
   align-items:center;
   gap:10px;
 }
 
-.menu-left i{
-  color:#ffd700;
-}
-
-.salsa-s{
-  color:#ffd700;
-  font-weight:bold;
-}
+.menu-left i { color:#ffd700; }
 
 /* SUBMENU */
-.submenu{
+.submenu {
   max-height:0;
   overflow:hidden;
   transition:0.3s;
   padding-left:28px;
 }
 
-.submenu a{
+.submenu a {
   display:block;
   padding:6px 0;
   color:#ccc;
   text-decoration:none;
 }
 
-.submenu a:hover{ color:#ffd700; }
-
-.logout{ color:#ff4d4d; }
+.submenu a:hover { color:#ffd700; }
 
 /* OVERLAY */
-.overlay{
+.overlay {
   position:fixed;
-  width:100%;
-  height:100%;
+  top:0; left:0;
+  width:100%; height:100%;
   background:rgba(0,0,0,0.7);
   opacity:0;
   visibility:hidden;
   transition:0.3s;
+  z-index:1500;
 }
-.overlay.active{
+
+.overlay.active {
   opacity:1;
   visibility:visible;
 }
 
+/* MODAL PASSWORD */
+#passwordModal {
+  position:fixed; 
+  top:0; left:0; 
+  width:100%; height:100%; 
+  background:rgba(0,0,0,0.98); 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+  z-index:3000;
+}
+
+.modal-content {
+  background:#111; 
+  padding:40px 30px; 
+  border-radius:20px; 
+  text-align:center; 
+  max-width:340px; 
+  width:90%;
+}
+
+.modal-content img { 
+  width:180px; 
+  margin-bottom:25px; 
+}
+
+h2 { 
+  color:#ffd700; 
+  margin-bottom:15px; 
+}
+
+#passInput {
+  width:100%; 
+  padding:15px; 
+  background:#222; 
+  border:none; 
+  border-radius:10px; 
+  color:white; 
+  font-size:16px;
+  margin:15px 0;
+  text-align:center;
+}
+
+.btn-entrar {
+  background:#ffd700; 
+  color:black; 
+  padding:14px 50px; 
+  border:none; 
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:17px;
+}
+
 /* CONTENIDO */
-.pagina{
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
+.pagina { 
+  max-width:960px; 
+  margin:40px auto; 
+  padding:30px; 
+  background:#111; 
+  border-radius:16px; 
   display:none;
 }
-.pagina.activa{ display:block; }
 
-h1{
-  color:#ffd700;
-  text-align:center;
-  margin-top:100px;
+.pagina.activa { display:block; }
+
+h1 { 
+  color:#ffd700; 
+  text-align:center; 
+  margin-top:100px; 
+  font-size:32px;
 }
 
 /* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  margin-top:30px;
+.grid { 
+  display:grid; 
+  grid-template-columns:repeat(2,1fr); 
+  gap:18px; 
+  margin-top:30px; 
 }
 
 /* TARJETAS */
-.card{
-  background:#1a1a1a;
+.card {
+  background:#1a1a1a; 
   border:2px solid #333;
   border-radius:18px;
   text-align:center;
   text-decoration:none;
   color:#eaeaea;
-
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-
   min-height:190px;
   gap:8px;
-
   transition:0.2s;
 }
 
-.card:active{
-  transform:scale(0.92);
-}
-
-.card:hover{
+.card:hover {
   border-color:#ffd700;
 }
 
-.card i{
+.card i {
   font-size:48px;
   color:#ffd700;
 }
 
-.card .salsa-s{
+.card .salsa-s {
   font-size:42px;
-}
-
-/* 🔐 LOGIN */
-#passwordModal{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.98);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:3000;
-}
-
-.modal-content{
-  background:#111;
-  padding:40px 30px;
-  border-radius:20px;
-  text-align:center;
-  max-width:340px;
-  width:90%;
-}
-
-.modal-content img{
-  width:160px;
-  margin-bottom:15px;
-}
-
-#passInput{
-  width:100%;
-  padding:14px;
-  background:#222;
-  border:none;
-  border-radius:10px;
-  color:white;
-  margin:15px 0;
-}
-
-.btn-entrar{
-  background:#ffd700;
-  color:black;
-  padding:12px 40px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
+  color:#ffd700;
 }
 </style>
 </head>
@@ -231,7 +228,7 @@ h1{
   <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
 </div>
 
-<!-- MENU -->
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
   <div class="menu-item" onclick="toggleSub('inicio')">
@@ -260,11 +257,11 @@ h1{
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<!-- 🔐 LOGIN -->
+<!-- MODAL PASSWORD -->
 <div id="passwordModal">
   <div class="modal-content">
     <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
-    <h2 style="color:#ffd700;">Área Privada</h2>
+    <h2>Área Privada</h2>
     <input type="password" id="passInput" placeholder="Contraseña">
     <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
   </div>
@@ -287,46 +284,53 @@ h1{
 </section>
 
 <script>
+// MENU
 function toggleMenu(){
-  sidebar.classList.toggle("active");
-  overlay.classList.toggle("active");
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
 }
 
 function toggleSub(id){
-  const el=document.getElementById(id);
-  el.style.maxHeight=el.style.maxHeight?null:el.scrollHeight+"px";
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
 }
 
-/* 🔐 LOGIN GLOBAL */
-const PASSWORD="fairy2025";
-const DURACION=3*60*60*1000;
-
-window.onload=function(){
-  const access=localStorage.getItem("fairyAccess");
-  const time=localStorage.getItem("fairyTime");
-
-  if(access==="true" && time && (Date.now()-time<DURACION)){
-    entrar();
-  }
-}
+// SESIÓN - 3 HORAS
+const PASSWORD = "fairy2025";
+const DURACION = 3 * 60 * 60 * 1000;   // 3 horas
 
 function checkPassword(){
-  if(passInput.value===PASSWORD){
-    localStorage.setItem("fairyAccess","true");
-    localStorage.setItem("fairyTime",Date.now());
-    entrar();
+  if (document.getElementById('passInput').value === PASSWORD) {
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime", Date.now());
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").classList.add("activa");
+  } else {
+    alert("Contraseña incorrecta");
   }
 }
 
-function entrar(){
-  passwordModal.style.display="none";
-  mainContent.classList.add("activa");
+function checkSession(){
+  const access = localStorage.getItem("fairyAccess");
+  const time = localStorage.getItem("fairyTime");
+
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    document.getElementById("passwordModal").style.display = "flex";
+    return;
+  }
+
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").classList.add("activa");
 }
 
 function logout(){
   localStorage.clear();
   location.reload();
 }
+
+// Iniciar
+checkSession();
 </script>
 
 </body>
