@@ -4,280 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Capacitaciones SALSA — Fairy Agency</title>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-body { 
-  margin:0; 
-  font-family:'Georgia',serif; 
-  background:#0a0a0a; 
-  color:#eaeaea; 
-}
-
-.header {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  position:absolute;
-  top:25px;
-  left:20px;
-  z-index:2001;
-}
-
-.menu-btn {
-  font-size:24px;
-  color:#ffd700;
-  cursor:pointer;
-}
-
+body { margin:0; font-family:'Georgia',serif; background:#0a0a0a; color:#eaeaea; }
+.header { display:flex; align-items:center; gap:12px; position:fixed; top:25px; left:20px; z-index:2001; }
+.menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
 .logo { width:85px; filter: brightness(1.15); }
-
-.sidebar {
-  position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:90px 18px 20px;
-  transform:translateX(-100%);
-  transition:0.3s ease;
-  z-index:3000;
-}
-
+.sidebar { position:fixed; top:0; left:0; width:260px; height:100%; background:#111; padding:90px 18px 20px; transform:translateX(-100%); transition:0.3s ease; z-index:3000; box-shadow:5px 0 20px rgba(0,0,0,0.5); }
 .sidebar.active { transform:translateX(0); }
-
-.logo-menu {
-  width:140px;
-  display:block;
-  margin:0 auto 30px;
-  filter: brightness(1.15);
-}
-
-.menu-item {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 12px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
+.logo-menu { width:140px; display:block; margin:0 auto 30px; filter: brightness(1.15); }
+.menu-item { display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-radius:10px; cursor:pointer; }
 .menu-item:hover { background:#222; }
-
-.menu-left {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
+.menu-left { display:flex; align-items:center; gap:10px; }
 .menu-left i { color:#ffd700; }
-
-.salsa-s {
-  color:#ffd700 !important;
-  font-size:24px;
-  font-weight:900;
-  width:24px;
-  text-align:center;
-}
-
-.submenu {
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-  padding-left:28px;
-}
-
-.submenu a {
-  display:block;
-  padding:8px 0;
-  color:#ccc;
-  text-decoration:none;
-}
-
+.salsa-s { color:#ffd700; font-weight:bold; }
+.submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
+.submenu a { display:block; padding:8px 0; color:#ccc; text-decoration:none; }
 .submenu a:hover { color:#ffd700; }
+.overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); opacity:0; visibility:hidden; transition:0.3s; z-index:2500; }
+.overlay.active { opacity:1; visibility:visible; }
 
-.overlay {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.7);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-  z-index:2500;
-}
-
-.overlay.active {
-  opacity:1;
-  visibility:visible;
-}
-
-#passwordModal {
-  position:fixed; 
-  top:0; left:0; 
-  width:100%; height:100%; 
-  background:rgba(0,0,0,0.98); 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  z-index:4000;
-}
-
-.modal-content {
-  background:#111; 
-  padding:40px 30px; 
-  border-radius:20px; 
-  text-align:center; 
-  max-width:340px; 
-  width:90%;
-}
-
-.modal-content img { 
-  width:180px; 
-  margin-bottom:25px; 
-  filter: brightness(1.15); 
-}
-
-h2 { color:#ffd700; margin-bottom:15px; }
-
-#passInput {
-  width:100%; 
-  padding:15px; 
-  background:#222; 
-  border:none; 
-  border-radius:10px; 
-  color:white; 
-  margin:15px 0;
-  text-align:center;
-}
-
-.btn-entrar {
-  background:#ffd700; 
-  color:black; 
-  padding:14px 50px; 
-  border:none; 
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.pagina {
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
-  display:none;
-}
-
-.pagina.activa { display:block; }
-
-h1 {
-  color:#ffd700;
-  text-align:center;
-  margin-top:100px;
-}
-
-.tabs {
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  margin-top:20px;
-}
-
-.tab {
-  cursor:pointer;
-  padding-bottom:5px;
-  font-size:18px;
-}
-
-.tab.active {
-  color:#ffd700;
-  border-bottom:3px solid #ffd700;
-}
-
-.subtabs {
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:25px;
-}
-
-.subtab {
-  padding:10px 20px;
-  border-radius:10px;
-  background:#222;
-  cursor:pointer;
-  font-size:15px;
-}
-
-.subtab.active {
-  background:#ffd700;
-  color:#000;
-  font-weight:bold;
-}
-
-.lista { 
-  margin-top:30px; 
-}
-
-.item {
-  background:#1a1a1a;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:18px;
-  display:flex;
-  gap:15px;
-  align-items:center;
-}
-
-.item img, .item i {
-  width:140px;
-  font-size:48px;
-  color:#ffd700;
-  flex-shrink:0;
-  text-align:center;
-}
-
-.ver {
-  color:#ffd700;
-  text-decoration:none;
-  font-weight:bold;
-}
-
+#mainContent { max-width:960px; margin:40px auto; padding:30px; background:#111; border-radius:16px; display:none; }
+#mainContent.activa { display:block; }
+h1 { color:#ffd700; text-align:center; margin-top:100px; }
+.tabs { display:flex; justify-content:center; gap:40px; margin-top:20px; }
+.tab { cursor:pointer; padding-bottom:5px; font-size:18px; }
+.tab.active { color:#ffd700; border-bottom:3px solid #ffd700; }
+.subtabs { display:flex; justify-content:center; gap:15px; margin-top:25px; }
+.subtab { padding:10px 20px; border-radius:10px; background:#222; cursor:pointer; font-size:15px; }
+.subtab.active { background:#ffd700; color:#000; font-weight:bold; }
+.lista { margin-top:30px; }
+.item { background:#1a1a1a; padding:15px; border-radius:12px; margin-bottom:18px; display:flex; gap:15px; align-items:center; }
+.item img { width:140px; border-radius:10px; flex-shrink:0; }
+.ver { color:#ffd700; text-decoration:none; font-weight:bold; }
 .hidden { display:none; }
-
-.empty {
-  text-align:center;
-  color:#888;
-  margin-top:40px;
-  font-size:16px;
-}
+.empty { text-align:center; color:#888; margin-top:40px; font-size:16px; }
 </style>
 </head>
 
-<body>
+<body onload="checkSession()">
 
 <div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
+  <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
   <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
 </div>
 
 <div class="sidebar" id="sidebar">
-
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu" style="width:140px; margin:0 auto 30px; display:block; filter:brightness(1.15);">
-
-  <div class="menu-item" onclick="toggleSub('inicio')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+  <div class="menu-item" onclick="toggleSub('inicio')"><div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼</div>
   <div class="submenu" id="inicio">
     <a href="zona-streamer.html">Zona Streamer</a>
     <a href="fairy-academy.html">Fairy Academy</a>
@@ -287,1140 +62,101 @@ h1 {
     <a href="noticias.html">Noticias</a>
     <a href="reglamento-interno.html">Reglamento</a>
   </div>
-
-  <div class="menu-item" onclick="toggleSub('fairy')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
+  <div class="menu-item" onclick="toggleSub('fairy')"><div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼</div>
   <div class="submenu" id="fairy">
     <a href="capacitaciones.html">Capacitaciones</a>
     <a href="tutoriales.html">Tutoriales</a>
     <a href="tips-fairy.html">Tips Fairy</a>
   </div>
-
-  <div class="menu-item" onclick="toggleSub('salsa')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
+  <div class="menu-item" onclick="toggleSub('salsa-menu')"><div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼</div>
+  <div class="submenu" id="salsa-menu">
     <a href="capacitaciones-salsa.html">Capacitaciones</a>
     <a href="tutoriales-salsa.html">Tutoriales</a>
     <a href="reglas-salsa.html">Reglas SALSA</a>
     <a href="herramientas-salsa.html">Herramientas</a>
   </div>
-
-  <div class="menu-item logout" onclick="logout()">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
+  <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;"><div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div></div>
 </div>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-<div id="passwordModal">
-  <div class="modal-content">
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
-    <h2>Área Privada</h2>
-    <input type="password" id="passInput" placeholder="Contraseña">
-    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
-  </div>
-</div>
-
 <section class="pagina" id="mainContent">
-
-<h1>Capacitaciones SALSA</h1>
-
-<div class="tabs">
-  <div class="tab active" onclick="cambiarTab('youtube',event)">YouTube</div>
-  <div class="tab" onclick="cambiarTab('meet',event)">Meet</div>
-</div>
-
-<div class="subtabs">
-  <div class="subtab active" onclick="cambiarSub('grabadas',event)">Grabadas</div>
-  <div class="subtab" onclick="cambiarSub('semana',event)">Esta semana</div>
-</div>
-
-<!-- ==================== YOUTUBE GRABADAS (todas las antiguas - NO BORRADAS) ==================== -->
-<div id="youtube-grabadas" class="lista">
-  <div class="item">
-    <img src="https://img.youtube.com/vi/LMH_0PFb0js/hqdefault.jpg">
-    <div>Bienvenida al mundo Salsa<br>
-      <a class="ver" href="https://www.youtube.com/live/LMH_0PFb0js" target="_blank">Ver ▶</a>
-    </div>
+  <h1>Capacitaciones SALSA</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="cambiarTab('youtube',event)">YouTube</div>
+    <div class="tab" onclick="cambiarTab('meet',event)">Meet</div>
   </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/3bc5nVBUbOo/hqdefault.jpg">
-    <div>Activar cuenta<br>
-      <a class="ver" href="https://www.youtube.com/live/3bc5nVBUbOo" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/LYvvu6Sw1zw/hqdefault.jpg">
-    <div>Primera capacitación<br>
-      <a class="ver" href="https://www.youtube.com/live/LYvvu6Sw1zw" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/nuEnJCT9MT4/hqdefault.jpg">
-    <div>Métodos de pago<br>
-      <a class="ver" href="https://www.youtube.com/live/nuEnJCT9MT4" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/eQNokkjNXK0/hqdefault.jpg">
-    <div>Optimizar perfil<br>
-      <a class="ver" href="https://www.youtube.com/live/eQNokkjNXK0" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/Rz_2AQBHVa4/hqdefault.jpg">
-    <div>Calificaciones<br>
-      <a class="ver" href="https://www.youtube.com/live/Rz_2AQBHVa4" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/y2X2HBlfWvo/hqdefault.jpg">
-    <div>Experiencia<br>
-      <a class="ver" href="https://www.youtube.com/live/y2X2HBlfWvo" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/FwfqyON3Yrw/hqdefault.jpg">
-    <div>Convertir match<br>
-      <a class="ver" href="https://www.youtube.com/live/FwfqyON3Yrw" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/3Qx0lYfl-ic/hqdefault.jpg">
-    <div>Perder miedo<br>
-      <a class="ver" href="https://www.youtube.com/live/3Qx0lYfl-ic" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/M4FAJjh4mAg/hqdefault.jpg">
-    <div>Cautivar usuarios<br>
-      <a class="ver" href="https://www.youtube.com/live/M4FAJjh4mAg" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/sdaxtuLsZ_U/hqdefault.jpg">
-    <div>Estrategias<br>
-      <a class="ver" href="https://www.youtube.com/live/sdaxtuLsZ_U" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/CvW5WDb5-ZA/hqdefault.jpg">
-    <div>Interactuar audiencia<br>
-      <a class="ver" href="https://www.youtube.com/live/CvW5WDb5-ZA" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/xolrmcWZKZU/hqdefault.jpg">
-    <div>Tono de voz<br>
-      <a class="ver" href="https://www.youtube.com/live/xolrmcWZKZU" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/RdLM0Nba-4E/hqdefault.jpg">
-    <div>Conectar usuarios<br>
-      <a class="ver" href="https://www.youtube.com/live/RdLM0Nba-4E" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/eGS8SdzX3GA/hqdefault.jpg">
-    <div>Experiencia 2<br>
-      <a class="ver" href="https://www.youtube.com/live/eGS8SdzX3GA" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/7zuikm3lPxA/hqdefault.jpg">
-    <div>Live avanzado<br>
-      <a class="ver" href="https://www.youtube.com/live/7zuikm3lPxA" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/FtT8366nX68/hqdefault.jpg">
-    <div>Usuarios difíciles<br>
-      <a class="ver" href="https://www.youtube.com/live/FtT8366nX68" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/OQ6m7vAJxX8/hqdefault.jpg">
-    <div>Seguridad emocional<br>
-      <a class="ver" href="https://www.youtube.com/live/OQ6m7vAJxX8" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/pl8tnpB5r8g/hqdefault.jpg">
-    <div>Lenguaje corporal<br>
-      <a class="ver" href="https://www.youtube.com/live/pl8tnpB5r8g" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/2HQxbzXqYTM/hqdefault.jpg">
-    <div>Seducción<br>
-      <a class="ver" href="https://www.youtube.com/live/2HQxbzXqYTM" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/MzF1MFu8c1U/hqdefault.jpg">
-    <div>Show sin filtro<br>
-      <a class="ver" href="https://www.youtube.com/live/MzF1MFu8c1U" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/uzqAFJd_BMg/hqdefault.jpg">
-    <div>Invitada especial<br>
-      <a class="ver" href="https://www.youtube.com/live/uzqAFJd_BMg" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/zf7ifZlqxrQ/hqdefault.jpg">
-    <div>Atrapar usuarios<br>
-      <a class="ver" href="https://www.youtube.com/live/zf7ifZlqxrQ" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/xYfqJYu7Acc/hqdefault.jpg">
-    <div>Generar sin agotarte<br>
-      <a class="ver" href="https://www.youtube.com/live/xYfqJYu7Acc" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/9teztVItqVw/hqdefault.jpg">
-    <div>Detectar usuarios<br>
-      <a class="ver" href="https://www.youtube.com/live/9teztVItqVw" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== YOUTUBE ESTA SEMANA ==================== -->
-<div id="youtube-semana" class="lista hidden">
-  <div class="item">
-    <img src="https://img.youtube.com/vi/yUKVcsZvKKw/hqdefault.jpg">
-    <div>Inicio Inteligente en Salsa App - Capacitación inicial<br>
-      Se estrena el 6 de abril a las 3:00 PM (Colombia)<br>
-      <a class="ver" href="https://youtu.be/yUKVcsZvKKw" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/8zSLEMOoi_Y/hqdefault.jpg">
-    <div>Improvisación en Vivo: Cómo reaccionar con seguridad ante cualquier situación<br>
-      Se estrena el 7 de abril a las 3:00 PM (Colombia)<br>
-      <a class="ver" href="https://youtu.be/8zSLEMOoi_Y" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/pFOny2CkVJs/hqdefault.jpg">
-    <div>Gestión emocional - Cómo superar días bajos y seguir generando sin forzarte<br>
-      Se estrena el 8 de abril a las 3:00 PM (Colombia)<br>
-      <a class="ver" href="https://youtu.be/pFOny2CkVJs" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-  <div class="item">
-    <img src="https://img.youtube.com/vi/gK-8hWlTkgI/hqdefault.jpg">
-    <div>Energía protegida: Cómo generar ingresos sin desgastarte emocionalmente<br>
-      Se estrena el 9 de abril a las 3:00 PM (Colombia)<br>
-      <a class="ver" href="https://youtu.be/gK-8hWlTkgI" target="_blank">Ver ▶</a>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== MEET ESTA SEMANA ==================== -->
-<div id="meet-semana" class="lista hidden">
-  <div class="item">
-    <i class="fa-solid fa-video" style="font-size:48px;color:#ffd700;width:140px;text-align:center;"></i>
-    <div>
-      <strong>TU PRIMER PASO AL ÉXITO</strong><br>
-      Taller para Streamers<br>
-      Lunes 6 de abril - 3:00 PM (Colombia)<br><br>
-      <small style="color:#aaa;">Revisa tu hora local en el reloj de SALSA (Menú → SALSA → Mi Horario Salsa)</small><br><br>
-      <a class="ver" href="https://meet.google.com/pni-ysnq-fma" target="_blank">Ver Meet ▶</a>
-    </div>
+  <div class="subtabs">
+    <div class="subtab active" onclick="cambiarSub('grabadas',event)">Grabadas</div>
+    <div class="subtab" onclick="cambiarSub('semana',event)">Esta semana</div>
   </div>
 
-  <div class="item">
-    <i class="fa-solid fa-video" style="font-size:48px;color:#ffd700;width:140px;text-align:center;"></i>
-    <div>
-      <strong>MANEJO DE LIVE</strong><br>
-      Aprende a manejar tus lives como toda una profesional<br>
-      Martes 7 de abril - 3:00 PM (Colombia)<br><br>
-      <small style="color:#aaa;">Revisa tu hora local en el reloj de SALSA (Menú → SALSA → Mi Horario Salsa)</small><br><br>
-      <a class="ver" href="https://meet.google.com/vkv-orib-kqt" target="_blank">Ver Meet ▶</a>
-    </div>
+  <div id="youtube-grabadas" class="lista">
+    <div class="item"><img src="https://img.youtube.com/vi/LMH_0PFb0js/hqdefault.jpg"><div>Bienvenida al mundo Salsa<br><a class="ver" href="https://www.youtube.com/live/LMH_0PFb0js" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/3bc5nVBUbOo/hqdefault.jpg"><div>Activar cuenta<br><a class="ver" href="https://www.youtube.com/live/3bc5nVBUbOo" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/LYvvu6Sw1zw/hqdefault.jpg"><div>Primera capacitación<br><a class="ver" href="https://www.youtube.com/live/LYvvu6Sw1zw" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/nuEnJCT9MT4/hqdefault.jpg"><div>Métodos de pago<br><a class="ver" href="https://www.youtube.com/live/nuEnJCT9MT4" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/eQNokkjNXK0/hqdefault.jpg"><div>Optimizar perfil<br><a class="ver" href="https://www.youtube.com/live/eQNokkjNXK0" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/Rz_2AQBHVa4/hqdefault.jpg"><div>Calificaciones<br><a class="ver" href="https://www.youtube.com/live/Rz_2AQBHVa4" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/y2X2HBlfWvo/hqdefault.jpg"><div>Experiencia<br><a class="ver" href="https://www.youtube.com/live/y2X2HBlfWvo" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/FwfqyON3Yrw/hqdefault.jpg"><div>Convertir match<br><a class="ver" href="https://www.youtube.com/live/FwfqyON3Yrw" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/3Qx0lYfl-ic/hqdefault.jpg"><div>Perder miedo<br><a class="ver" href="https://www.youtube.com/live/3Qx0lYfl-ic" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/M4FAJjh4mAg/hqdefault.jpg"><div>Cautivar usuarios<br><a class="ver" href="https://www.youtube.com/live/M4FAJjh4mAg" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/sdaxtuLsZ_U/hqdefault.jpg"><div>Estrategias<br><a class="ver" href="https://www.youtube.com/live/sdaxtuLsZ_U" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/CvW5WDb5-ZA/hqdefault.jpg"><div>Interactuar audiencia<br><a class="ver" href="https://www.youtube.com/live/CvW5WDb5-ZA" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/xolrmcWZKZU/hqdefault.jpg"><div>Tono de voz<br><a class="ver" href="https://www.youtube.com/live/xolrmcWZKZU" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/RdLM0Nba-4E/hqdefault.jpg"><div>Conectar usuarios<br><a class="ver" href="https://www.youtube.com/live/RdLM0Nba-4E" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/eGS8SdzX3GA/hqdefault.jpg"><div>Experiencia 2<br><a class="ver" href="https://www.youtube.com/live/eGS8SdzX3GA" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/7zuikm3lPxA/hqdefault.jpg"><div>Live avanzado<br><a class="ver" href="https://www.youtube.com/live/7zuikm3lPxA" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/FtT8366nX68/hqdefault.jpg"><div>Usuarios difíciles<br><a class="ver" href="https://www.youtube.com/live/FtT8366nX68" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/OQ6m7vAJxX8/hqdefault.jpg"><div>Seguridad emocional<br><a class="ver" href="https://www.youtube.com/live/OQ6m7vAJxX8" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/pl8tnpB5r8g/hqdefault.jpg"><div>Lenguaje corporal<br><a class="ver" href="https://www.youtube.com/live/pl8tnpB5r8g" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/2HQxbzXqYTM/hqdefault.jpg"><div>Seducción<br><a class="ver" href="https://www.youtube.com/live/2HQxbzXqYTM" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/MzF1MFu8c1U/hqdefault.jpg"><div>Show sin filtro<br><a class="ver" href="https://www.youtube.com/live/MzF1MFu8c1U" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/uzqAFJd_BMg/hqdefault.jpg"><div>Invitada especial<br><a class="ver" href="https://www.youtube.com/live/uzqAFJd_BMg" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/zf7ifZlqxrQ/hqdefault.jpg"><div>Atrapar usuarios<br><a class="ver" href="https://www.youtube.com/live/zf7ifZlqxrQ" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/xYfqJYu7Acc/hqdefault.jpg"><div>Generar sin agotarte<br><a class="ver" href="https://www.youtube.com/live/xYfqJYu7Acc" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/9teztVItqVw/hqdefault.jpg"><div>Detectar usuarios<br><a class="ver" href="https://www.youtube.com/live/9teztVItqVw" target="_blank">Ver ▶</a></div></div>
   </div>
 
-  <div class="item">
-    <i class="fa-solid fa-video" style="font-size:48px;color:#ffd700;width:140px;text-align:center;"></i>
-    <div>
-      <strong>TU PRIMER PASO AL ÉXITO</strong><br>
-      Taller para Streamers<br>
-      Miércoles 8 de abril - 3:00 PM (Colombia)<br><br>
-      <small style="color:#aaa;">Revisa tu hora local en el reloj de SALSA (Menú → SALSA → Mi Horario Salsa)</small><br><br>
-      <a class="ver" href="https://meet.google.com/pni-ysnq-fma" target="_blank">Ver Meet ▶</a>
-    </div>
+  <div id="youtube-semana" class="lista hidden">
+    <div class="item"><img src="https://img.youtube.com/vi/yUKVcsZvKKw/hqdefault.jpg"><div>Inicio Inteligente - 6 de abril 3 PM<br><a class="ver" href="https://youtu.be/yUKVcsZvKKw" target="_blank">Ver ▶</a></div></div>
+    <div class="item"><img src="https://img.youtube.com/vi/8zSLEMOoi_Y/hqdefault.jpg"><div>Improvisación en Vivo - 7 de abril 3 PM<br><a class="ver" href="https://youtu.be/8zSLEMOoi_Y" target="_blank">Ver ▶</a></div></div>
   </div>
-</div>
 
+  <div id="meet-grabadas" class="lista hidden"><div class="empty">Sin grabaciones en Meet disponibles.</div></div>
+
+  <div id="meet-semana" class="lista hidden">
+    <div class="item"><i class="fa-solid fa-video" style="font-size:48px;color:#ffd700;width:140px;text-align:center;"></i><div><strong>Taller Streamers</strong><br>6 de abril - 3:00 PM<br><a class="ver" href="https://meet.google.com/pni-ysnq-fma" target="_blank">Ir a Meet ▶</a></div></div>
+  </div>
 </section>
 
 <script>
-// MENU, TABS, SESIÓN
-function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
-}
-
-function toggleSub(id){
-  const el = document.getElementById(id);
-  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
-}
-
-let tab = "youtube";
-let sub = "grabadas";
-
-function cambiarTab(t, e){
-  tab = t;
-  document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
-  e.target.classList.add("active");
-  actualizar();
-}
-
-function cambiarSub(s, e){
-  sub = s;
-  document.querySelectorAll(".subtab").forEach(el => el.classList.remove("active"));
-  e.target.classList.add("active");
-  actualizar();
-}
-
-function actualizar(){
-  document.querySelectorAll(".lista").forEach(el => el.classList.add("hidden"));
-  document.getElementById(tab + "-" + sub).classList.remove("hidden");
-}
-
-const PASSWORD = "fairy2025";
-const DURACION = 3 * 60 * 60 * 1000;
-
-function checkPassword(){
-  if (document.getElementById('passInput').value === PASSWORD) {
-    localStorage.setItem("fairyAccess", "true");
-    localStorage.setItem("fairyTime", Date.now());
-    document.getElementById("passwordModal").style.display = "none";
-    document.getElementById("mainContent").classList.add("activa");
-  } else {
-    alert("Contraseña incorrecta");
-  }
-}
-
-function checkSession(){
+const DURACION = 10800000;
+function checkSession() {
   const access = localStorage.getItem("fairyAccess");
   const time = localStorage.getItem("fairyTime");
-  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
-    localStorage.clear();
-    document.getElementById("passwordModal").style.display = "flex";
-    return;
-  }
-  document.getElementById("passwordModal").style.display = "none";
-  document.getElementById("mainContent").classList.add("activa");
-}
-
-function logout(){
-  localStorage.clear();
-  window.location.href = "zona-streamer.html";
-}
-
-checkSession();
-actualizar();
-</script>
-
-</body>
-</html>/* SIDEBAR */
-.sidebar {
-  position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:100px 18px 20px;
-  transform:translateX(-100%);
-  transition:0.3s ease;
-  z-index:3000;
-  box-shadow:5px 0 20px rgba(0,0,0,0.5);
-}
-
-.sidebar.active { transform:translateX(0); }
-
-.menu-item {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 12px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.menu-item:hover { background:#222; }
-
-.menu-left {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.menu-left i { color:#ffd700; }
-
-.salsa-s {
-  color:#ffd700;
-  font-weight:bold;
-}
-
-/* SUBMENU */
-.submenu {
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-  padding-left:28px;
-}
-
-.submenu a {
-  display:block;
-  padding:6px 0;
-  color:#ccc;
-  text-decoration:none;
-}
-
-.submenu a:hover { color:#ffd700; }
-
-/* OVERLAY */
-.overlay {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.7);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-  z-index:2500;
-}
-
-.overlay.active {
-  opacity:1;
-  visibility:visible;
-}
-
-/* MODAL PASSWORD */
-#passwordModal {
-  position:fixed; 
-  top:0; left:0; 
-  width:100%; height:100%; 
-  background:rgba(0,0,0,0.98); 
-  display:flex; 
-  align-items:center; 
-  justify-content:center; 
-  z-index:4000;
-}
-
-.modal-content {
-  background:#111; 
-  padding:40px 30px; 
-  border-radius:20px; 
-  text-align:center; 
-  max-width:340px; 
-  width:90%;
-}
-
-.modal-content img { width:180px; margin-bottom:25px; }
-
-h2 { color:#ffd700; margin-bottom:15px; }
-
-#passInput {
-  width:100%; 
-  padding:15px; 
-  background:#222; 
-  border:none; 
-  border-radius:10px; 
-  color:white; 
-  margin:15px 0;
-  text-align:center;
-}
-
-.btn-entrar {
-  background:#ffd700; 
-  color:black; 
-  padding:14px 50px; 
-  border:none; 
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* CONTENIDO */
-.pagina {
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
-  display:none;
-}
-
-.pagina.activa { display:block; }
-
-h1 {
-  color:#ffd700;
-  text-align:center;
-  margin-top:100px;
-}
-
-/* TABS */
-.tabs {
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  margin-top:20px;
-}
-
-.tab {
-  cursor:pointer;
-  padding-bottom:5px;
-}
-
-.tab.active {
-  color:#ffd700;
-  border-bottom:2px solid #ffd700;
-}
-
-/* SUBTABS */
-.subtabs {
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:20px;
-}
-
-.subtab {
-  padding:10px 20px;
-  border-radius:10px;
-  background:#222;
-  cursor:pointer;
-}
-
-.subtab.active {
-  background:#ffd700;
-  color:#000;
-}
-
-/* LISTA */
-.lista { margin-top:25px; }
-
-.item {
-  display:flex;
-  gap:15px;
-  margin-bottom:18px;
-  align-items:center;
-}
-
-.item img {
-  width:140px;
-  border-radius:10px;
-}
-
-.ver {
-  color:#ffd700;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-.hidden { display:none; }
-
-.empty {
-  text-align:center;
-  color:#888;
-  margin-top:30px;
-}
-</style>
-</head>
-
-<body>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
-</div>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-
-  <div class="menu-item" onclick="toggleSub('inicio')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="inicio">
-    <a href="fairy-academy.html">Fairy Academy</a>
-    <a href="salsa.html">SALSA</a>
-    <a href="reportes-salsa.html">Reportes</a>
-    <a href="binance-streamer.html">Binance</a>
-    <a href="noticias.html">Noticias</a>
-    <a href="reglamento-interno.html">Reglamento</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('fairy')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('salsa')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <div class="menu-item logout" onclick="logout()">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<!-- MODAL PASSWORD -->
-<div id="passwordModal">
-  <div class="modal-content">
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
-    <h2>Área Privada</h2>
-    <input type="password" id="passInput" placeholder="Contraseña">
-    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
-  </div>
-</div>
-
-<!-- CONTENIDO -->
-<section class="pagina" id="mainContent">
-
-<h1>Capacitaciones SALSA</h1>
-
-<div class="tabs">
-  <div class="tab active" onclick="cambiarTab('youtube',event)">YouTube</div>
-  <div class="tab" onclick="cambiarTab('meet',event)">Meet</div>
-</div>
-
-<div class="subtabs">
-  <div class="subtab active" onclick="cambiarSub('grabadas',event)">Grabadas</div>
-  <div class="subtab" onclick="cambiarSub('semana',event)">Esta semana</div>
-</div>
-
-<div id="youtube-grabadas" class="lista">
-  <div class="item"><img src="https://img.youtube.com/vi/LMH_0PFb0js/hqdefault.jpg"><div>Bienvenida al mundo Salsa<br><a class="ver" href="https://www.youtube.com/live/LMH_0PFb0js" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/3bc5nVBUbOo/hqdefault.jpg"><div>Activar cuenta<br><a class="ver" href="https://www.youtube.com/live/3bc5nVBUbOo" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/LYvvu6Sw1zw/hqdefault.jpg"><div>Primera capacitación<br><a class="ver" href="https://www.youtube.com/live/LYvvu6Sw1zw" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/nuEnJCT9MT4/hqdefault.jpg"><div>Métodos de pago<br><a class="ver" href="https://www.youtube.com/live/nuEnJCT9MT4" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/eQNokkjNXK0/hqdefault.jpg"><div>Optimizar perfil<br><a class="ver" href="https://www.youtube.com/live/eQNokkjNXK0" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/Rz_2AQBHVa4/hqdefault.jpg"><div>Calificaciones<br><a class="ver" href="https://www.youtube.com/live/Rz_2AQBHVa4" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/y2X2HBlfWvo/hqdefault.jpg"><div>Experiencia<br><a class="ver" href="https://www.youtube.com/live/y2X2HBlfWvo" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/FwfqyON3Yrw/hqdefault.jpg"><div>Convertir match<br><a class="ver" href="https://www.youtube.com/live/FwfqyON3Yrw" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/3Qx0lYfl-ic/hqdefault.jpg"><div>Perder miedo<br><a class="ver" href="https://www.youtube.com/live/3Qx0lYfl-ic" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/M4FAJjh4mAg/hqdefault.jpg"><div>Cautivar usuarios<br><a class="ver" href="https://www.youtube.com/live/M4FAJjh4mAg" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/sdaxtuLsZ_U/hqdefault.jpg"><div>Estrategias<br><a class="ver" href="https://www.youtube.com/live/sdaxtuLsZ_U" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/CvW5WDb5-ZA/hqdefault.jpg"><div>Interactuar audiencia<br><a class="ver" href="https://www.youtube.com/live/CvW5WDb5-ZA" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/xolrmcWZKZU/hqdefault.jpg"><div>Tono de voz<br><a class="ver" href="https://www.youtube.com/live/xolrmcWZKZU" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/RdLM0Nba-4E/hqdefault.jpg"><div>Conectar usuarios<br><a class="ver" href="https://www.youtube.com/live/RdLM0Nba-4E" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/eGS8SdzX3GA/hqdefault.jpg"><div>Experiencia 2<br><a class="ver" href="https://www.youtube.com/live/eGS8SdzX3GA" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/7zuikm3lPxA/hqdefault.jpg"><div>Live avanzado<br><a class="ver" href="https://www.youtube.com/live/7zuikm3lPxA" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/FtT8366nX68/hqdefault.jpg"><div>Usuarios difíciles<br><a class="ver" href="https://www.youtube.com/live/FtT8366nX68" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/OQ6m7vAJxX8/hqdefault.jpg"><div>Seguridad emocional<br><a class="ver" href="https://www.youtube.com/live/OQ6m7vAJxX8" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/pl8tnpB5r8g/hqdefault.jpg"><div>Lenguaje corporal<br><a class="ver" href="https://www.youtube.com/live/pl8tnpB5r8g" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/2HQxbzXqYTM/hqdefault.jpg"><div>Seducción<br><a class="ver" href="https://www.youtube.com/live/2HQxbzXqYTM" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/MzF1MFu8c1U/hqdefault.jpg"><div>Show sin filtro<br><a class="ver" href="https://www.youtube.com/live/MzF1MFu8c1U" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/uzqAFJd_BMg/hqdefault.jpg"><div>Invitada especial<br><a class="ver" href="https://www.youtube.com/live/uzqAFJd_BMg" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/zf7ifZlqxrQ/hqdefault.jpg"><div>Atrapar usuarios<br><a class="ver" href="https://www.youtube.com/live/zf7ifZlqxrQ" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/xYfqJYu7Acc/hqdefault.jpg"><div>Generar sin agotarte<br><a class="ver" href="https://www.youtube.com/live/xYfqJYu7Acc" target="_blank">Ver ▶</a></div></div>
-  <div class="item"><img src="https://img.youtube.com/vi/9teztVItqVw/hqdefault.jpg"><div>Detectar usuarios<br><a class="ver" href="https://www.youtube.com/live/9teztVItqVw" target="_blank">Ver ▶</a></div></div>
-</div>
-
-<div id="youtube-semana" class="lista hidden">
-  <div class="empty">No hay capacitaciones esta semana</div>
-</div>
-
-<div id="meet-grabadas" class="lista hidden">
-  <div class="empty">Sin grabaciones en Meet</div>
-</div>
-
-<div id="meet-semana" class="lista hidden">
-  <div class="empty">No hay capacitaciones esta semana</div>
-</div>
-
-</section>
-
-<script>
-// MENU
-function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
-}
-
-function toggleSub(id){
-  const el = document.getElementById(id);
-  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
-}
-
-// TABS
-let tab = "youtube";
-let sub = "grabadas";
-
-function cambiarTab(t, e){
-  tab = t;
-  document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
-  e.target.classList.add("active");
-  actualizar();
-}
-
-function cambiarSub(s, e){
-  sub = s;
-  document.querySelectorAll(".subtab").forEach(el => el.classList.remove("active"));
-  e.target.classList.add("active");
-  actualizar();
-}
-
-function actualizar(){
-  document.querySelectorAll(".lista").forEach(el => el.classList.add("hidden"));
-  document.getElementById(tab + "-" + sub).classList.remove("hidden");
-}
-
-// SESIÓN - 3 HORAS
-const PASSWORD = "fairy2025";
-const DURACION = 3 * 60 * 60 * 1000;
-
-function checkPassword(){
-  if (document.getElementById('passInput').value === PASSWORD) {
-    localStorage.setItem("fairyAccess", "true");
-    localStorage.setItem("fairyTime", Date.now());
-    document.getElementById("passwordModal").style.display = "none";
+  if (access === "true" && time && (Date.now() - parseInt(time) < DURACION)) {
     document.getElementById("mainContent").classList.add("activa");
+    actualizar();
   } else {
-    alert("Contraseña incorrecta");
-  }
-}
-
-function checkSession(){
-  const access = localStorage.getItem("fairyAccess");
-  const time = localStorage.getItem("fairyTime");
-
-  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
     localStorage.clear();
-    document.getElementById("passwordModal").style.display = "flex";
-    return;
+    window.location.href = "zona-streamer.html";
   }
-  document.getElementById("passwordModal").style.display = "none";
-  document.getElementById("mainContent").classList.add("activa");
 }
 
-function logout(){
-  localStorage.clear();
-  window.location.href = "zona-streamer.html";
-}
-
-// Iniciar
-checkSession();
-actualizar();
-</script>
-
-</body>
-</html>/* SIDEBAR (TIP FAIRY) */
-.sidebar{
-  position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:90px 16px 20px;
-  transform:translateX(-100%);
-  transition:0.3s ease;
-  z-index:2000;
-}
-.sidebar.active{ transform:translateX(0); }
-
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-.menu-item:hover{ background:#222; }
-
-.menu-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.menu-left i{
-  color:#ffd700;
-}
-
-.salsa-s{
-  color:#ffd700;
-  font-weight:bold;
-}
-
-.submenu{
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-  padding-left:28px;
-}
-
-.submenu a{
-  display:block;
-  padding:6px 0;
-  color:#ccc;
-  text-decoration:none;
-}
-
-.submenu a:hover{ color:#ffd700; }
-
-.logout{ color:#ff4d4d; }
-
-/* OVERLAY */
-.overlay{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.7);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-  z-index:1500;
-}
-.overlay.active{
-  opacity:1;
-  visibility:visible;
-}
-
-/* CONTENIDO */
-.pagina{
-  max-width:960px;
-  margin:40px auto;
-  padding:30px;
-  background:#111;
-  border-radius:16px;
-  display:none;
-}
-.pagina.activa{ display:block; }
-
-h1{
-  color:#ffd700;
-  text-align:center;
-  margin-top:100px;
-}
-
-/* TABS */
-.tabs{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  margin-top:20px;
-}
-
-.tab{
-  cursor:pointer;
-  padding-bottom:5px;
-}
-
-.tab.active{
-  color:#ffd700;
-  border-bottom:2px solid #ffd700;
-}
-
-/* SUBTABS */
-.subtabs{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:20px;
-}
-
-.subtab{
-  padding:10px 20px;
-  border-radius:10px;
-  background:#222;
-  cursor:pointer;
-}
-
-.subtab.active{
-  background:#ffd700;
-  color:#000;
-}
-
-/* LISTA */
-.lista{ margin-top:25px; }
-
-.item{
-  display:flex;
-  gap:15px;
-  margin-bottom:18px;
-  align-items:center;
-}
-
-.item img{
-  width:140px;
-  border-radius:10px;
-}
-
-.ver{
-  color:#ffd700;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-.hidden{ display:none; }
-
-.empty{
-  text-align:center;
-  color:#888;
-  margin-top:30px;
-}
-</style>
-</head>
-
-<body>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
-</div>
-
-<!-- MENU -->
-<div class="sidebar" id="sidebar">
-
-  <div class="menu-item" onclick="toggleSub('inicio')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="inicio">
-    <a href="fairy-academy.html">Fairy Academy</a>
-    <a href="salsa.html">SALSA</a>
-    <a href="reportes-salsa.html">Reportes</a>
-    <a href="binance-streamer.html">Binance</a>
-    <a href="noticias.html">Noticias</a>
-    <a href="reglamento-interno.html">Reglamento</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('fairy')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('salsa')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <div class="menu-item logout" onclick="logout()">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<!-- CONTENIDO -->
-<section class="pagina" id="mainContent">
-
-<h1>Capacitaciones SALSA</h1>
-
-<div class="tabs">
-  <div class="tab active" onclick="cambiarTab('youtube',event)">YouTube</div>
-  <div class="tab" onclick="cambiarTab('meet',event)">Meet</div>
-</div>
-
-<div class="subtabs">
-  <div class="subtab active" onclick="cambiarSub('grabadas',event)">Grabadas</div>
-  <div class="subtab" onclick="cambiarSub('semana',event)">Esta semana</div>
-</div>
-
-<!-- 🔥 SOLO AQUÍ ESTÁN LAS CAPACITACIONES -->
-<div id="youtube-grabadas" class="lista">
-   <div class="item"><img src="https://img.youtube.com/vi/LMH_0PFb0js/hqdefault.jpg"><div>Bienvenida al mundo Salsa<br><a class="ver" href="https://www.youtube.com/live/LMH_0PFb0js" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/3bc5nVBUbOo/hqdefault.jpg"><div>Activar cuenta<br><a class="ver" href="https://www.youtube.com/live/3bc5nVBUbOo" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/LYvvu6Sw1zw/hqdefault.jpg"><div>Primera capacitación<br><a class="ver" href="https://www.youtube.com/live/LYvvu6Sw1zw" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/nuEnJCT9MT4/hqdefault.jpg"><div>Métodos de pago<br><a class="ver" href="https://www.youtube.com/live/nuEnJCT9MT4" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/eQNokkjNXK0/hqdefault.jpg"><div>Optimizar perfil<br><a class="ver" href="https://www.youtube.com/live/eQNokkjNXK0" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/Rz_2AQBHVa4/hqdefault.jpg"><div>Calificaciones<br><a class="ver" href="https://www.youtube.com/live/Rz_2AQBHVa4" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/y2X2HBlfWvo/hqdefault.jpg"><div>Experiencia<br><a class="ver" href="https://www.youtube.com/live/y2X2HBlfWvo" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/FwfqyON3Yrw/hqdefault.jpg"><div>Convertir match<br><a class="ver" href="https://www.youtube.com/live/FwfqyON3Yrw" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/3Qx0lYfl-ic/hqdefault.jpg"><div>Perder miedo<br><a class="ver" href="https://www.youtube.com/live/3Qx0lYfl-ic" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/M4FAJjh4mAg/hqdefault.jpg"><div>Cautivar usuarios<br><a class="ver" href="https://www.youtube.com/live/M4FAJjh4mAg" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/sdaxtuLsZ_U/hqdefault.jpg"><div>Estrategias<br><a class="ver" href="https://www.youtube.com/live/sdaxtuLsZ_U" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/CvW5WDb5-ZA/hqdefault.jpg"><div>Interactuar audiencia<br><a class="ver" href="https://www.youtube.com/live/CvW5WDb5-ZA" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/xolrmcWZKZU/hqdefault.jpg"><div>Tono de voz<br><a class="ver" href="https://www.youtube.com/live/xolrmcWZKZU" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/RdLM0Nba-4E/hqdefault.jpg"><div>Conectar usuarios<br><a class="ver" href="https://www.youtube.com/live/RdLM0Nba-4E" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/eGS8SdzX3GA/hqdefault.jpg"><div>Experiencia 2<br><a class="ver" href="https://www.youtube.com/live/eGS8SdzX3GA" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/7zuikm3lPxA/hqdefault.jpg"><div>Live avanzado<br><a class="ver" href="https://www.youtube.com/live/7zuikm3lPxA" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/FtT8366nX68/hqdefault.jpg"><div>Usuarios difíciles<br><a class="ver" href="https://www.youtube.com/live/FtT8366nX68" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/OQ6m7vAJxX8/hqdefault.jpg"><div>Seguridad emocional<br><a class="ver" href="https://www.youtube.com/live/OQ6m7vAJxX8" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/pl8tnpB5r8g/hqdefault.jpg"><div>Lenguaje corporal<br><a class="ver" href="https://www.youtube.com/live/pl8tnpB5r8g" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/2HQxbzXqYTM/hqdefault.jpg"><div>Seducción<br><a class="ver" href="https://www.youtube.com/live/2HQxbzXqYTM" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/MzF1MFu8c1U/hqdefault.jpg"><div>Show sin filtro<br><a class="ver" href="https://www.youtube.com/live/MzF1MFu8c1U" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/uzqAFJd_BMg/hqdefault.jpg"><div>Invitada especial<br><a class="ver" href="https://www.youtube.com/live/uzqAFJd_BMg" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/zf7ifZlqxrQ/hqdefault.jpg"><div>Atrapar usuarios<br><a class="ver" href="https://www.youtube.com/live/zf7ifZlqxrQ" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/xYfqJYu7Acc/hqdefault.jpg"><div>Generar sin agotarte<br><a class="ver" href="https://www.youtube.com/live/xYfqJYu7Acc" target="_blank">Ver ▶</a></div></div>
-
-<div class="item"><img src="https://img.youtube.com/vi/9teztVItqVw/hqdefault.jpg"><div>Detectar usuarios<br><a class="ver" href="https://www.youtube.com/live/9teztVItqVw" target="_blank">Ver ▶</a></div></div> 
-
-<!-- PEGA AQUÍ TU LISTA (la que ya te di) -->
-
-</div>
-
-<div id="youtube-semana" class="lista hidden">
-  <div class="empty">No hay capacitaciones esta semana</div>
-</div>
-
-<div id="meet-grabadas" class="lista hidden">
-  <div class="empty">Sin grabaciones en Meet</div>
-</div>
-
-<div id="meet-semana" class="lista hidden">
-  <div class="empty">No hay capacitaciones esta semana</div>
-</div>
-
-</section>
-
-<script>
-function toggleMenu(){
-  sidebar.classList.toggle("active");
-  overlay.classList.toggle("active");
-}
-
-function toggleSub(id){
-  const el=document.getElementById(id);
-  el.style.maxHeight=el.style.maxHeight?null:el.scrollHeight+"px";
-}
-
-let tab="youtube";
-let sub="grabadas";
-
-function cambiarTab(t,e){
-  tab=t;
-  document.querySelectorAll(".tab").forEach(el=>el.classList.remove("active"));
-  e.target.classList.add("active");
-  actualizar();
-}
-
-function cambiarSub(s,e){
-  sub=s;
-  document.querySelectorAll(".subtab").forEach(el=>el.classList.remove("active"));
-  e.target.classList.add("active");
-  actualizar();
-}
-
-function actualizar(){
-  document.querySelectorAll(".lista").forEach(el=>el.classList.add("hidden"));
-  document.getElementById(tab+"-"+sub).classList.remove("hidden");
-}
-
-const DURACION=3*60*60*1000;
-
-window.onload=function(){
-  const access=localStorage.getItem("fairyAccess");
-  const time=localStorage.getItem("fairyTime");
-
-  if(!access || !time || Date.now()-time>DURACION){
-    localStorage.clear();
-    window.location.href="zona-streamer.html";
-    return;
-  }
-
-  mainContent.classList.add("activa");
-}
-
-function logout(){
-  localStorage.clear();
-  window.location.href="zona-streamer.html";
+function logout() { localStorage.clear(); window.location.href = "zona-streamer.html"; }
+function toggleMenu() { sidebar.classList.toggle("active"); overlay.classList.toggle("active"); }
+function toggleSub(id) { const el = document.getElementById(id); el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px"; }
+
+let tab = "youtube", sub = "grabadas";
+function cambiarTab(t, e) { tab = t; document.querySelectorAll(".tab").forEach(el => el.classList.remove("active")); e.target.classList.add("active"); actualizar(); }
+function cambiarSub(s, e) { sub = s; document.querySelectorAll(".subtab").forEach(el => el.classList.remove("active")); e.target.classList.add("active"); actualizar(); }
+function actualizar() {
+  document.querySelectorAll(".lista").forEach(el => el.classList.add("hidden"));
+  const target = document.getElementById(tab + "-" + sub);
+  if (target) target.classList.remove("hidden");
 }
 </script>
-
 </body>
 </html>
