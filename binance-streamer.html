@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Binance — Fairy Agency</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ESTILOS GLOBALES SISTEMA FAIRY */
+        body { 
+            margin:0; 
+            font-family:'Georgia',serif; 
+            background:#0a0a0a; 
+            color:#eaeaea; 
+            overflow:hidden;
+            height: 100vh;
+        }
+
+        /* SISTEMA DE LOGIN */
+        #passwordModal {
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.98);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:4000;
+        }
+        .modal-content {
+            background:#111;
+            padding:40px 30px;
+            border-radius:20px;
+            text-align:center;
+            max-width:340px;
+            width:90%;
+        }
+        .modal-content img {
+            width:180px;
+            margin-bottom:25px;
+            filter: brightness(1.15);
+        }
+        h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
+        #passInput {
+            width:100%;
+            padding:15px;
+            background:#222;
+            border:none;
+            border-radius:10px;
+            color:white;
+            margin:15px 0;
+            text-align:center;
+            box-sizing: border-box;
+        }
+        .btn-entrar {
+            background:#ffd700;
+            color:black;
+            padding:14px 50px;
+            border:none;
+            border-radius:10px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+        #mainContent { display:none; }
+
+        /* HEADER */
+        .header {
+            display:flex; align-items:center; gap:12px;
+            position:fixed; top:20px; left:20px; z-index:2001;
+        }
+        .menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
+        .logo-header { width:85px; filter: brightness(1.15); }
+
+        /* SIDEBAR */
+        .sidebar {
+            position:fixed; top:0; left:0; width:260px; height:100%;
+            background:#111; padding:90px 18px 20px;
+            transform:translateX(-100%); transition:0.3s ease;
+            z-index:3000; box-shadow:5px 0 20px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+        .sidebar.active { transform:translateX(0); }
+        .logo-menu { width:140px; display:block; margin:0 auto 30px; }
+
+        .menu-item {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:12px; border-radius:10px; cursor:pointer;
+            color: white; text-decoration: none; margin-bottom: 5px;
+            font-family: sans-serif;
+        }
+        .menu-item:hover { background:#222; }
+        .menu-left { display:flex; align-items:center; gap:10px; }
+        .menu-left i { color:#ffd700; width: 20px; text-align: center; }
+        .salsa-s { color:#ffd700; font-weight:bold; width:20px; text-align:center; }
+
+        .submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
+        .submenu a {
+            display:block; padding:8px 0; color:#ccc;
+            text-decoration:none; font-size: 14px; font-family: sans-serif;
+        }
+        .submenu a:hover { color:#ffd700; }
+
+        .overlay {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.7); opacity:0; visibility:hidden;
+            transition:0.3s; z-index:2500;
+        }
+        .overlay.active { opacity:1; visibility:visible; }
+
+        /* SLIDER SISTEMA LIBRO */
+        .slider-container { 
+            height: 100vh; 
+            width: 100vw; 
+            display: flex; 
+            align-items: center; 
+            background: #000; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .slides { 
+            display:flex; 
+            transition:0.45s ease; 
+            height:100%; 
+        }
+        .slide { 
+            min-width:100vw; 
+            display:flex; 
+            flex-direction: column;
+            justify-content:center; 
+            align-items:center; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* TARJETAS */
+        .card-guia {
+            background: white;
+            color: black;
+            padding: 30px 25px;
+            border-radius: 20px;
+            font-family: sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 340px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .card-video {
+            background: white;
+            width: 90%;
+            max-width: 360px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .video-header {
+            background: #000;
+            color: #ffd700;
+            padding: 15px;
+            text-align: center;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 177.77%; /* Relación 9:16 para videos verticales */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+
+        /* CONTROLES */
+        .arrow { 
+            position:absolute; 
+            top:50%; 
+            transform:translateY(-50%); 
+            font-size:26px; 
+            color:white; 
+            background:rgba(0,0,0,0.4); 
+            padding:12px; 
+            border-radius:50%; 
+            cursor:pointer; 
+            z-index:10; 
+        }
+        .arrow.left { left:15px; }
+        .arrow.right { right:15px; }
+
+        .indicador { 
+            position:absolute; 
+            bottom:25px; 
+            width:100%; 
+            text-align:center; 
+        }
+        .barras { 
+            display:flex; 
+            justify-content:center; 
+            gap: 8px; 
+            margin-top: 10px; 
+        }
+        .barra { 
+            width:12px; 
+            height:4px; 
+            background:#333; 
+            border-radius:3px; 
+            transition: 0.3s;
+        }
+        .barra.active { 
+            background:#ffd700; 
+            width: 20px;
+        }
+        #numero { 
+            font-size: 13px; 
+            font-weight: bold; 
+            color: #ffd700; 
+            font-family: sans-serif; 
+        }
+    </style>
+</head>
+
+<body onload="checkSession()">
+
+    <div id="passwordModal">
+        <div class="modal-content">
+            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
+            <h2>Área Privada</h2>
+            <input type="password" id="passInput" placeholder="Contraseña">
+            <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+        </div>
+    </div>
+
+    <div id="mainContent">
+        <div class="header">
+            <div class="menu-btn" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+            <div class="menu-item" onclick="toggleSub('inicio')">
+                <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+            </div>
+            <div class="submenu" id="inicio">
+                <a href="zona-streamer.html">Zona Streamer</a>
+                <a href="fairy-academy.html">Fairy Academy</a>
+                <a href="salsa.html">SALSA</a>
+                <a href="reportes-salsa.html">Reportes</a>
+                <a href="binance-streamer.html">Binance</a>
+                <a href="noticias.html">Noticias</a>
+                <a href="reglamento-interno.html">Reglamento</a>
+            </div>
+            <div class="menu-item" onclick="toggleSub('fairy')">
+                <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+            </div>
+            <div class="submenu" id="fairy">
+                <a href="capacitaciones.html">Capacitaciones</a>
+                <a href="tutoriales.html">Tutoriales</a>
+                <a href="tips-fairy.html">Tips Fairy</a>
+            </div>
+            <div class="menu-item" onclick="toggleSub('salsa-sub')">
+                <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+            </div>
+            <div class="submenu" id="salsa-sub">
+                <a href="capacitaciones-salsa.html">Capacitaciones</a>
+                <a href="tutoriales-salsa.html">Tutoriales</a>
+                <a href="reglas-salsa.html">Reglas SALSA</a>
+                <a href="herramientas-salsa.html">Herramientas</a>
+            </div>
+            <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;">
+                <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+        <div class="slider-container">
+            <div class="arrow left" onclick="prevSlide()">❮</div>
+            <div class="arrow right" onclick="nextSlide()">❯</div>
+
+            <div class="slides" id="slides">
+                
+                <div class="slide">
+                    <div class="card-guia">
+                        En esta sección aprenderás paso a paso cómo configurar correctamente tu cuenta de Binance para poder recibir tus pagos sin errores.
+                        <br><br>
+                        Sigue cada paso con atención.
+                        <br><br>
+                        <b>Desliza hacia la derecha para comenzar.</b>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 1 — CREAR CUENTA</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/14wkxP4T8SRdgfzmQ0cqKHA-pdNYJ81oE/preview" allow="autoplay"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 2 — SEGURIDAD</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/1QH1effdbIokELnrwO-WNBMGVndAgWYQy/preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 3 — MÉTODO DE PAGO</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/1QzbED6qC8nCIxJiaEQxZhMGbarqwq6Hw/preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 4 — MONEDA LOCAL</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/1R2Xp1Ww4wePFBnJxLpuYWa9JYB9JQZx0/preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 5 — CUENTA BANCARIA</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/1R0IgR0SrdZTfKo9FuCLXAsO5QSPXiSCq/preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 6 — TRANSFERENCIA</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/1QKw-6Sr88gbrqijpBmXgE3LMGOQ_nJxG/preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide">
+                    <div class="card-video">
+                        <div class="video-header">PASO 7 — COMERCIO P2P</div>
+                        <div class="video-container">
+                            <iframe src="https://drive.google.com/file/d/1QsuaTtLpslOAKpk-6b2igqnmoS8mVgkU/preview"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="indicador">
+                <div id="numero"></div>
+                <div class="barras" id="barras"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* CONFIGURACIÓN DE SEGURIDAD */
+        const PASSWORD = "fairy2025";
+        const DURACION = 3600 * 3 * 1000;
+
+        function checkPassword(){
+            if(document.getElementById('passInput').value === PASSWORD){
+                localStorage.setItem("fairyAccess", "true");
+                localStorage.setItem("fairyTime", Date.now());
+                document.getElementById("passwordModal").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                actualizar();
+            } else {
+                alert("Contraseña incorrecta");
+            }
+        }
+
+        function checkSession(){
+            const access = localStorage.getItem("fairyAccess");
+            const time = localStorage.getItem("fairyTime");
+            if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
+                localStorage.clear();
+                document.getElementById("passwordModal").style.display = "flex";
+            } else {
+                document.getElementById("passwordModal").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+                actualizar();
+            }
+        }
+
+        /* MENÚ */
+        function toggleMenu(){
+            document.getElementById("sidebar").classList.toggle("active");
+            document.getElementById("overlay").classList.toggle("active");
+        }
+
+        function toggleSub(id){
+            const el = document.getElementById(id);
+            el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+        }
+
+        function logout(){ 
+            localStorage.clear(); 
+            window.location.href = "zona-streamer.html"; 
+        }
+
+        /* LÓGICA DEL SLIDER */
+        let index = 0;
+        const slides = document.getElementById("slides");
+        const total = slides.children.length;
+        const numero = document.getElementById("numero");
+        const barrasContainer = document.getElementById("barras");
+
+        for(let i=0; i<total; i++){
+            const b = document.createElement("div");
+            b.className = "barra";
+            if(i===0) b.classList.add("active");
+            barrasContainer.appendChild(b);
+        }
+        const barras = document.querySelectorAll(".barra");
+
+        function actualizar(){
+            slides.style.transform = `translateX(-${index * 100}vw)`;
+            numero.textContent = `${index + 1} / ${total}`;
+            barras.forEach(b => b.classList.remove("active"));
+            if(barras[index]) barras[index].classList.add("active");
+        }
+
+        function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
+        function prevSlide(){ if(index > 0){ index--; actualizar(); } }
+    </script>
+</body>
+</html>
