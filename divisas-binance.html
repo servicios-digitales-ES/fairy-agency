@@ -18,13 +18,13 @@ body {
   height: 100vh;
 }
 
-/* SISTEMA DE LOGIN */
+/* SISTEMA DE LOGIN (OCULTO POR DEFECTO EN ESTA PÁGINA) */
 #passwordModal {
   position:fixed;
   top:0; left:0;
   width:100%; height:100%;
   background:rgba(0,0,0,0.98);
-  display:flex;
+  display:none; /* Se cambia a none para evitar parpadeos */
   align-items:center;
   justify-content:center;
   z-index:4000;
@@ -380,11 +380,29 @@ h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
 </div>
 
 <script>
-const PASSWORD = "fairy2025";
-const DURACION = 3600 * 3 * 1000;
+/* LÓGICA DE SESIÓN GLOBAL */
+const DURACION = 10800000; // 3 Horas
 
+function checkSession(){
+  const access = localStorage.getItem("fairyAccess");
+  const time = localStorage.getItem("fairyTime");
+  
+  // Si no hay acceso o el tiempo expiró, redirige al login principal
+  if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
+    localStorage.clear();
+    window.location.href = "zona-streamer.html";
+  } else {
+    // Sesión válida: ocultamos modal y mostramos contenido
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+    actualizar();
+  }
+}
+
+// Mantener por compatibilidad si se llega a llamar, pero el flujo principal es checkSession
 function checkPassword(){
-  if(document.getElementById('passInput').value === PASSWORD){
+  const pass = document.getElementById('passInput').value;
+  if(pass === "fairy2025"){
     localStorage.setItem("fairyAccess", "true");
     localStorage.setItem("fairyTime", Date.now());
     document.getElementById("passwordModal").style.display = "none";
@@ -392,19 +410,6 @@ function checkPassword(){
     actualizar();
   } else {
     alert("Contraseña incorrecta");
-  }
-}
-
-function checkSession(){
-  const access = localStorage.getItem("fairyAccess");
-  const time = localStorage.getItem("fairyTime");
-  if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
-    localStorage.clear();
-    document.getElementById("passwordModal").style.display = "flex";
-  } else {
-    document.getElementById("passwordModal").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-    actualizar();
   }
 }
 
@@ -423,13 +428,14 @@ function logout(){
   window.location.href = "zona-streamer.html"; 
 }
 
-/* LÓGICA DEL SLIDER - SOLO FLECHAS */
+/* LÓGICA DEL SLIDER */
 let index = 0;
 const slides = document.getElementById("slides");
 const total = slides.children.length;
 const numero = document.getElementById("numero");
 const barrasContainer = document.getElementById("barras");
 
+// Crear indicadores
 for(let i=0; i<total; i++){
   const b = document.createElement("div");
   b.className = "barra";
@@ -447,10 +453,6 @@ function actualizar(){
 
 function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
 function prevSlide(){ if(index > 0){ index--; actualizar(); } }
-
-/* SE HAN ELIMINADO LOS EVENTOS TOUCHSTART Y TOUCHEND 
-   PARA PERMITIR EL ZOOM NATIVO Y NAVEGACIÓN SOLO POR CLIC 
-*/
 </script>
 
 </body>
