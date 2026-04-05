@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reglamento Interno — Fairy Agency</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* BASE */
+body { 
+  margin:0; 
+  font-family:'Georgia',serif; 
+  background:#0a0a0a; 
+  color:#eaeaea; 
+  overflow:hidden;
+}
+
+/* 1. HEADER (COPIADO EXACTAMENTE) */
+.header {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:fixed;
+  top:20px;
+  left:20px;
+  z-index:2001;
+}
+
+.menu-btn {
+  font-size:24px;
+  color:#ffd700;
+  cursor:pointer;
+}
+
+.logo-header { 
+  width:85px; 
+  filter: brightness(1.15); 
+}
+
+/* 1. SIDEBAR (COPIADO EXACTAMENTE) */
+.sidebar {
+  position:fixed;
+  top:0;
+  left:0;
+  width:260px;
+  height:100%;
+  background:#111;
+  padding:90px 18px 20px;
+  transform:translateX(-100%);
+  transition:0.3s ease;
+  z-index:3000;
+  box-shadow:5px 0 20px rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+
+.sidebar.active { transform:translateX(0); }
+
+.logo-menu {
+  width:140px;
+  display:block;
+  margin:0 auto 30px;
+  filter: brightness(1.15);
+}
+
+.menu-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px;
+  border-radius:10px;
+  cursor:pointer;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 5px;
+  font-family: sans-serif;
+}
+
+.menu-item:hover { background:#222; }
+
+.menu-left {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.menu-left i { color:#ffd700; width: 20px; text-align: center; }
+
+.salsa-s {
+  color: #ffd700;
+  font-weight: bold;
+  font-family: 'Georgia', serif;
+  width: 20px;
+  text-align: center;
+}
+
+.submenu {
+  max-height:0;
+  overflow:hidden;
+  transition:0.3s;
+  padding-left:28px;
+  font-family: sans-serif;
+}
+
+.submenu a {
+  display:block;
+  padding:8px 0;
+  color:#ccc;
+  text-decoration:none;
+  font-size: 14px;
+}
+
+.submenu a:hover { color:#ffd700; }
+
+.overlay {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.7);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:2500;
+}
+
+.overlay.active { opacity:1; visibility:visible; }
+
+/* 2. SISTEMA DE PÁGINAS (SLIDER) */
+.slider-container {
+  height: 100vh;
+  width: 100vw;
+  position:relative;
+  overflow:hidden;
+  display: flex;
+  align-items: center;
+  background: #000;
+}
+
+.slides {
+  display:flex;
+  transition:0.45s ease;
+  height:100%;
+}
+
+.slide {
+  min-width:100vw;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 4. DISEÑO DE CARDS */
+.pagina {
+  background: white;
+  color: black;
+  width: 90%;
+  max-width: 450px;
+  border-radius: 20px;
+  font-family: sans-serif;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.guia-superior {
+  background: #fdfaf0;
+  padding: 20px;
+  border-bottom: 2px solid #f1ebd5;
+  text-align: center;
+}
+
+.guia-superior h4 { 
+  color: #d4af37; 
+  font-size: 19px; 
+  margin: 0 0 5px; 
+  font-weight: 800;
+  text-transform: none;
+}
+
+.guia-superior p { 
+  color: #777; 
+  font-size: 12px; 
+  margin: 0; 
+  text-transform: uppercase; 
+  letter-spacing: 1.5px;
+  font-weight: bold;
+}
+
+.contenido-pagina {
+  padding: 25px;
+  overflow-y: auto;
+}
+
+.contenido-pagina p { 
+  font-size:14.5px; 
+  line-height:1.6; 
+  margin-bottom: 15px; 
+  color: #333; 
+}
+
+.contenido-pagina ul { 
+  padding-left:10px; 
+  margin-bottom: 20px; 
+  list-style: none;
+}
+
+.contenido-pagina li { 
+  font-size: 14px; 
+  margin-bottom: 10px; 
+  color: #444;
+  position: relative;
+  padding-left: 15px;
+}
+
+.contenido-pagina li::before {
+  content: "•";
+  color: #d4af37;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.btn-accion {
+  display:block;
+  text-align: center;
+  background:#ffd700;
+  color:black;
+  padding:15px;
+  border-radius:12px;
+  font-weight:bold;
+  text-decoration:none;
+  margin-top:5px;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* CONTROLES */
+.arrow {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:26px;
+  color:white;
+  background:rgba(0,0,0,0.3);
+  padding:12px;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:10;
+}
+.arrow.left { left:10px; }
+.arrow.right { right:10px; }
+
+.indicador {
+  position:absolute;
+  bottom:20px;
+  width:100%;
+  text-align:center;
+}
+
+.barras {
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top: 8px;
+}
+
+.barra {
+  width:20px;
+  height:4px;
+  background:#333;
+  border-radius:3px;
+}
+
+.barra.active { background:#fff; }
+
+#numero {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  font-family: sans-serif;
+}
+
+img.tabla-niveles {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+</div>
+
+<div class="sidebar" id="sidebar">
+
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+
+  <div class="menu-item" onclick="toggleSub('inicio')">
+    <div class="menu-left">
+      <i class="fa-solid fa-house"></i>Inicio
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="inicio">
+    <a href="zona-streamer.html">Zona Streamer</a>
+    <a href="fairy-academy.html">Fairy Academy</a>
+    <a href="salsa.html">SALSA</a>
+    <a href="reportes-salsa.html">Reportes</a>
+    <a href="binance-streamer.html">Binance</a>
+    <a href="noticias.html">Noticias</a>
+    <a href="reglamento-interno.html">Reglamento</a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSub('fairy')">
+    <div class="menu-left">
+      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="fairy">
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="tutoriales.html">Tutoriales</a>
+    <a href="tips-fairy.html">Tips Fairy</a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSub('salsa')">
+    <div class="menu-left">
+      <span class="salsa-s">S</span>SALSA
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="salsa">
+    <a href="capacitaciones-salsa.html">Capacitaciones</a>
+    <a href="tutoriales-salsa.html">Tutoriales</a>
+    <a href="reglas-salsa.html">Reglas SALSA</a>
+    <a href="herramientas-salsa.html">Herramientas</a>
+  </div>
+
+  <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
+    <div class="menu-left">
+      <i class="fa-solid fa-right-from-bracket"></i>Salir
+    </div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<div class="slider-container">
+  
+  <div class="arrow left" onclick="prevSlide()">❮</div>
+  <div class="arrow right" onclick="nextSlide()">❯</div>
+
+  <div class="slides" id="slides">
+
+    <div class="slide">
+      <div class="pagina">
+        <div class="guia-superior">
+          <h4>Seguridad e identidad</h4>
+          <p>SECCIÓN 01 — VERIFICACIÓN</p>
+        </div>
+        <div class="contenido-pagina">
+          <p>La verificación de identidad es el primer paso para asegurar tu lugar dentro de Fairy Agency.</p>
+          <p>Este proceso protege tanto a la agencia como a ti, garantizando que tu cuenta sea segura, única y sin riesgo de suplantaciones.</p>
+          <ul>
+            <li><strong>Protección de datos:</strong> Tu información se maneja de forma confidencial.</li>
+            <li><strong>Respaldo:</strong> Solo las streamers verificadas reciben soporte completo.</li>
+            <li><strong>Seguridad:</strong> Evita fraudes y asegura que tus ingresos lleguen correctamente.</li>
+          </ul>
+          <p>Esto te permite empezar con seguridad desde el primer momento.</p>
+          <a class="btn-accion" href="https://docs.google.com/forms/d/e/1FAIpQLSeKdrdYSEHG-jLkm0-9DMBUEWq9xYQNGIC31HUJnNp4X1y3Gg/viewform" target="_blank">Completar verificación</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="pagina">
+        <div class="guia-superior">
+          <h4>Seguimiento de resultados</h4>
+          <p>SECCIÓN 02 — REPORTE DIARIO</p>
+        </div>
+        <div class="contenido-pagina">
+          <p>El crecimiento en la app no es suerte, es estrategia.</p>
+          <p>El reporte diario permite acompañarte de forma directa para ayudarte a mejorar tus resultados y aumentar tus ingresos.</p>
+          <ul>
+            <li>Analizamos tu perfil</li>
+            <li>Revisamos tus horarios</li>
+            <li>Evaluamos tus ganancias</li>
+            <li>Ajustamos tus estrategias</li>
+          </ul>
+          <p>Tener este acompañamiento marca una gran diferencia en tu crecimiento.</p>
+          <a class="btn-accion" href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform" target="_blank">Enviar reporte hoy</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="pagina">
+        <div class="guia-superior">
+          <h4>Niveles y metas</h4>
+          <p>SECCIÓN 03 — GANANCIAS</p>
+        </div>
+        <div class="contenido-pagina">
+          <p>Conocer esta tabla te ayuda a organizar mejor tus metas y entender cuánto puedes generar dentro de la aplicación.</p>
+          <p>Mientras más avances de nivel, mayores serán tus ingresos. Utiliza esta referencia para planificar tu crecimiento de forma inteligente.</p>
+          <img src="https://i.postimg.cc/fkQkcBn1/Nivel-Requerido-(3).png" class="tabla-niveles">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="indicador">
+    <div id="numero"></div>
+    <div class="barras" id="barras"></div>
+  </div>
+
+</div>
+
+<script>
+/* 1. FUNCIONES JS OBLIGATORIAS (COPIADAS EXACTAMENTE) */
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function toggleSub(id){
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+function logout(){
+  localStorage.clear();
+  window.location.href="zona-streamer.html";
+}
+
+/* 2. LÓGICA DEL SLIDER */
+let index = 0;
+const slides = document.getElementById("slides");
+const total = slides.children.length;
+const numero = document.getElementById("numero");
+const barrasContainer = document.getElementById("barras");
+
+// Crear barras indicadoras
+for(let i=0; i<total; i++){
+  const b = document.createElement("div");
+  b.className = "barra";
+  if(i===0) b.classList.add("active");
+  barrasContainer.appendChild(b);
+}
+
+const barras = document.querySelectorAll(".barra");
+
+function actualizar(){
+  slides.style.transform = `translateX(-${index * 100}vw)`;
+  numero.textContent = `${index + 1} / ${total}`;
+  barras.forEach(b => b.classList.remove("active"));
+  barras[index].classList.add("active");
+}
+
+function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
+function prevSlide(){ if(index > 0){ index--; actualizar(); } }
+
+// Inicializar
+actualizar();
+</script>
+
+</body>
+  </html>
+  
