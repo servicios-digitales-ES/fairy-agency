@@ -18,12 +18,9 @@
             height: 100vh;
         }
 
-        /* CONFIGURACIÓN DE VISIBILIDAD DE CONTENIDO */
+        /* CONTENIDO PRINCIPAL */
         #mainContent { display:none; }
         #mainContent.session-active { display:block; }
-
-        /* EL MODAL SE MANTIENE POR COMPATIBILIDAD PERO SE OCULTA POR DEFECTO */
-        #passwordModal { display:none; }
 
         /* HEADER */
         .header {
@@ -42,7 +39,7 @@
             overflow-y: auto;
         }
         .sidebar.active { transform:translateX(0); }
-        .logo-menu { width:140px; display:block; margin:0 auto 30px; }
+        .logo-menu { width:140px; display:block; margin:0 auto 30px; filter: brightness(1.15); }
 
         .menu-item {
             display:flex; justify-content:space-between; align-items:center;
@@ -94,7 +91,6 @@
             box-sizing: border-box;
         }
 
-        /* TARJETAS */
         .card-guia {
             background: white;
             color: black;
@@ -144,7 +140,7 @@
             border: none;
         }
 
-        /* CONTROLES */
+        /* CONTROLES SLIDER */
         .arrow { 
             position:absolute; 
             top:50%; 
@@ -194,7 +190,8 @@
 
 <body onload="checkSession()">
 
-    <div id="passwordModal"></div>
+    <!-- MODAL OCULTO POR DEFECTO (solo por compatibilidad) -->
+    <div id="passwordModal" style="display:none;"></div>
 
     <div id="mainContent">
         <div class="header">
@@ -206,6 +203,7 @@
 
         <div class="sidebar" id="sidebar">
             <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+            
             <div class="menu-item" onclick="toggleSub('inicio')">
                 <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
             </div>
@@ -218,6 +216,7 @@
                 <a href="noticias.html">Noticias</a>
                 <a href="reglamento-interno.html">Reglamento</a>
             </div>
+
             <div class="menu-item" onclick="toggleSub('fairy')">
                 <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
             </div>
@@ -226,6 +225,7 @@
                 <a href="tutoriales.html">Tutoriales</a>
                 <a href="tips-fairy.html">Tips Fairy</a>
             </div>
+
             <div class="menu-item" onclick="toggleSub('salsa-sub')">
                 <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
             </div>
@@ -235,6 +235,7 @@
                 <a href="reglas-salsa.html">Reglas SALSA</a>
                 <a href="herramientas-salsa.html">Herramientas</a>
             </div>
+
             <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;">
                 <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
             </div>
@@ -242,6 +243,7 @@
 
         <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
+        <!-- SLIDER -->
         <div class="slider-container">
             <div class="arrow left" onclick="prevSlide()">❮</div>
             <div class="arrow right" onclick="nextSlide()">❯</div>
@@ -331,26 +333,26 @@
     </div>
 
     <script>
-        /* CONFIGURACIÓN DE SEGURIDAD GLOBAL */
-        const DURACION = 10800000; // 3 Horas
+        /* === SESIÓN GLOBAL (3 HORAS) === */
+        const DURACION = 3 * 60 * 60 * 1000; // 3 horas en milisegundos
 
         function checkSession(){
             const access = localStorage.getItem("fairyAccess");
             const time = localStorage.getItem("fairyTime");
             const ahora = Date.now();
 
-            // Validación de sesión global
-            if(access === "true" && time && (ahora - parseInt(time) < DURACION)){
+            if (access === "true" && time && (ahora - parseInt(time) < DURACION)) {
+                // Sesión válida → mostrar contenido
                 document.getElementById("mainContent").classList.add("session-active");
                 actualizar();
             } else {
-                // Si no hay sesión válida, redirigir al login principal
+                // Sesión inválida o expirada → redirigir al login principal
                 localStorage.clear();
                 window.location.href = "zona-streamer.html";
             }
         }
 
-        // Mantenemos por compatibilidad, pero no se ejecuta automáticamente
+        /* Compatibilidad (no se usa en esta página) */
         function checkPassword(){ return; }
 
         /* MENÚ */
@@ -376,10 +378,11 @@
         const numero = document.getElementById("numero");
         const barrasContainer = document.getElementById("barras");
 
-        for(let i=0; i<total; i++){
+        // Crear barras
+        for(let i = 0; i < total; i++){
             const b = document.createElement("div");
             b.className = "barra";
-            if(i===0) b.classList.add("active");
+            if(i === 0) b.classList.add("active");
             barrasContainer.appendChild(b);
         }
         const barras = document.querySelectorAll(".barra");
@@ -387,12 +390,24 @@
         function actualizar(){
             slides.style.transform = `translateX(-${index * 100}vw)`;
             numero.textContent = `${index + 1} / ${total}`;
-            barras.forEach(b => b.classList.remove("active"));
-            if(barras[index]) barras[index].classList.add("active");
+            barras.forEach((b, i) => {
+                b.classList.toggle("active", i === index);
+            });
         }
 
-        function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
-        function prevSlide(){ if(index > 0){ index--; actualizar(); } }
+        function nextSlide(){ 
+            if(index < total - 1){ 
+                index++; 
+                actualizar(); 
+            } 
+        }
+        
+        function prevSlide(){ 
+            if(index > 0){ 
+                index--; 
+                actualizar(); 
+            } 
+        }
     </script>
 </body>
 </html>
