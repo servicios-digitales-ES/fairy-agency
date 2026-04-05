@@ -18,52 +18,12 @@
             height: 100vh;
         }
 
-        /* SISTEMA DE LOGIN */
-        #passwordModal {
-            position:fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            background:rgba(0,0,0,0.98);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            z-index:4000;
-        }
-        .modal-content {
-            background:#111;
-            padding:40px 30px;
-            border-radius:20px;
-            text-align:center;
-            max-width:340px;
-            width:90%;
-        }
-        .modal-content img {
-            width:180px;
-            margin-bottom:25px;
-            filter: brightness(1.15);
-        }
-        h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
-        #passInput {
-            width:100%;
-            padding:15px;
-            background:#222;
-            border:none;
-            border-radius:10px;
-            color:white;
-            margin:15px 0;
-            text-align:center;
-            box-sizing: border-box;
-        }
-        .btn-entrar {
-            background:#ffd700;
-            color:black;
-            padding:14px 50px;
-            border:none;
-            border-radius:10px;
-            font-weight:bold;
-            cursor:pointer;
-        }
+        /* CONFIGURACIÓN DE VISIBILIDAD DE CONTENIDO */
         #mainContent { display:none; }
+        #mainContent.session-active { display:block; }
+
+        /* EL MODAL SE MANTIENE POR COMPATIBILIDAD PERO SE OCULTA POR DEFECTO */
+        #passwordModal { display:none; }
 
         /* HEADER */
         .header {
@@ -173,7 +133,7 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 177.77%; /* Relación 9:16 para videos verticales */
+            padding-bottom: 177.77%; 
             height: 0;
         }
 
@@ -234,14 +194,7 @@
 
 <body onload="checkSession()">
 
-    <div id="passwordModal">
-        <div class="modal-content">
-            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
-            <h2>Área Privada</h2>
-            <input type="password" id="passInput" placeholder="Contraseña">
-            <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
-        </div>
-    </div>
+    <div id="passwordModal"></div>
 
     <div id="mainContent">
         <div class="header">
@@ -378,34 +331,27 @@
     </div>
 
     <script>
-        /* CONFIGURACIÓN DE SEGURIDAD */
-        const PASSWORD = "fairy2025";
-        const DURACION = 3600 * 3 * 1000;
-
-        function checkPassword(){
-            if(document.getElementById('passInput').value === PASSWORD){
-                localStorage.setItem("fairyAccess", "true");
-                localStorage.setItem("fairyTime", Date.now());
-                document.getElementById("passwordModal").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-                actualizar();
-            } else {
-                alert("Contraseña incorrecta");
-            }
-        }
+        /* CONFIGURACIÓN DE SEGURIDAD GLOBAL */
+        const DURACION = 10800000; // 3 Horas
 
         function checkSession(){
             const access = localStorage.getItem("fairyAccess");
             const time = localStorage.getItem("fairyTime");
-            if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
-                localStorage.clear();
-                document.getElementById("passwordModal").style.display = "flex";
-            } else {
-                document.getElementById("passwordModal").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
+            const ahora = Date.now();
+
+            // Validación de sesión global
+            if(access === "true" && time && (ahora - parseInt(time) < DURACION)){
+                document.getElementById("mainContent").classList.add("session-active");
                 actualizar();
+            } else {
+                // Si no hay sesión válida, redirigir al login principal
+                localStorage.clear();
+                window.location.href = "zona-streamer.html";
             }
         }
+
+        // Mantenemos por compatibilidad, pero no se ejecuta automáticamente
+        function checkPassword(){ return; }
 
         /* MENÚ */
         function toggleMenu(){
