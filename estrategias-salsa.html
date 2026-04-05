@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia SALSA — Fairy Agency</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ESTILOS BASE Y REGLAS DE DISEÑO */
+        body { 
+            margin:0; 
+            font-family:'Georgia', serif; 
+            background:#0a0a0a; 
+            color:#eaeaea; 
+            overflow-x:hidden;
+            min-height: 100vh;
+        }
+
+        /* LOGIN MODAL (NO CAMBIAR) */
+        #passwordModal {
+            position:fixed;
+            top:0; left:0;
+            width:100%; height:100%;
+            background:rgba(0,0,0,0.98);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:4000;
+        }
+        .modal-content {
+            background:#111;
+            padding:40px 30px;
+            border-radius:20px;
+            text-align:center;
+            max-width:340px;
+            width:90%;
+        }
+        .modal-content img { width:180px; margin-bottom:25px; filter: brightness(1.15); }
+        h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
+        #passInput {
+            width:100%; padding:15px; background:#222; border:none; border-radius:10px;
+            color:white; margin:15px 0; text-align:center; box-sizing: border-box;
+        }
+        .btn-entrar {
+            background:#ffd700; color:black; padding:14px 50px; border:none;
+            border-radius:10px; font-weight:bold; cursor:pointer;
+        }
+        #mainContent { display:none; padding-top: 100px; padding-bottom: 60px; }
+
+        /* HEADER & SIDEBAR (NO CAMBIAR) */
+        .header {
+            display:flex; align-items:center; gap:12px;
+            position:fixed; top:20px; left:20px; z-index:2001;
+        }
+        .menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
+        .logo-header { width:85px; filter: brightness(1.15); }
+
+        .sidebar {
+            position:fixed; top:0; left:0; width:260px; height:100%;
+            background:#111; padding:90px 18px 20px;
+            transform:translateX(-100%); transition:0.3s ease;
+            z-index:3000; box-shadow:5px 0 20px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+        .sidebar.active { transform:translateX(0); }
+        .logo-menu { width:140px; display:block; margin:0 auto 30px; }
+        .menu-item {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:12px; border-radius:10px; cursor:pointer;
+            color: white; text-decoration: none; margin-bottom: 5px;
+            font-family: sans-serif;
+        }
+        .menu-item:hover { background:#222; }
+        .menu-left { display:flex; align-items:center; gap:10px; }
+        .menu-left i { color:#ffd700; width: 20px; text-align: center; }
+        .salsa-s { color:#ffd700; font-weight:bold; width:20px; text-align:center; }
+        .submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
+        .submenu a { display:block; padding:8px 0; color:#ccc; text-decoration:none; font-size: 14px; font-family: sans-serif; }
+        .submenu a:hover { color:#ffd700; }
+        .overlay {
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.7); opacity:0; visibility:hidden;
+            transition:0.3s; z-index:2500;
+        }
+        .overlay.active { opacity:1; visibility:visible; }
+
+        /* CONTENEDOR PRINCIPAL */
+        .page-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px; 
+        }
+
+        h1.main-title {
+            text-align: center;
+            color: #ffd700;
+            font-family: sans-serif;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin: 10px 0 0 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .card-premium {
+            background: #ffffff;
+            color: #1a1a1a;
+            border-radius: 25px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            text-align: center;
+            box-sizing: border-box;
+            width: 100%;
+            border: 1px solid #f1f1f1;
+        }
+
+        .card-title-gold {
+            color: #b8860b;
+            font-family: sans-serif;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .card-text {
+            font-family: sans-serif;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .card-activation {
+            border: 1.5px solid #ffd700;
+            background: #ffffff;
+            color: #1a1a1a;
+            border-radius: 25px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 40px rgba(255,215,0,0.1);
+            text-align: center;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .card-activation:hover {
+            transform: scale(1.01);
+        }
+
+        .activation-header { margin-bottom: 25px; }
+        .activation-header i { color: #ffd700; font-size: 28px; margin-bottom: 10px; display: block; }
+        .activation-header span { 
+            font-family: sans-serif; 
+            font-weight: bold; 
+            font-size: 18px; 
+            text-transform: uppercase;
+        }
+
+        .step-block {
+            margin-bottom: 25px;
+            font-family: sans-serif;
+        }
+        .step-block:last-child { margin-bottom: 0; }
+        .step-title { 
+            display: block; 
+            color: #b8860b; 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+            font-size: 15px;
+        }
+        .step-desc { font-size: 14px; line-height: 1.5; color: #444; }
+
+        .pillar-item {
+            margin-bottom: 25px;
+            font-family: sans-serif;
+        }
+        .pillar-item:last-child { margin-bottom: 0; }
+        .pillar-name {
+            display: block;
+            color: #b8860b;
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+        .pillar-desc {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .card-important {
+            background: #fdf8e6;
+            border-radius: 25px;
+            padding: 35px 25px;
+            text-align: center;
+            box-sizing: border-box;
+            color: #5d4a1b;
+            box-shadow: 0 10px 30px rgba(184,134,11,0.15);
+        }
+        .card-important i { font-size: 24px; color: #b8860b; margin-bottom: 15px; display: block; }
+        .important-text {
+            font-family: sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            margin: 0;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #b8860b;
+            text-decoration: underline;
+        }
+
+        .levels-section { margin-top: 10px; text-align: center; }
+        .levels-section span { color: #ffd700; font-family: sans-serif; font-weight: bold; display: block; margin-bottom: 15px; }
+        .img-meta {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .levels-info {
+            margin-top: 20px;
+            font-family: sans-serif;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .footer-note {
+            color: #666;
+            font-size: 12px;
+            text-align: center;
+            font-style: italic;
+            margin-top: 15px;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body onload="checkSession()">
+
+    <div id="passwordModal">
+        <div class="modal-content">
+            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
+            <h2>Área Privada</h2>
+            <input type="password" id="passInput" placeholder="Contraseña">
+            <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+        </div>
+    </div>
+
+    <div id="mainContent">
+        <div class="header">
+            <div class="menu-btn" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+            <div class="menu-item" onclick="toggleSub('inicio')">
+                <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+            </div>
+            <div class="submenu" id="inicio">
+                <a href="zona-streamer.html">Zona Streamer</a>
+                <a href="fairy-academy.html">Fairy Academy</a>
+                <a href="salsa.html">SALSA</a>
+                <a href="reportes-salsa.html">Reportes</a>
+                <a href="binance-streamer.html">Binance</a>
+                <a href="noticias.html">Noticias</a>
+                <a href="reglamento-interno.html">Reglamento</a>
+            </div>
+            <div class="menu-item" onclick="toggleSub('fairy')">
+                <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+            </div>
+            <div class="submenu" id="fairy">
+                <a href="capacitaciones.html">Capacitaciones</a>
+                <a href="tutoriales.html">Tutoriales</a>
+                <a href="tips-fairy.html">Tips Fairy</a>
+            </div>
+            <div class="menu-item" onclick="toggleSub('salsa-sub')">
+                <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+            </div>
+            <div class="submenu" id="salsa-sub">
+                <a href="capacitaciones-salsa.html">Capacitaciones</a>
+                <a href="tutoriales-salsa.html">Tutoriales</a>
+                <a href="reglas-salsa.html">Reglas SALSA</a>
+                <a href="herramientas-salsa.html">Herramientas</a>
+            </div>
+            <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;">
+                <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+        <div class="page-container">
+            
+            <h1 class="main-title">ESTRATEGIA SALSA</h1>
+
+            <div class="card-premium">
+                <span class="card-title-gold">Introducción</span>
+                <p class="card-text">
+                    Para aumentar tus ingresos dentro de la app es importante aplicar estrategias inteligentes y consistentes.
+                </p>
+            </div>
+
+            <div class="card-activation">
+                <div class="activation-header">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Técnica de Activación</span>
+                </div>
+                
+                <div class="step-block">
+                    <span class="step-title">Fase Match</span>
+                    <p class="step-desc">
+                        Haz <b>dos horas de Match</b> tratando de lograr entre 30 a 50 matches efectivos por hora.
+                        <br><i>(Varía según la calidad de tu internet)</i>
+                    </p>
+                </div>
+
+                <div class="step-block">
+                    <span class="step-title">Fase Live</span>
+                    <p class="step-desc">
+                        Inmediatamente después, haz <b>una hora de Live</b>. Sigue este ritmo constantemente para activar tu algoritmo.
+                    </p>
+                </div>
+
+                <div class="step-block">
+                    <span class="step-title">Resultado Final</span>
+                    <p class="step-desc" style="color: #b8860b; font-weight: bold;">
+                        Si sigues esta estrategia en menos de una semana verás resultados reales.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card-premium">
+                <span class="card-title-gold">Pilares del éxito</span>
+                
+                <div class="pillar-item">
+                    <span class="pillar-name">Constancia</span>
+                    <p class="pillar-desc">Conéctate diariamente.</p>
+                </div>
+
+                <div class="pillar-item">
+                    <span class="pillar-name">Interacción</span>
+                    <p class="pillar-desc">Responde mensajes y crea conexión.</p>
+                </div>
+
+                <div class="pillar-item">
+                    <span class="pillar-name">Perfil</span>
+                    <p class="pillar-desc">Usa buenas fotos y descripción clara.</p>
+                </div>
+
+                <div class="pillar-item">
+                    <span class="pillar-name">Horarios</span>
+                    <p class="pillar-desc">Conéctate en momentos de mayor tráfico.</p>
+                </div>
+            </div>
+
+            <div class="card-important">
+                <i class="fa-solid fa-star"></i>
+                <p class="important-text">
+                    El éxito <span class="highlight">no depende solo</span> de las horas de conexión, sino que también tiene mucho que ver la <span class="highlight">actitud</span> del streamer y sus métodos de persuasión. 
+                    <br><br>
+                    Es importante que seas <span class="highlight">creativa</span>, que te <span class="highlight">capacites</span> y siempre busques mejorar.
+                    <br><br>
+                    <span style="display:block; border-top:1px dashed #ffeeba; padding-top:15px;">
+                        <b style="color: #b8860b;">Para obtener resultados reales debes dedicar suficiente tiempo.</b>
+                        <br><br>
+                        • Recomendado: 8 a 12 horas diarias<br>
+                        • Mínimo funcional: 4 horas
+                        <br><br>
+                        <b style="color: #b8860b;">Si trabajas menos de 4 horas será muy difícil activar tu algoritmo.</b>
+                    </span>
+                </p>
+            </div>
+
+            <div class="levels-section">
+                <span>Niveles y metas</span>
+                <img src="https://i.postimg.cc/fkQkcBn1/Nivel_Requerido_(3).png" class="img-meta" alt="Tabla de Niveles">
+                
+                <div class="levels-info">
+                    Tu objetivo debe ser avanzar progresivamente en los niveles.
+                    
+                    <div style="margin-top:10px;">
+                        • Mantente al menos 2 semanas en un nivel para estabilizar tus ingresos<br>
+                        • Si el nivel es exigente, puedes mantenerte hasta 1 mes<br>
+                        • No te enfoques en subir rápido, enfócate en ser constante
+                    </div>
+                </div>
+
+                <div class="footer-note">
+                    "Revisa constantemente la tabla de niveles y cumple los objetivos semanales para escalar tus ingresos."
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = "fairy2025";
+        const DURACION = 3600 * 3 * 1000; 
+
+        function checkPassword(){
+            if(document.getElementById('passInput').value === PASSWORD){
+                localStorage.setItem("fairyAccess", "true");
+                localStorage.setItem("fairyTime", Date.now());
+                document.getElementById("passwordModal").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+            } else { alert("Contraseña incorrecta"); }
+        }
+
+        function checkSession(){
+            const access = localStorage.getItem("fairyAccess");
+            const time = localStorage.getItem("fairyTime");
+            if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
+                localStorage.clear();
+                document.getElementById("passwordModal").style.display = "flex";
+            } else {
+                document.getElementById("passwordModal").style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+            }
+        }
+
+        function toggleMenu(){
+            document.getElementById("sidebar").classList.toggle("active");
+            document.getElementById("overlay").classList.toggle("active");
+        }
+
+        function toggleSub(id){
+            const el = document.getElementById(id);
+            el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+        }
+
+        function logout(){ localStorage.clear(); window.location.href = "zona-streamer.html"; }
+    </script>
+</body>
+</html>
