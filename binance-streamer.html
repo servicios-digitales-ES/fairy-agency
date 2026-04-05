@@ -41,6 +41,7 @@
             display:flex; justify-content:space-between; align-items:center;
             padding:12px; border-radius:10px; cursor:pointer;
             color: white; text-decoration: none; margin-bottom: 5px;
+            font-family: sans-serif;
         }
         .menu-item:hover { background:#222; }
         .menu-left { display:flex; align-items:center; gap:10px; }
@@ -50,7 +51,7 @@
         .submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
         .submenu a {
             display:block; padding:8px 0; color:#ccc;
-            text-decoration:none; font-size: 14px;
+            text-decoration:none; font-size: 14px; font-family: sans-serif;
         }
         .submenu a:hover { color:#ffd700; }
 
@@ -61,7 +62,6 @@
         }
         .overlay.active { opacity:1; visibility:visible; }
 
-        /* SLIDER OPTIMIZADO */
         .slider-container { 
             height: 100vh; 
             width: 100vw; 
@@ -86,7 +86,7 @@
             box-sizing: border-box;
         }
 
-        .card-guia, .card-video {
+        .card-guia {
             background: white;
             color: black;
             padding: 30px 25px;
@@ -99,11 +99,21 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
+        .card-video {
+            background: white;
+            width: 90%;
+            max-width: 360px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
         .video-header {
             background: #000;
             color: #ffd700;
             padding: 15px;
             text-align: center;
+            font-family: sans-serif;
             font-weight: bold;
             font-size: 14px;
             text-transform: uppercase;
@@ -167,6 +177,7 @@
             font-size: 13px; 
             font-weight: bold; 
             color: #ffd700; 
+            font-family: sans-serif; 
         }
     </style>
 </head>
@@ -230,6 +241,7 @@
             <div class="arrow right" onclick="nextSlide()">❯</div>
 
             <div class="slides" id="slides">
+                
                 <div class="slide">
                     <div class="card-guia">
                         En esta sección aprenderás paso a paso cómo configurar correctamente tu cuenta de Binance para poder recibir tus pagos sin errores.
@@ -240,7 +252,6 @@
                     </div>
                 </div>
 
-                <!-- Los iframes se cargan con lazy loading para que no ralenticen la página -->
                 <div class="slide">
                     <div class="card-video">
                         <div class="video-header">PASO 1 — CREAR CUENTA</div>
@@ -259,7 +270,6 @@
                     </div>
                 </div>
 
-                <!-- Repite loading="lazy" en todos los iframes restantes -->
                 <div class="slide">
                     <div class="card-video">
                         <div class="video-header">PASO 3 — MÉTODO DE PAGO</div>
@@ -304,6 +314,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="indicador">
@@ -364,11 +375,13 @@
         function actualizar(){
             slides.style.transform = `translateX(-${index * 100}vw)`;
             numero.textContent = `${index + 1} / ${total}`;
-            barras.forEach((b, i) => b.classList.toggle("active", i === index));
+            barras.forEach((b, i) => {
+                b.classList.toggle("active", i === index);
+            });
         }
 
         function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
         function prevSlide(){ if(index > 0){ index--; actualizar(); } }
     </script>
 </body>
-</html>
+                        </html>
