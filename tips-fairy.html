@@ -230,73 +230,6 @@ h2 { color:#ffd700; margin-bottom:15px; }
 
 <body onload="checkSession()">
 
-<!-- HEADER -->
-<div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
-</div>
-
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
-
-  <div class="menu-item" onclick="toggleSub('inicio')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="inicio">
-    <a href="zona-streamer.html">Zona Streamer</a>
-    <a href="fairy-academy.html">Fairy Academy</a>
-    <a href="salsa.html">SALSA</a>
-    <a href="reportes-salsa.html">Reportes</a>
-    <a href="binance-streamer.html">Binance</a>
-    <a href="noticias.html">Noticias</a>
-    <a href="reglamento-interno.html">Reglamento</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('fairy')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('salsa')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
 <!-- MODAL -->
 <div id="passwordModal">
   <div class="modal-content">
@@ -307,41 +240,113 @@ h2 { color:#ffd700; margin-bottom:15px; }
   </div>
 </div>
 
-<!-- SLIDER -->
-<div class="slider-container">
-  <button class="nav prev" onclick="mover(-1)">❮</button>
+<!-- MAIN CONTENT -->
+<div id="mainContent" style="display:none;">
 
-  <div class="slider" id="slider">
-   <div class="slide"><img loading="lazy" src="https://i.postimg.cc/t4yMNzfG/Screenshot-20260403-011321-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/XY3zkghW/Screenshot-20260403-011352-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/YCkszxVc/Screenshot-20260403-011409-Drive.jpg"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/13PjrKTZ/Screenshot-20260403-011649-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/2SwXcZpt/Screenshot-20260403-012028-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/4x5FL9kk/Screenshot-20260403-012101-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/Z5cD7dtk/Screenshot-20260403-012138-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/3xBbSv5Y/Screenshot-20260403-012201-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/GmQS7ywb/Screenshot-20260403-012216-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/8zHnK6Q7/Screenshot-20260403-012247-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/T39H7DMp/Screenshot-20260403-012309-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/W1nfWkLD/Screenshot-20260403-012332-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/FHZnWL5d/Screenshot-20260403-012356-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/fbRq6RDx/Screenshot-20260403-012501-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/nLSSZfhR/Screenshot-20260403-012524-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/0NXXx1yF/Screenshot-20260403-012541-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/FKCCmXHq/Screenshot-20260403-012558-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/YSDDkBSp/Screenshot-20260403-012617-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/50H72KHt/Screenshot-20260403-012633-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/1tgC37gt/Screenshot-20260403-012647-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/76CsZtC5/Screenshot-20260403-012702-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/PxL35VLv/Screenshot-20260403-012720-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/hjJytZJb/Screenshot-20260403-012738-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/26PHbdvq/Screenshot-20260403-012754-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/k4kj6N8W/Screenshot-20260403-012809-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/sXtnQPS6/Screenshot-20260403-012823-Drive.png"></div>
-<div class="slide"><img loading="lazy" src="https://i.postimg.cc/rmvh0GWH/Screenshot-20260403-012843-Drive.png"></div>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
   </div>
 
-  <button class="nav next" onclick="mover(1)">❯</button>
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+
+    <div class="menu-item" onclick="toggleSub('inicio')">
+      <div class="menu-left">
+        <i class="fa-solid fa-house"></i>Inicio
+      </div>
+      ▼
+    </div>
+
+    <div class="submenu" id="inicio">
+      <a href="zona-streamer.html">Zona Streamer</a>
+      <a href="fairy-academy.html">Fairy Academy</a>
+      <a href="salsa.html">SALSA</a>
+      <a href="reportes-salsa.html">Reportes</a>
+      <a href="binance-streamer.html">Binance</a>
+      <a href="noticias.html">Noticias</a>
+      <a href="reglamento-interno.html">Reglamento</a>
+    </div>
+
+    <div class="menu-item" onclick="toggleSub('fairy')">
+      <div class="menu-left">
+        <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
+      </div>
+      ▼
+    </div>
+
+    <div class="submenu" id="fairy">
+      <a href="capacitaciones.html">Capacitaciones</a>
+      <a href="tutoriales.html">Tutoriales</a>
+      <a href="tips-fairy.html">Tips Fairy</a>
+    </div>
+
+    <div class="menu-item" onclick="toggleSub('salsa')">
+      <div class="menu-left">
+        <span class="salsa-s">S</span>SALSA
+      </div>
+      ▼
+    </div>
+
+    <div class="submenu" id="salsa">
+      <a href="capacitaciones-salsa.html">Capacitaciones</a>
+      <a href="tutoriales-salsa.html">Tutoriales</a>
+      <a href="reglas-salsa.html">Reglas SALSA</a>
+      <a href="herramientas-salsa.html">Herramientas</a>
+    </div>
+
+    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
+      <div class="menu-left">
+        <i class="fa-solid fa-right-from-bracket"></i>Salir
+      </div>
+    </div>
+
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+  <!-- SLIDER -->
+  <div class="slider-container">
+    <button class="nav prev" onclick="mover(-1)">❮</button>
+
+    <div class="slider" id="slider">
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/t4yMNzfG/Screenshot-20260403-011321-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/XY3zkghW/Screenshot-20260403-011352-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/YCkszxVc/Screenshot-20260403-011409-Drive.jpg"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/13PjrKTZ/Screenshot-20260403-011649-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/2SwXcZpt/Screenshot-20260403-012028-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/4x5FL9kk/Screenshot-20260403-012101-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/Z5cD7dtk/Screenshot-20260403-012138-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/3xBbSv5Y/Screenshot-20260403-012201-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/GmQS7ywb/Screenshot-20260403-012216-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/8zHnK6Q7/Screenshot-20260403-012247-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/T39H7DMp/Screenshot-20260403-012309-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/W1nfWkLD/Screenshot-20260403-012332-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/FHZnWL5d/Screenshot-20260403-012356-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/fbRq6RDx/Screenshot-20260403-012501-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/nLSSZfhR/Screenshot-20260403-012524-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/0NXXx1yF/Screenshot-20260403-012541-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/FKCCmXHq/Screenshot-20260403-012558-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/YSDDkBSp/Screenshot-20260403-012617-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/50H72KHt/Screenshot-20260403-012633-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/1tgC37gt/Screenshot-20260403-012647-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/76CsZtC5/Screenshot-20260403-012702-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/PxL35VLv/Screenshot-20260403-012720-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/hjJytZJb/Screenshot-20260403-012738-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/26PHbdvq/Screenshot-20260403-012754-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/k4kj6N8W/Screenshot-20260403-012809-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/sXtnQPS6/Screenshot-20260403-012823-Drive.png"></div>
+     <div class="slide"><img loading="lazy" src="https://i.postimg.cc/rmvh0GWH/Screenshot-20260403-012843-Drive.png"></div>
+    </div>
+
+    <button class="nav next" onclick="mover(1)">❯</button>
+  </div>
+
 </div>
 
 <script>
@@ -374,6 +379,7 @@ function checkPassword(){
     localStorage.setItem("fairyAccess", "true");
     localStorage.setItem("fairyTime", Date.now());
     document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
   } else {
     alert("Contraseña incorrecta");
   }
@@ -386,9 +392,11 @@ function checkSession(){
   if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
     localStorage.clear();
     document.getElementById("passwordModal").style.display = "flex";
-    return;
+    document.getElementById("mainContent").style.display = "none";
+  } else {
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
   }
-  document.getElementById("passwordModal").style.display = "none";
 }
 
 function logout(){
