@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videollamadas — Fairy Agency</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* CSS ESTRUCTURAL PRESERVADO */
+body { margin:0; font-family:'Georgia',serif; background:#0a0a0a; color:#eaeaea; overflow:hidden; height: 100vh; }
+
+.header { display:flex; align-items:center; gap:12px; position:absolute; top:25px; left:20px; z-index:2001; }
+.menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
+.logo { width:85px; filter: brightness(1.15); }
+
+.sidebar { position:fixed; top:0; left:0; width:260px; height:100%; background:#111; padding:90px 18px 20px; transform:translateX(-100%); transition:0.3s ease; z-index:3000; }
+.sidebar.active { transform:translateX(0); }
+.logo-menu { width:140px; display:block; margin:0 auto 30px; filter: brightness(1.15); }
+
+.menu-item { display:flex; justify-content:space-between; align-items:center; padding:12px; border-radius:10px; cursor:pointer; color:#ccc; margin-bottom: 5px; }
+.menu-item:hover { background:#222; }
+.menu-left { display:flex; align-items:center; gap:10px; }
+.menu-left i { color:#ffd700; width: 20px; text-align: center; }
+.salsa-s { color:#ffd700; font-weight:bold; margin-right:5px; }
+
+.submenu { max-height:0; overflow:hidden; transition:0.3s ease; padding-left:32px; }
+.submenu a { display:block; padding:8px 0; color:#aaa; text-decoration:none; font-size:14px; }
+.submenu a:hover { color:#ffd700; }
+
+.overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); opacity:0; visibility:hidden; transition:0.3s; z-index:2500; }
+.overlay.active { opacity:1; visibility:visible; }
+
+#passwordModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.98); display:none; align-items:center; justify-content:center; z-index:4000; }
+.modal-content { background:#111; padding:40px 30px; border-radius:20px; text-align:center; max-width:340px; width:95%; border: 1px solid #333; }
+.modal-content img { width:180px; margin-bottom:25px; }
+.modal-content h2 { color:#ffd700; font-size:22px; margin-bottom:20px; }
+#passInput { width:100%; padding:15px; background:#222; border:none; border-radius:10px; color:white; margin:15px 0; text-align:center; font-size: 16px; box-sizing: border-box; }
+.btn-entrar { background:#ffd700; color:black; padding:14px 50px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; width: 100%; }
+
+.pagina { display:none; height:100vh; width:100vw; }
+.pagina.activa { display:block; }
+
+/* TABS PRINCIPALES */
+.tabs {
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 130px;
+  padding: 0 10px;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  font-size: 15px;
+  color:#ffd700;
+  font-weight: bold;
+  opacity: 0.6;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.tab.active {
+  opacity: 1;
+  border-bottom: 3px solid #ffd700;
+  padding-bottom: 6px;
+}
+
+/* SUBTABS */
+.subtabs { display:flex; justify-content:center; gap:12px; margin-top: 25px; }
+.subtab { padding:10px 20px; border-radius:25px; background:#1a1a1a; cursor:pointer; font-size:14px; color:#888; border: 1px solid #333; }
+.subtab.active { background:#ffd700; color:#000; font-weight:bold; border-color: #ffd700; }
+
+/* 1. AJUSTE DE ALTURA Y POSICIÓN (ACTUALIZADO) */
+.slider-container {
+  height: calc(100vh - 180px);
+  width: 100vw;
+  position: relative;
+  margin-top: 0px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.slides { display:flex; transition:0.5s cubic-bezier(0.25, 1, 0.5, 1); height:100%; }
+
+/* CENTRAR TARJETAS */
+.slide {
+  min-width:100vw;
+  width:100vw;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-shrink:0;
+  position: relative;
+}
+
+/* TARJETAS PREMIUM */
+.card-impact {
+  background: linear-gradient(135deg, #fffaf0 0%, #f2e6d0 100%);
+  color: #1a1a1a;
+  padding: 50px 30px;
+  border-radius: 30px;
+  text-align: center;
+  width: 92%;
+  max-width: 400px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+  border: 3px solid #b8930d;
+  box-sizing: border-box;
+  position: relative;
+}
+.card-impact h3 { font-size: 20px; color: #8a6d0a; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 2px solid #b8930d; padding-bottom: 15px; }
+.card-impact p { font-size: 16px; line-height: 1.7; font-weight: 600; color: #444; margin: 0; }
+
+/* BOTONES INTERACTIVOS */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+  background: linear-gradient(135deg, #ffd700, #ffcc00);
+  color: #000;
+  padding: 16px 24px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 14px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 25px rgba(255,215,0,0.35);
+  transition: all 0.25s ease;
+  animation: pulseBtn 1.8s infinite;
+  border: none;
+  cursor: pointer;
+}
+.btn-action i { font-size: 16px; }
+.btn-action:hover { transform: translateY(-2px) scale(1.05); }
+.btn-action:active { transform: scale(0.95); }
+
+@keyframes pulseBtn {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* FLECHAS */
+.arrow {
+  position: absolute;
+  bottom: 15px;
+  top: auto;
+  transform: none;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  color:#ffd700;
+  background: rgba(0,0,0,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:100;
+  border: 1px solid #ffd700;
+}
+.arrow.left { left: 25%; }
+.arrow.right { right: 25%; }
+
+.img-full { height: 75vh; max-width: 92%; border-radius: 12px; object-fit: contain; }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
+</div>
+
+<div class="sidebar" id="sidebar">
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+  <div class="menu-item" onclick="toggleSub('inicio')">
+    <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+  </div>
+  <div class="submenu" id="inicio">
+    <a href="zona-streamer.html">Zona Streamer</a>
+    <a href="fairy-academy.html">Fairy Academy</a>
+    <a href="salsa.html">SALSA</a>
+    <a href="reportes-salsa.html">Reportes</a>
+    <a href="binance-streamer.html">Binance</a>
+    <a href="noticias.html">Noticias</a>
+    <a href="reglamento-interno.html">Reglamento</a>
+  </div>
+  <div class="menu-item" onclick="toggleSub('fairy')">
+    <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+  </div>
+  <div class="submenu" id="fairy">
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="tutoriales.html">Tutoriales</a>
+    <a href="tips-fairy.html">Tips Fairy</a>
+  </div>
+  <div class="menu-item" onclick="toggleSub('salsa')">
+    <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+  </div>
+  <div class="submenu" id="salsa">
+    <a href="capacitaciones-salsa.html">Capacitaciones</a>
+    <a href="tutoriales-salsa.html">Tutoriales</a>
+    <a href="reglas-salsa.html">Reglas SALSA</a>
+    <a href="herramientas-salsa.html">Herramientas</a>
+  </div>
+  <div class="menu-item logout" onclick="logout()">
+    <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
+    <h2>Área Privada</h2>
+    <input type="password" id="passInput" placeholder="Contraseña">
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+  </div>
+</div>
+
+<section class="pagina" id="mainContent">
+  <div class="tabs">
+    <div class="tab active" id="t-video" onclick="showTab('video')">Videollamadas</div>
+    <div class="tab" id="t-calif" onclick="showTab('calif')">Calificación</div>
+    <div class="tab" id="t-algo" onclick="showTab('algo')">Algoritmo</div>
+  </div>
+
+  <div class="subtabs" id="subtabs-video">
+    <div class="subtab active" id="st-publica" onclick="showSubVideo('publica')">Pública</div>
+    <div class="subtab" id="st-privada" onclick="showSubVideo('privada')">Privada</div>
+  </div>
+
+  <div id="section-publica" class="content-area">
+    <div class="slider-container">
+      <div class="arrow left" onclick="moveSlider('publica', -1)">❮</div>
+      <div class="arrow right" onclick="moveSlider('publica', 1)">❯</div>
+      <div class="slides" id="slides-publica">
+        <div class="slide"><div class="card-impact"><h3>Videollamadas públicas</h3><p>Las videollamadas públicas solo se pueden iniciar desde la zona Match.<br><br>El Match es una zona pública donde el usuario decide si quiere pasar a llamada pública o privada.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Funcionamiento</h3><p>Cuando el usuario elige llamada pública, la streamer comienza a generar 60 monedas por minuto.<br><br>Generalmente, los usuarios que entran en llamada pública buscan conversar, por lo que es importante mantener una buena interacción.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Restricciones</h3><p>Las llamadas públicas están dentro de zonas monitoreadas y restringidas.<br><br>Siempre debes respetar las normas de la plataforma, incluso si el usuario solicita otro tipo de contenido.</p><a href="reglas-salsa.html" class="btn-action"><i class="fa-solid fa-hand-pointer"></i> Ver reglas de la plataforma</a></div></div>
+        <div class="slide"><div class="card-impact"><h3>Importante</h3><p>Zona pública no significa que muchas personas estén viendo la llamada.<br><br>Significa que es una zona supervisada y controlada dentro de la aplicación.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Monetización</h3><p>En las llamadas públicas también se pueden recibir regalos por parte de los usuarios.<br><br>Esto aumenta directamente las ganancias generadas durante la llamada.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-privada" class="content-area" style="display:none;">
+    <div class="slider-container">
+      <div class="arrow left" onclick="moveSlider('privada', -1)">❮</div>
+      <div class="arrow right" onclick="moveSlider('privada', 1)">❯</div>
+      <div class="slides" id="slides-privada">
+        <div class="slide"><div class="card-impact"><h3>Videollamadas privadas</h3><p>Las llamadas privadas pueden iniciarse de tres formas:<br><br>- Desde Match, cuando el usuario decide cambiar a llamada privada<br>- Directamente desde el perfil de la streamer<br>- Desde un live, cuando el usuario decide iniciar una llamada privada mientras estás en transmisión</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Ganancias</h3><p>Las llamadas privadas generan 120 monedas por minuto.<br><br>Esto las convierte en una de las principales fuentes de ingresos dentro de la app.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Normas básicas</h3><p>Aunque la app no monitorea esta zona, siempre se deben respetar reglas básicas:<br><br>- No menores<br>- No animales<br>- No compartir datos privados (redes sociales, cuentas bancarias, etc)</p><a href="reglas-salsa.html" class="btn-action"><i class="fa-solid fa-hand-pointer"></i> Ver reglas completas</a></div></div>
+        <div class="slide"><div class="card-impact"><h3>Monetización</h3><p>En las llamadas privadas también se pueden recibir regalos.<br><br>Esto incrementa aún más la monetización de cada sesión.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Rendimiento</h3><p>Entre más tiempo duren las llamadas y mayor sea la generación de monedas, mejor será tu posicionamiento dentro del algoritmo de la plataforma.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-calif" class="content-area" style="display:none;">
+    <div class="slider-container">
+      <div class="arrow left" onclick="moveSlider('calif', -1)">❮</div>
+      <div class="arrow right" onclick="moveSlider('calif', 1)">❯</div>
+      <div class="slides" id="slides-calif">
+        <div class="slide"><img src="https://i.postimg.cc/5tjgbg7J/Pagina-1.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/0NrnPnWR/Pagina-2.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/rpzjMjnc/Pagina-3.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/K80f6wNv/Screenshot-20260406-120523-Drive.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/HLjzdzZp/Screenshot-20260406-120530-Drive.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/PqNyTy3X/Screenshot-20260406-120537-Drive.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/Gp9KdK7h/Screenshot-20260406-120548-Drive.jpg" class="img-full"></div>
+        <div class="slide"><img src="https://i.postimg.cc/LshD2DC8/Screenshot-20260406-120556-Drive-2.jpg" class="img-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-algo" class="content-area" style="display:none;">
+    <div class="slider-container">
+      <div class="arrow left" onclick="moveSlider('algo', -1)">❮</div>
+      <div class="arrow right" onclick="moveSlider('algo', 1)">❯</div>
+      <div class="slides" id="slides-algo">
+        <div class="slide"><div class="card-impact"><h3>Métricas</h3><p>Salsa utiliza múltiples métricas para posicionar a las streamers dentro de la plataforma.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Conversión</h3><p>La tasa de conversión en Match es una de las métricas más importantes.<br><br>Entre más usuarios conviertas a llamadas, mejor será tu posicionamiento.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Retención</h3><p>La retención en llamadas también influye directamente.<br><br>Llamadas más largas hacen que la app te envíe usuarios más conversacionales.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Ingresos</h3><p>La generación de monedas es clave.<br><br>Entre más dinero generes, mayor será tu visibilidad dentro de la plataforma.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Rankings</h3><p>Un buen rendimiento puede posicionarte en rankings, tabla de líderes y secciones destacadas.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Calificación</h3><p>El sistema de calificación también influye directamente en el algoritmo.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Conexión</h3><p>El tiempo de conexión continua es clave.<br><br>Entrar y salir constantemente de la app afecta negativamente tu posicionamiento.</p></div></div>
+        <div class="slide"><div class="card-impact"><h3>Constancia</h3><p>La constancia en los días de conexión influye directamente.<br><br>Entre más días te conectes, mejor será tu algoritmo. Un mejor algoritmo significa mejores ganancias.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const PASSWORD = "fairy2025";
+const DURACION = 3 * 60 * 60 * 1000;
+
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function toggleSub(id){
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+function logout(){
+  localStorage.clear();
+  window.location.href = "zona-streamer.html";
+}
+
+function checkPassword(){
+  if (document.getElementById('passInput').value === PASSWORD) {
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime", Date.now());
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").classList.add("activa");
+  } else { alert("Contraseña incorrecta"); }
+}
+
+function checkSession(){
+  const access = localStorage.getItem("fairyAccess");
+  const time = localStorage.getItem("fairyTime");
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    document.getElementById("passwordModal").style.display = "flex";
+    return;
+  }
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").classList.add("activa");
+}
+
+let indices = { publica: 0, privada: 0, calif: 0, algo: 0 };
+
+function moveSlider(section, direction) {
+  const container = document.getElementById(`slides-${section}`);
+  if (!container) return;
+  const total = container.children.length;
+  indices[section] += direction;
+  if (indices[section] < 0) indices[section] = 0;
+  if (indices[section] >= total) indices[section] = total - 1;
+  container.style.transform = `translateX(-${indices[section] * 100}vw)`;
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.content-area').forEach(a => a.style.display = 'none');
+  document.getElementById('subtabs-video').style.display = 'none';
+  
+  if(tab === 'video') {
+    document.getElementById('t-video').classList.add('active');
+    document.getElementById('subtabs-video').style.display = 'flex';
+    showSubVideo('publica');
+  } else if(tab === 'calif') {
+    document.getElementById('t-calif').classList.add('active');
+    document.getElementById('section-calif').style.display = 'block';
+  } else {
+    document.getElementById('t-algo').classList.add('active');
+    document.getElementById('section-algo').style.display = 'block';
+  }
+  resetAllSliders();
+}
+
+function showSubVideo(sub) {
+  document.querySelectorAll('.subtab').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-publica').style.display = 'none';
+  document.getElementById('section-privada').style.display = 'none';
+  
+  if(sub === 'publica') {
+    document.getElementById('st-publica').classList.add('active');
+    document.getElementById('section-publica').style.display = 'block';
+  } else {
+    document.getElementById('st-privada').classList.add('active');
+    document.getElementById('section-privada').style.display = 'block';
+  }
+  resetAllSliders();
+}
+
+function resetAllSliders() {
+  for (let key in indices) { indices[key] = 0; }
+  document.querySelectorAll('.slides').forEach(s => { s.style.transform = 'translateX(0)'; });
+}
+
+window.onload = checkSession;
+</script>
+</body>
+</html>
