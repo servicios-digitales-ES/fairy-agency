@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-/* BASE FIEL AL SISTEMA */
+/* BASE FIEL AL SISTEMA - SIN CAMBIOS */
 body { 
   margin:0; 
   font-family:'Georgia',serif; 
@@ -24,7 +24,7 @@ body {
   top:0; left:0;
   width:100%; height:100%;
   background:rgba(0,0,0,0.98);
-  display:flex;
+  display:none; /* Ajustado para control por JS */
   align-items:center;
   justify-content:center;
   z-index:4000;
@@ -171,7 +171,7 @@ h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
 .video-wrapper { width: 100%; height: 100%; background: #000; }
 iframe { width: 100%; height: 100%; border: none; }
 
-/* ESTILOS DEL BOTÓN PREMIUM INTERACTIVO */
+/* BOTÓN PREMIUM */
 .btn-interactivo {
   background: linear-gradient(145deg, #ffd700, #ffcc00);
   color: black;
@@ -184,12 +184,9 @@ iframe { width: 100%; height: 100%; border: none; }
   font-family: sans-serif;
   width: 85%;
   max-width: 320px;
-  box-shadow: 
-    0 8px 20px rgba(255, 215, 0, 0.4),
-    0 0 15px rgba(255, 215, 0, 0.6);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.6);
   transition: all 0.2s ease;
   border: none;
-  /* AJUSTE SOLICITADO: EQUILIBRIO VISUAL */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,68 +194,24 @@ iframe { width: 100%; height: 100%; border: none; }
   text-decoration: none;
 }
 
-.btn-interactivo:active {
-  transform: scale(0.97);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-}
+.btn-interactivo:active { transform: scale(0.97); }
+.btn-interactivo i { animation: pulse 1.2s infinite; }
 
-/* ANIMACIÓN ICONO PULSE */
-.btn-interactivo i {
-  animation: pulse 1.2s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
 /* CONTROLES */
 .arrow { 
-  position:absolute; 
-  top:50%; 
-  transform:translateY(-50%); 
-  font-size:26px; 
-  color:white; 
-  background:rgba(0,0,0,0.4); 
-  padding:12px; 
-  border-radius:50%; 
-  cursor:pointer; 
-  z-index:10; 
+  position:absolute; top:50%; transform:translateY(-50%); font-size:26px; color:white; 
+  background:rgba(0,0,0,0.4); padding:12px; border-radius:50%; cursor:pointer; z-index:10; 
 }
 .arrow.left { left:15px; }
 .arrow.right { right:15px; }
 
-.indicador { 
-  position:absolute; 
-  bottom:25px; 
-  width:100%; 
-  text-align:center; 
-}
-.barras { 
-  display:flex; 
-  justify-content:center; 
-  gap: 8px; 
-  margin-top: 10px; 
-}
-.barra { 
-  width:15px; 
-  height:4px; 
-  background:#333; 
-  border-radius:3px; 
-  transition: 0.3s;
-}
-.barra.active { 
-  background:#ffd700; 
-  width: 25px;
-}
-#numero { 
-  font-size: 14px; 
-  font-weight: bold; 
-  color: #ffd700; 
-  font-family: sans-serif; 
-  letter-spacing: 1px;
-}
+.indicador { position:absolute; bottom:25px; width:100%; text-align:center; }
+.barras { display:flex; justify-content:center; gap: 8px; margin-top: 10px; }
+.barra { width:15px; height:4px; background:#333; border-radius:3px; transition: 0.3s; }
+.barra.active { background:#ffd700; width: 25px; }
+#numero { font-size: 14px; font-weight: bold; color: #ffd700; font-family: sans-serif; letter-spacing: 1px; }
 </style>
 </head>
 
@@ -324,7 +277,6 @@ iframe { width: 100%; height: 100%; border: none; }
     <div class="arrow right" onclick="nextSlide()">❯</div>
 
     <div class="slides" id="slides">
-      
       <div class="slide">
         <div class="paso-container">
           <div style="background:white; color:black; padding:30px 25px; border-radius:20px; font-family:sans-serif; font-size:15px; line-height:1.6; text-align:left; max-width:320px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
@@ -337,76 +289,37 @@ iframe { width: 100%; height: 100%; border: none; }
         </div>
       </div>
 
-      <div class="slide">
-        <div class="paso-container">
-          <img src="https://i.postimg.cc/tgzPX1n3/Paso-1-y-2.png" alt="Paso 1 y 2">
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="paso-container">
-          <img src="https://i.postimg.cc/jjhNsWn4/Paso-3-y-4.png" alt="Paso 3 y 4">
-        </div>
-      </div>
-
+      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/tgzPX1n3/Paso-1-y-2.png" alt="Paso 1 y 2"></div></div>
+      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/jjhNsWn4/Paso-3-y-4.png" alt="Paso 3 y 4"></div></div>
+      
       <div class="slide">
         <div class="paso-container">
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
-            
             <div style="background: white; color: black; padding: 15px; border-radius: 12px; font-family: sans-serif; font-size: 13px; line-height: 1.4; max-width: 300px; text-align: left;">
-              Fairy Agency generalmente recomienda seleccionar 
-              <b>USDT (Tether) BEP20 (Binance Smart Chain)</b>, 
-              pero esta opción puede variar dependiendo del país.
-              <br><br>
-              Siempre debes elegir la red donde Binance te cobre la 
-              <b>comisión más baja posible</b>.
+              Fairy Agency generalmente recomienda seleccionar <b>USDT (Tether) BEP20 (Binance Smart Chain)</b>.
+              Siempre debes elegir la red donde Binance te cobre la <b>comisión más baja posible</b>.
             </div>
-
             <img src="https://i.postimg.cc/BvCDq8P5/Paso-5.png" alt="Paso 5" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-
             <a href="divisas-binance.html" class="btn-interactivo">
               Cómo conseguir la dirección de las divisas, revísalo aquí <i class="fa-solid fa-hand-pointer"></i>
             </a>
-
           </div>
         </div>
       </div>
 
-      <div class="slide">
-        <div class="paso-container">
-          <img src="https://i.postimg.cc/tgzPX1nt/Paso-6.png" alt="Paso 6">
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="paso-container">
-          <img src="https://i.postimg.cc/GpjYcBTq/Paso-7-8-y-9.gif" alt="Paso 7, 8 y 9">
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="paso-container">
-          <img src="https://i.postimg.cc/25xvzqLJ/Paso-10.png" alt="Paso 10">
-        </div>
-      </div>
-
-      <div class="slide">
-        <div class="paso-container">
-          <img src="https://i.postimg.cc/g0KRYwLf/paso-11.png" alt="Paso 11">
-        </div>
-      </div>
+      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/tgzPX1nt/Paso-6.png" alt="Paso 6"></div></div>
+      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/GpjYcBTq/Paso-7-8-y-9.gif" alt="Paso 7, 8 y 9"></div></div>
+      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/25xvzqLJ/Paso-10.png" alt="Paso 10"></div></div>
+      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/g0KRYwLf/paso-11.png" alt="Paso 11"></div></div>
 
       <div class="slide">
         <div class="pagina-video">
-          <div class="guia-superior">
-            <h4>VIDEO FINAL — REFUERZO</h4>
-          </div>
+          <div class="guia-superior"><h4>VIDEO FINAL — REFUERZO</h4></div>
           <div class="video-wrapper">
             <iframe src="https://drive.google.com/file/d/1gbUa-j0icwVC8NrLEc-asdBX6TsovM01/preview" allow="autoplay"></iframe>
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="indicador">
@@ -420,31 +333,83 @@ iframe { width: 100%; height: 100%; border: none; }
 const PASSWORD="fairy2025";
 const DURACION=3600 * 3 * 1000;
 
+// VARIABLES GLOBALES (Se inicializan en initSlider)
+let index = 0;
+let total = 0;
+let slidesEl, numeroEl, barrasContainer;
+
+function initSlider() {
+    slidesEl = document.getElementById("slides");
+    numeroEl = document.getElementById("numero");
+    barrasContainer = document.getElementById("barras");
+    
+    if (!slidesEl) return;
+
+    total = slidesEl.children.length;
+    index = 0;
+
+    // Generar barras dinámicamente
+    barrasContainer.innerHTML = "";
+    for(let i=0; i<total; i++){
+      const b = document.createElement("div");
+      b.className = "barra";
+      barrasContainer.appendChild(b);
+    }
+    
+    // Iniciar gestos táctiles
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+    document.addEventListener('touchend', e => {
+      let touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) nextSlide();
+      if (touchEndX - touchStartX > 50) prevSlide();
+    }, {passive: true});
+
+    actualizar();
+}
+
 function checkPassword(){
   if(document.getElementById('passInput').value===PASSWORD){
     localStorage.setItem("fairyAccess","true");
     localStorage.setItem("fairyTime",Date.now());
     document.getElementById("passwordModal").style.display="none";
     document.getElementById("mainContent").style.display="block";
-    actualizar();
+    initSlider(); // Cargar slider tras login
   }else{
     alert("Contraseña incorrecta");
   }
 }
 
 function checkSession(){
-  const access=localStorage.getItem("fairyAccess");
-  const time=localStorage.getItem("fairyTime");
+  const access = localStorage.getItem("fairyAccess");
+  const time = localStorage.getItem("fairyTime");
+  const modal = document.getElementById("passwordModal");
+  const content = document.getElementById("mainContent");
 
-  if(!access||!time||(Date.now()-parseInt(time)>DURACION)){
+  if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
     localStorage.clear();
-    document.getElementById("passwordModal").style.display="flex";
-  }else{
-    document.getElementById("passwordModal").style.display="none";
-    document.getElementById("mainContent").style.display="block";
-    actualizar();
+    modal.style.display = "flex";
+    content.style.display = "none";
+  } else {
+    modal.style.display = "none";
+    content.style.display = "block";
+    initSlider(); // Cargar slider si la sesión es válida
   }
 }
+
+function actualizar(){
+  const barras = document.querySelectorAll(".barra");
+  if(slidesEl) slidesEl.style.transform = `translateX(-${index * 100}vw)`;
+  if(numeroEl) numeroEl.textContent = `${index + 1} / ${total}`;
+  
+  barras.forEach((b, i) => {
+    b.classList.remove("active");
+    if(i === index) b.classList.add("active");
+  });
+}
+
+function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
+function prevSlide(){ if(index > 0){ index--; actualizar(); } }
 
 function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
@@ -460,41 +425,6 @@ function logout(){
   localStorage.clear(); 
   window.location.href="zona-streamer.html"; 
 }
-
-// SLIDER LOGIC
-let index = 0;
-const slides = document.getElementById("slides");
-const total = slides.children.length;
-const numero = document.getElementById("numero");
-const barrasContainer = document.getElementById("barras");
-
-for(let i=0; i<total; i++){
-  const b = document.createElement("div");
-  b.className = "barra";
-  if(i===0) b.classList.add("active");
-  barrasContainer.appendChild(b);
-}
-const barras = document.querySelectorAll(".barra");
-
-function actualizar(){
-  slides.style.transform = `translateX(-${index * 100}vw)`;
-  numero.textContent = `${index + 1} / ${total}`;
-  barras.forEach(b => b.classList.remove("active"));
-  barras[index].classList.add("active");
-}
-
-function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
-function prevSlide(){ if(index > 0){ index--; actualizar(); } }
-
-let touchStartX = 0;
-document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
-document.addEventListener('touchend', e => {
-  let touchEndX = e.changedTouches[0].screenX;
-  if (touchStartX - touchEndX > 50) nextSlide();
-  if (touchEndX - touchStartX > 50) prevSlide();
-});
-
-actualizar();
 </script>
 
 </body>
