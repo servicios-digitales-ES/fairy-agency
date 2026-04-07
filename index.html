@@ -110,7 +110,6 @@
             font-weight: 600;
         }
 
-        /* Flechas - ABAJO, fuera de la tarjeta */
         .navigation {
             position: fixed;
             bottom: 85px;
@@ -238,7 +237,7 @@
                     <div class="slide-number">03 / 15</div>
                     <div class="slide-title">Realidad que debes saber</div>
                     <div class="slide-text">
-                        <p><strong>Salsa</strong> es una aplicación de entretenimiento para adultos.</p>
+                        <p>Trabajamos con una <strong>aplicación</strong> de entretenimiento para adultos.</p>
                         <p>Muchos usuarios pueden mostrarse masturbándose desde el primer minuto.</p>
                         <p>No estás obligada a hacer contenido sexual si no quieres, pero sí necesitas saber manejar este tipo de situaciones con seguridad y carácter.</p>
                         <p>Si no estás dispuesta a enfrentar este entorno o aprender a manejarlo, este trabajo no es para ti.</p>
@@ -321,8 +320,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="slide">
+                        <div class="slide">
                 <div class="card">
                     <div class="slide-number">09 / 15</div>
                     <div class="slide-title">Ingresos adicionales</div>
@@ -437,14 +435,14 @@
                     <div class="slide-text" style="text-align: center; margin-bottom: 30px;">
                         <p>Si leíste todo y estás segura, puedes iniciar tu proceso.</p>
                     </div>
-                    
                     <a href="https://wa.me/50370482075" target="_blank" class="btn btn-primary">Hablar por WhatsApp</a>
                 </div>
             </div>
 
         </div>
     </div>
- <div class="navigation" id="navigation">
+
+    <div class="navigation" id="navigation">
         <div class="arrow" id="prevBtn">‹</div>
         <div class="arrow" id="nextBtn">›</div>
     </div>
@@ -458,13 +456,10 @@
         const pagination = document.getElementById('pagination');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const navigation = document.getElementById('navigation');
 
         function updateSlider() {
             slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
             pagination.textContent = `${currentIndex + 1} / ${totalSlides}`;
-
-            // Control de flechas según slide
             if (currentIndex === 0) {
                 prevBtn.style.display = 'none';
                 nextBtn.style.display = 'flex';
@@ -491,11 +486,9 @@
             }
         }
 
-        // Eventos
         nextBtn.addEventListener('click', nextSlide);
         prevBtn.addEventListener('click', prevSlide);
 
-        // Swipe táctil
         let touchStartX = 0;
         document.addEventListener('touchstart', e => {
             touchStartX = e.changedTouches[0].screenX;
@@ -506,13 +499,11 @@
             if (diff < -60) prevSlide();
         });
 
-        // Teclas flecha
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        // Inicializar
         updateSlider();
     </script>
 </body>
