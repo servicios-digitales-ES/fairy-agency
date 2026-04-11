@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Guía Real del Trabajo - Fairy Agency</title>
+    <title>Guía Oficial - Fairy Agency</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --gold: #ffd700;
+            --dark-bg: #0a0a0a;
+            --card-bg: #111111;
+            --text-gray: #e0e0e0;
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #0a0a0a;
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
             color: #ffffff;
             overflow: hidden;
             height: 100vh;
             width: 100vw;
+            position: fixed;
         }
 
         .header {
@@ -27,482 +36,540 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 105px;
-            background: #0a0a0a;
+            height: 100px;
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-top: 18px;
+            background: linear-gradient(to bottom, var(--dark-bg) 70%, transparent);
         }
 
-        .logo {
-            height: 74px;
+        .logo-main {
+            height: 75px;
             width: auto;
         }
 
-        .container {
+        .main-container {
             height: 100vh;
             width: 100vw;
-            padding-top: 105px;
-            padding-bottom: 110px;
             overflow: hidden;
             position: relative;
         }
 
-        .slider {
+        .slider-track {
             display: flex;
             height: 100%;
-            width: 1500vw;
-            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 100%;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform;
         }
 
         .slide {
             min-width: 100vw;
+            width: 100vw;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0 20px;
+            padding: 110px 20px 110px;
         }
 
         .card {
             width: 100%;
-            max-width: 390px;
-            background: #111111;
-            border-radius: 28px;
-            padding: 32px 26px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
-            border: 1px solid #222;
-            min-height: 520px;
+            max-width: 400px;
+            max-height: 70vh;
+            background: var(--card-bg);
+            border-radius: 30px;
             display: flex;
             flex-direction: column;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            position: relative;
+            overflow: hidden;
         }
 
-        .slide-number {
-            font-size: 14px;
-            color: #ffd700;
-            font-weight: 600;
-            margin-bottom: 12px;
+        .card-scroll-area {
+            padding: 35px 25px;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            touch-action: pan-y; /* Permite scroll vertical, pero no gestos horizontales del navegador */
+        }
+
+        .card-scroll-area::-webkit-scrollbar { display: none; }
+
+        .slide-num {
+            font-size: 11px;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: block;
+            text-transform: uppercase;
         }
 
         .slide-title {
             font-size: 24px;
             font-weight: 700;
-            line-height: 1.25;
-            margin-bottom: 22px;
-            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            color: #fff;
         }
 
-        .slide-text {
-            font-size: 15.8px;
-            line-height: 1.68;
-            color: #e0e0e0;
-            flex-grow: 1;
+        .slide-body {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-gray);
+            white-space: pre-line;
         }
 
-        .slide-text p, .slide-text ul {
-            margin-bottom: 14px;
-        }
-
-        .highlight {
-            color: #ffd700;
-            font-weight: 600;
-        }
-
-        .navigation {
+        .nav-controls {
             position: fixed;
-            bottom: 85px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
             display: flex;
-            gap: 60px;
+            justify-content: space-between;
+            padding: 0 8px;
+            pointer-events: none;
             z-index: 1100;
         }
 
         .arrow {
-            width: 52px;
-            height: 52px;
-            background: rgba(255, 215, 0, 0.1);
-            border: 2px solid #ffd700;
+            width: 48px;
+            height: 48px;
+            background: rgba(10, 10, 10, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffd700;
-            font-size: 32px;
+            color: var(--gold);
+            font-size: 28px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            animation: pulse 2.4s infinite ease-in-out;
+            pointer-events: auto;
+            backdrop-filter: blur(4px);
+            opacity: 0.2;
         }
 
-        .arrow:hover {
-            background: #ffd700;
-            color: #0a0a0a;
-            transform: scale(1.1);
+        .arrow.blink {
+            animation: arrowBlink 0.5s ease-in-out 3;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.07); }
+        @keyframes arrowBlink {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
 
-        .pagination {
+        .page-indicator {
             position: fixed;
-            bottom: 28px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(15, 15, 15, 0.95);
-            padding: 8px 24px;
-            border-radius: 30px;
-            font-size: 15px;
-            font-weight: 600;
-            color: #ffd700;
+            background: rgba(17, 17, 17, 0.9);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--gold);
+            border: 1px solid rgba(255, 215, 0, 0.2);
             z-index: 1000;
-            border: 1px solid #333;
         }
 
-        .btn {
+        .cta-wrapper { text-align: center; margin-top: 30px; }
+        .finger-icon { font-size: 32px; display: block; margin-bottom: 15px; animation: bounce 2s infinite; }
+        
+        .btn-final {
             display: block;
-            width: 100%;
-            padding: 17px 20px;
-            margin: 14px 0;
-            border: none;
-            border-radius: 18px;
-            font-size: 17px;
-            font-weight: 700;
-            text-align: center;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #000;
+            padding: 22px 15px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 15px;
             text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            line-height: 1.3;
+            animation: pulse-gold 2s infinite;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #ffd700, #ffcc00);
-            color: #0a0a0a;
+        .footer-logo {
+            margin: 35px auto 10px;
+            height: 45px;
+            opacity: 0.25;
+            display: block;
+            filter: grayscale(1);
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: #ffd700;
-            border: 2px solid #ffd700;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-        }
+        @keyframes bounce { 0%,20%,50%,80%,100% {transform:translateY(0)} 40% {transform:translateY(-12px)} 60% {transform:translateY(-6px)} }
+        @keyframes pulse-gold { 0% {transform:scale(1)} 50% {transform:scale(1.03)} 100% {transform:scale(1)} }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="logo">
+        <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="logo-main">
     </div>
 
-    <div class="container">
-        <div class="slider" id="slider">
+    <div class="nav-controls">
+        <div class="arrow blink" id="prevBtn" style="visibility: hidden;">‹</div>
+        <div class="arrow blink" id="nextBtn">›</div>
+    </div>
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">01 / 15</div>
-                    <div class="slide-title">Guía real del trabajo</div>
-                    <div class="slide-text">
-                        <p>Este material fue creado para que entiendas cómo funciona realmente este trabajo antes de empezar.</p>
-                        <p>Aquí no vas a encontrar promesas falsas ni dinero fácil.</p>
-                        <p>Vas a conocer la realidad, cómo se gana dinero y qué se necesita para que funcione.</p>
-                        <p>Si decides continuar después de leer todo, será porque sabes exactamente en qué te estás metiendo.</p>
-                    </div>
-                </div>
-            </div>
+    <div class="main-container">
+        <div class="slider-track" id="sliderTrack">
+            
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 01 / 20</span><h2 class="slide-title">¿Cómo funciona?</h2><div class="slide-body">Este material te explica cómo funciona realmente este trabajo, sin promesas falsas y sin información engañosa. Aquí vas a entender exactamente en qué consiste, cómo se gana dinero y qué se necesita para que funcione.
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">02 / 15</div>
-                    <div class="slide-title">¿Qué es ser streamer o novia virtual?</div>
-                    <div class="slide-text">
-                        <p>Ser streamer consiste en interactuar con usuarios mediante:</p>
-                        <ul style="margin: 16px 0; padding-left: 12px; line-height: 1.9;">
-                            <li>Videollamadas</li>
-                            <li>Lives</li>
-                            <li>Mensajes</li>
-                        </ul>
-                        <p>Los usuarios pagan por tu tiempo, tu atención y la experiencia que les brindas.</p>
-                        <p>No se trata solo de estar conectada, sino de saber conversar, generar interés y mantener la atención del usuario.</p>
-                    </div>
-                </div>
-            </div>
+Todo es completamente gratuito y contarás con acompañamiento personalizado durante tu proceso. No somos vendedores de cursos, no tienes que pagar nada para empezar y no se trata de ningún sistema piramidal.
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">03 / 15</div>
-                    <div class="slide-title">Realidad que debes saber</div>
-                    <div class="slide-text">
-                        <p>Trabajamos con una <strong>aplicación</strong> de entretenimiento para adultos.</p>
-                        <p>Muchos usuarios pueden mostrarse masturbándose desde el primer minuto.</p>
-                        <p>No estás obligada a hacer contenido sexual si no quieres, pero sí necesitas saber manejar este tipo de situaciones con seguridad y carácter.</p>
-                        <p>Si no estás dispuesta a enfrentar este entorno o aprender a manejarlo, este trabajo no es para ti.</p>
-                    </div>
-                </div>
-            </div>
+Es muy importante que leas toda la información completa con atención, así evitas malos entendidos y te aseguras de no aplicar a un trabajo que realmente no te gustaría realizar. Lee cada parte con detalle antes de continuar.</div></div></div></div>
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">04 / 15</div>
-                    <div class="slide-title">Sistema de ganancias</div>
-                    <div class="slide-text">
-                        <p>Dentro de la app todo funciona con monedas:</p>
-                        <p class="highlight" style="font-size: 20px; margin: 20px 0;">👉 650 monedas = $1 dólar</p>
-                        <p>Tu objetivo es generar la mayor cantidad de monedas posible.</p>
-                        <p>Entre más monedas generes:</p>
-                        <ul style="padding-left: 18px; margin-top: 12px;">
-                            <li>Más dinero ganas</li>
-                            <li>Más visibilidad te da la app</li>
-                            <li>Más oportunidades tienes de crecer</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 02 / 20</span><h2 class="slide-title">Antes de continuar</h2><div class="slide-body">Antes de continuar, es muy importante que tengas en cuenta lo siguiente:
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">05 / 15</div>
-                    <div class="slide-title">Videollamadas (ingreso principal)</div>
-                    <div class="slide-text">
-                        <p>Las videollamadas son una de las principales fuentes de ingresos dentro de la app:</p>
-                        <p style="margin: 16px 0;">
-                            Públicas: 60 monedas por minuto<br>
-                            Privadas: 120 monedas por minuto
-                        </p>
-                        <p>Además, durante la llamada los usuarios pueden enviarte regalos.</p>
-                        <p class="highlight">Los regalos pueden ayudarte a maximizar tus ganancias dentro de la app.</p>
-                        <p>Tu objetivo siempre será convertir usuarios a llamadas y mantenerlas el mayor tiempo posible.</p>
-                    </div>
-                </div>
-            </div>
+• Lee toda la información completa  
+• No avances rápido  
+• No te saltes partes  
+• Lee cada slide con atención  
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">06 / 15</div>
-                    <div class="slide-title">Sistema de rendimiento</div>
-                    <div class="slide-text">
-                        <p>Dentro de la app existen objetivos que debes cumplir, como convertir usuarios en llamadas.</p>
-                        <p>👉 Al cumplir ciertos requisitos, puedes acceder a bonos diarios según tu rendimiento.</p>
-                        <p>No es automático, depende de tu constancia y resultados.</p>
-                    </div>
-                </div>
-            </div>
+Esto es importante porque:
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">07 / 15</div>
-                    <div class="slide-title">Lives públicos y privados</div>
-                    <div class="slide-text">
-                        <p>También puedes generar ingresos haciendo transmisiones en vivo:</p>
-                        <p style="margin-top: 16px;"><strong>🔹 Lives públicos</strong><br>Generas dinero mediante regalos</p>
-                        <p style="margin-top: 16px;"><strong>🔹 Lives privados</strong><br>Generas dinero mediante regalos<br>Además puedes cobrar entrada en monedas</p>
-                        <p style="margin-top: 20px;">Los lives te ayudan a atraer usuarios y aumentar tus ingresos.</p>
-                    </div>
-                </div>
-            </div>
+• Así entiendes realmente el trabajo  
+• Evitas malos entendidos  
+• No aplicas a algo que no te gustaría hacer  
+• Tomas una decisión consciente antes de comenzar</div></div></div></div>
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">08 / 15</div>
-                    <div class="slide-title">Otras formas de generar ingresos</div>
-                    <div class="slide-text">
-                        <p>Además de las videollamadas, existen otras formas de generar dinero que funcionan en paralelo:</p>
-                        <ul style="padding-left: 18px; margin: 16px 0; line-height: 1.8;">
-                            <li>Regalos: en mensajes, llamadas y lives</li>
-                            <li>Contenido premium: fotos o videos con precio</li>
-                            <li>Lives con entrada pagada</li>
-                        </ul>
-                        <p class="highlight">Mientras mejor combines estas opciones, mayores serán tus resultados.</p>
-                    </div>
-                </div>
-            </div>
-                        <div class="slide">
-                <div class="card">
-                    <div class="slide-number">09 / 15</div>
-                    <div class="slide-title">Ingresos adicionales</div>
-                    <div class="slide-text">
-                        <p><strong>🔹 Bono por rendimiento</strong><br>Es un ingreso adicional basado en tu rendimiento al convertir usuarios en llamadas.</p>
-                        <p style="margin: 14px 0;">Puede aumentar según tus resultados dentro de la app.</p>
-                        <p style="margin-top: 22px;"><strong>🔹 Referidos</strong><br>Puedes invitar a otras personas a trabajar.</p>
-                        <p>👉 Generas ingresos cuando ellas trabajan y generan resultados.</p>
-                        <p>No depende solo de invitar, sino de que las personas realmente trabajen.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 03 / 20</span><h2 class="slide-title">¿En qué consiste?</h2><div class="slide-body">Este trabajo consiste en interactuar con usuarios dentro de una aplicación mediante:
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">10 / 15</div>
-                    <div class="slide-title">Todas las formas de generar dinero</div>
-                    <div class="slide-text">
-                        <p>Dentro de la app puedes ganar dinero mediante:</p>
-                        <ul style="padding-left: 18px; margin: 16px 0; line-height: 1.9;">
-                            <li>Videollamadas</li>
-                            <li>Regalos</li>
-                            <li>Lives</li>
-                            <li>Contenido premium</li>
-                            <li>Bonos por rendimiento</li>
-                            <li>Referidos</li>
-                        </ul>
-                        <p class="highlight">Las videollamadas son la base, pero todo lo demás suma y potencia tus ingresos.</p>
-                    </div>
-                </div>
-            </div>
+• Videollamadas  
+• Mensajes  
+• Transmisiones en vivo  
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">11 / 15</div>
-                    <div class="slide-title">Requisitos para generar resultados</div>
-                    <div class="slide-text">
-                        <p><strong>Disponibilidad recomendada:</strong> 8 a 12 horas diarias</p>
-                        <p><strong>Mínimo funcional:</strong> 4 horas</p>
-                        <ul style="padding-left: 18px; margin: 16px 0;">
-                            <li>Constancia diaria</li>
-                            <li>Mostrar rostro (obligatorio)</li>
-                            <li>Buena conexión a internet</li>
-                        </ul>
-                        <p style="margin-top: 20px; color: #ff7777;">⚠️ Importante: Conectarte poco tiempo o de forma intermitente no genera resultados. El algoritmo premia la constancia y castiga la inactividad.</p>
-                        <p class="highlight">Si no te conectas, no ganas.</p>
-                    </div>
-                </div>
-            </div>
+Los usuarios pagan por tu tiempo, tu atención y la experiencia que les brindas. No se trata solo de estar conectada, necesitas saber interactuar, conversar y mantener el interés del usuario.</div></div></div></div>
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">12 / 15</div>
-                    <div class="slide-title">No se trata solo de conectarte</div>
-                    <div class="slide-text">
-                        <p>Este trabajo requiere más que estar en línea.</p>
-                        <p style="margin: 18px 0;">Necesitas:</p>
-                        <ul style="padding-left: 18px; line-height: 1.9;">
-                            <li>Excelente actitud</li>
-                            <li>Energía y presencia</li>
-                            <li>Habilidad para conversar</li>
-                            <li>Saber generar interés en el usuario</li>
-                        </ul>
-                        <p class="highlight">Conectarte sin intención, sin actitud o sin estrategia no genera resultados.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 04 / 20</span><h2 class="slide-title">Realidad del trabajo</h2><div class="slide-body">La mayoría de usuarios que vas a encontrar al inicio se están masturbando desde el primer minuto, esto es algo normal dentro de la aplicación.
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">13 / 15</div>
-                    <div class="slide-title">Lo que obtienes al ingresar</div>
-                    <div class="slide-text">
-                        <p>Al trabajar con nosotros tendrás acceso a:</p>
-                        <ul style="padding-left: 18px; margin: 16px 0; line-height: 1.85;">
-                            <li>Campus de aprendizaje completo</li>
-                            <li>Capacitaciones en vivo y grabadas</li>
-                            <li>Tutoriales y guías paso a paso</li>
-                            <li>Acompañamiento personalizado</li>
-                            <li>Estrategias reales para generar ingresos</li>
-                        </ul>
-                        <p style="margin-top: 18px;">Te damos todas las herramientas necesarias para entender la plataforma y mejorar tus resultados.</p>
-                        <p>Pero depende de ti aprovechar el contenido y aplicar lo aprendido.</p>
-                        <p class="highlight" style="margin-top: 18px;">Todo completamente GRATIS.<br>No pedimos dinero ni inversión.</p>
-                    </div>
-                </div>
-            </div>
+No estás obligada a hacer nada sexual si no quieres, pero sí necesitas aprender a manejar este tipo de situaciones con seguridad, actitud y carácter.
 
-            <div class="slide">
-                <div class="card">
-                    <div class="slide-number">14 / 15</div>
-                    <div class="slide-title">Seriedad y responsabilidad</div>
-                    <div class="slide-text">
-                        <p>Brindamos acompañamiento personalizado constante.</p>
-                        <p>Por eso necesitamos trabajar con personas comprometidas.</p>
-                        <p style="margin: 20px 0; color: #ff7777;">Esto no es para:</p>
-                        <ul style="padding-left: 18px; line-height: 1.85;">
-                            <li>Personas que no responden</li>
-                            <li>Personas que no aplican lo aprendido</li>
-                            <li>Personas que no se capacitan</li>
-                        </ul>
-                        <p class="highlight">Aquí necesitas formarte, aprender y aplicar.</p>
-                        <p>Si no estás dispuesta a aprender y mejorar, no podremos ayudarte.</p>
-                    </div>
-                </div>
-            </div>
+Es importante que tengas una mentalidad abierta. Si este tipo de contenido:
 
-            <div class="slide">
+• Te incomoda demasiado  
+• Te da asco  
+• Te hace sentir incómoda  
+
+Este trabajo no es para ti, porque es muy probable que te sientas abrumada y quieras dejarlo desde el primer día.
+
+Más adelante comenzarán a aparecer otros tipos de usuarios que no son tan explícitos, pero al inicio este tipo de usuarios es lo más común.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 05 / 20</span><h2 class="slide-title">Control y seguridad</h2><div class="slide-body">La aplicación no suele conectarte con personas cercanas a tu zona, normalmente te conecta con usuarios de otros países.
+
+Puede pasar que te aparezcan personas de tu mismo país, pero:
+
+• Puedes bloquear a cualquier usuario  
+• Puedes reportarlo si te incomoda  
+• No estás obligada a hablar con nadie con quien no te sientas cómoda  
+
+No se puede bloquear un país completo, pero sí puedes bloquear usuario por usuario fácilmente.
+
+Tú tienes el control total de con quién hablar y con quién no.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 06 / 20</span><h2 class="slide-title">Lo que se espera</h2><div class="slide-body">Este no es un trabajo donde solo entras y ya.
+
+Necesitas:
+
+• Tener buena actitud  
+• Estar dispuesta a aprender cosas nuevas  
+• Ser constante todos los días  
+• Tomarlo como un trabajo real  
+
+Sobre todo al inicio necesitas conectarte todos los días, ya que la aplicación funciona con un sistema que te muestra más cuando eres constante.
+
+Si te conectas un día sí y otro no, o solo entras un rato, no vas a generar resultados.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 07 / 20</span><h2 class="slide-title">Requisitos y tiempo</h2><div class="slide-body">• Ser mujer (18 a 55 años)  
+• Mostrar rostro (obligatorio)  
+• Buena conexión a internet  
+
+Tiempo recomendado para tener resultados reales:
+
+• 8 a 12 horas diarias → ingresos reales y constantes  
+• 4 horas diarias → puede ser un ingreso extra, pero ten en cuenta que puede ser bastante bajo  
+
+Este trabajo depende directamente de:
+
+• El tiempo que le dediques  
+• Tu actitud  
+• Tu constancia  
+• Las estrategias que apliques</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 08 / 20</span><h2 class="slide-title">Mito vs realidad</h2><div class="slide-body">Existe el mito de que este es un “trabajo fácil”, pero la realidad es otra.
+
+Este trabajo requiere:
+
+• Paciencia  
+• Disciplina  
+• Constancia  
+• Esfuerzo  
+
+Si no tienes estas cualidades, no vas a generar resultados.
+
+Las chicas que realmente ganan dinero son las que entienden esto desde el inicio y actúan con compromiso hacia el trabajo.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 09 / 20</span><h2 class="slide-title">Sistema de monedas</h2><div class="slide-body">Dentro de la app todo funciona con monedas:
+
+650 monedas = 1 dólar  
+
+Tu objetivo es generar la mayor cantidad de monedas posible.
+
+Entre más monedas generes:
+
+• Más dinero ganas  
+• Más visibilidad te da la aplicación  
+• Más oportunidades tienes de crecer  
+
+Todo dentro de la aplicación gira alrededor de las monedas. Si entiendes cómo generar más monedas, entiendes cómo generar más dinero.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 10 / 20</span><h2 class="slide-title">Cómo generas ingresos</h2><div class="slide-body">Dentro de la aplicación puedes generar ingresos mediante diferentes actividades:
+
+• Videollamadas  
+• Regalos en llamadas, mensajes y transmisiones  
+• Transmisiones en vivo  
+• Contenido premium  
+• Bonos por rendimiento  
+• Bonos por referidos  
+
+Todo dentro de la aplicación genera monedas, y las monedas son lo que luego se convierte en dinero.
+
+Esto significa que puedes generar ingresos de varias formas al mismo tiempo.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 11 / 20</span><h2 class="slide-title">Sistema de referidos</h2><div class="slide-body">Sobre los referidos, es importante que entiendas que:
+
+• No ganas dinero solo por invitar personas  
+• Las personas que invites deben trabajar y generar monedas  
+• Recibir tu bono de referidos depende directamente del rendimiento de ellas  
+
+Esto no es un sistema piramidal.
+
+Aquí no ganas por traer gente, ganas solo si ellas consiguen resultados reales dentro de la aplicación.
+
+Nosotros como agencia también te ayudamos en este proceso:
+
+• Te enseñamos cómo hacerlo correctamente (dentro del campus puedes aprenderlo)  
+• Tus referidas pueden tener acceso a nuestro campus si se registran contigo dentro de Fairy Agency  
+• Les brindamos orientación para que puedan generar resultados, de la misma forma en la que te enseñaremos a ti durante tu proceso  
+
+Todo esto con el objetivo de que ellas también generen ingresos y de esa forma tú puedas aumentar tus ingresos lo más posible a través de los bonos de referidos.
+
+También es importante que mantengas una buena comunicación con nosotros como agencia para poder ayudarte correctamente con tus referidas.
+
+Los referidos son un ingreso adicional, pero tu enfoque principal siempre debe ser generar tus propias monedas.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 12 / 20</span><h2 class="slide-title">Cómo te pagan</h2><div class="slide-body">Aquí se recompensa directamente tu esfuerzo, ya que se te paga por cada minuto de actividad que tengas dentro de la aplicación.
+
+Mientras más videollamadas hagas y mientras más largas sean, más oportunidades tienes de generar monedas y ganar dinero.
+
+Públicas: 60 monedas por minuto  
+Privadas: 120 monedas por minuto  
+
+Además, durante las llamadas puedes recibir regalos.
+
+Tu objetivo es:
+
+• Mantener la llamada el mayor tiempo posible  
+• Ser totalmente seductora  
+• Mantener el foco de atención del usuario en ti  
+• Generar interés para motivarlo a enviarte regalos  
+
+Todo esto se aprende dentro del campus.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 13 / 20</span><h2 class="slide-title">Cómo crecer</h2><div class="slide-body">La aplicación tiene un sistema que decide a quién mostrar más.
+
+• Si eres constante → la app te muestra más  
+• Si no te conectas → la app deja de mostrarte  
+
+Pero no depende solo de la constancia.
+
+También influye:
+
+• Tu actitud  
+• Las estrategias que emplees  
+• Qué tanto te capacites y apliques lo aprendido  
+
+Si no eres constante pierdes visibilidad, si pierdes visibilidad no recibes llamadas, si no recibes llamadas no generas monedas y si no generas monedas no ganas dinero.
+
+Por eso no es solo conectarte, es conectarte bien y 100% comprometida.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 14 / 20</span><h2 class="slide-title">Claves del éxito</h2><div class="slide-body">Las chicas que tienen resultados son las que:
+
+• Leen toda la información del campus  
+• Ven los tutoriales que están dentro del campus  
+• Aplican lo aprendido  
+• Son constantes  
+
+El campus es:
+
+• Tu herramienta principal  
+• Exclusiva de Fairy Agency  
+• No la encontrarás en ninguna otra agencia  
+
+Si no usas el campus, es muy difícil que tengas resultados.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 15 / 20</span><h2 class="slide-title">Qué es el campus</h2><div class="slide-body">El campus es una plataforma creada por Fairy Agency.
+
+Esto significa que:
+
+• Es una herramienta exclusiva para las chicas que trabajan con nosotros  
+• No la encontrarás en ninguna otra agencia  
+• Está diseñada para que puedas formarte paso a paso desde cero  
+
+Incluye:
+
+• Tutoriales paso a paso  
+• Videos explicativos  
+• Estrategias reales  
+• Uso completo de la aplicación  
+
+Está diseñado para que aprendas incluso si no tienes experiencia.
+
+También está pensado para que no dependas de esperar a que alguien te responda.
+
+Dentro del campus tienes explicado:
+
+• Cómo usar la aplicación botón por botón  
+• Cómo funciona cada sección  
+• Qué hacer en cada situación  
+• Qué estrategias aplicar  
+
+Todo está explicado paso a paso.
+
+No hay una sola parte importante que no esté dentro del campus.
+
+Es una herramienta pensada para que puedas aprender de forma autónoma y avanzar por tu cuenta.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 16 / 20</span><h2 class="slide-title">Tu privacidad</h2><div class="slide-body">Tu información y tus ganancias son totalmente privadas.
+
+• Nosotros no tenemos acceso a tu correo  
+• No tenemos acceso a tu contraseña  
+• No vemos tus métodos de pago  
+• No podemos entrar a tu cuenta  
+
+Tú eres la única persona que controla:
+
+• Tus ingresos  
+• Tus retiros  
+• Tu cuenta dentro de la aplicación  
+
+Nosotros solo te enseñamos cómo hacerlo.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 17 / 20</span><h2 class="slide-title">Lo que debes saber</h2><div class="slide-body">Este trabajo requiere que tengas claro lo siguiente:
+
+• Vas a encontrar contenido sexual  
+• Algunos usuarios serán explícitos  
+• Necesitas tener mente abierta  
+• Necesitas saber manejar situaciones incómodas  
+
+También debes tener en cuenta que los mejores horarios suelen ser en la noche, necesitas horas continuas de conexión y necesitas disciplina, paciencia y constancia.
+
+Si no cumples con esto no vas a tener resultados.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 18 / 20</span><h2 class="slide-title">Ventajas</h2><div class="slide-body">A diferencia de un trabajo tradicional:
+
+• No gastas dinero en transporte  
+• No pierdes tiempo en tráfico  
+• Trabajas desde casa  
+
+Puedes organizar tu tiempo, pero necesitas ser organizada y separar tu tiempo personal de tu tiempo de trabajo.
+
+Debes tener horas continuas de conexión.
+
+No sirve conectarte 20 minutos, salirte y volver después, la aplicación necesita constancia real.</div></div></div></div>
+
+            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 19 / 20</span><h2 class="slide-title">Lo que recibes</h2><div class="slide-body">Si decides continuar tendrás acceso a:
+
+• Acompañamiento personalizado  
+• Capacitación completa  
+• Estrategias reales  
+• Acceso al campus  
+
+Pero esto solo aplica si decides comprometerte de verdad.</div></div></div></div>
+
+             <div class="slide">
                 <div class="card">
-                    <div class="slide-number">15 / 15</div>
-                    <div class="slide-title" style="text-align: center; font-size: 27px; margin-bottom: 26px;">¿Lista para empezar?</div>
-                    <div class="slide-text" style="text-align: center; margin-bottom: 30px;">
-                        <p>Si leíste todo y estás segura, puedes iniciar tu proceso.</p>
+                    <div class="card-scroll-area">
+                        <span class="slide-num">SLIDE 20 / 20</span>
+                        <h2 class="slide-title">¿Lista para empezar?</h2>
+                        <div class="slide-body">Antes de continuar, asegúrate de que realmente cumples con todo lo siguiente:
+
+• Estás dispuesta a trabajar en un entorno donde habrá contenido sexual  
+• Entiendes que algunos usuarios pueden ser explícitos  
+• Tienes la mente abierta para manejar este tipo de situaciones  
+• Puedes trabajar en horarios nocturnos  
+• Puedes mantener horas continuas de conexión  
+• Estás dispuesta a ser constante, disciplinada y paciente  
+
+También debes tener claro que:
+
+• Este no es un trabajo fácil  
+• No vas a generar dinero solo por registrarte  
+• Tus resultados dependen completamente de tu esfuerzo  
+
+Si después de leer todo esto estás lista para comprometerte:</div>
+                        
+                        <div class="cta-wrapper">
+                            <span class="finger-icon">👇</span>
+                            <a href="descarga-registro-salsa.html" class="btn-final">
+                                Leí toda la información y estoy lista para comprometerme y comenzar
+                            </a>
+                            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="footer-logo">
+                        </div>
                     </div>
-                    <a href="https://wa.me/50370482075" target="_blank" class="btn btn-primary">Hablar por WhatsApp</a>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <div class="navigation" id="navigation">
-        <div class="arrow" id="prevBtn">‹</div>
-        <div class="arrow" id="nextBtn">›</div>
-    </div>
-
-    <div class="pagination" id="pagination">1 / 15</div>
+    <div class="page-indicator" id="pageIndicator">1 / 20</div>
 
     <script>
         let currentIndex = 0;
-        const totalSlides = 15;
-        const slider = document.getElementById('slider');
-        const pagination = document.getElementById('pagination');
+        const totalSlides = 20;
+        const track = document.getElementById('sliderTrack');
+        const indicator = document.getElementById('pageIndicator');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        const cards = document.querySelectorAll('.card-scroll-area');
 
         function updateSlider() {
-            slider.style.transform = `translateX(-${currentIndex * 100}vw)`;
-            pagination.textContent = `${currentIndex + 1} / ${totalSlides}`;
-            if (currentIndex === 0) {
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'flex';
-            } else if (currentIndex === totalSlides - 1) {
-                prevBtn.style.display = 'flex';
-                nextBtn.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'flex';
-                nextBtn.style.display = 'flex';
-            }
+            track.style.transform = `translateX(-${currentIndex * 100}vw)`;
+            indicator.textContent = `${currentIndex + 1} / ${totalSlides}`;
+            
+            prevBtn.style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
+            nextBtn.style.visibility = currentIndex === totalSlides - 1 ? 'hidden' : 'visible';
+            
+            [prevBtn, nextBtn].forEach(btn => {
+                btn.classList.remove('blink');
+                void btn.offsetWidth;
+                btn.classList.add('blink');
+            });
+
+            const currentCard = cards[currentIndex];
+            currentCard.scrollTo({ top: 0, behavior: 'instant' });
+
+            setTimeout(() => {
+                const maxScroll = currentCard.scrollHeight - currentCard.clientHeight;
+                if (maxScroll > 15) {
+                    currentCard.scrollTo({ top: maxScroll, behavior: 'smooth' });
+                    setTimeout(() => {
+                        currentCard.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 500); 
+                }
+            }, 300); 
         }
 
-        function nextSlide() {
-            if (currentIndex < totalSlides - 1) {
-                currentIndex++;
-                updateSlider();
-            }
-        }
+        nextBtn.addEventListener('click', () => { if (currentIndex < totalSlides - 1) { currentIndex++; updateSlider(); } });
+        prevBtn.addEventListener('click', () => { if (currentIndex > 0) { currentIndex--; updateSlider(); } });
 
-        function prevSlide() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateSlider();
-            }
-        }
-
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
-
-        let touchStartX = 0;
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        document.addEventListener('touchend', e => {
-            const diff = touchStartX - e.changedTouches[0].screenX;
-            if (diff > 60) nextSlide();
-            if (diff < -60) prevSlide();
-        });
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
+        // SE ELIMINÓ EL SOPORTE PARA GESTOS TÁCTILES (SWIPE) PARA CUMPLIR CON LA NAVEGACIÓN EXCLUSIVA POR FLECHAS.
 
         updateSlider();
     </script>
