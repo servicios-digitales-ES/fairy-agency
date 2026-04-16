@@ -24,7 +24,7 @@
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0,0,0,0.98);
-            display: flex; align-items: center; justify-content: center;
+            display: none; align-items: center; justify-content: center;
             z-index: 4000;
         }
         .modal-content {
@@ -174,7 +174,20 @@
         ul li::before { content: "•"; color: #ffd700; font-weight: bold; margin-right: 8px; }
     </style>
 </head>
-<body onload="checkSession()">
+
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
+<body>
 
 <!-- ════════════════════════════════════════════
      ❌ NO TOCAR — INICIO LOGIN MODAL
@@ -404,21 +417,12 @@ function checkPassword() {
 }
 
 // ─────────────────────────────────────────
-//  CHECK SESSION
+//  MOSTRAR CONTENIDO — sesión ya validada en <head>
 // ─────────────────────────────────────────
-function checkSession() {
-    const access = localStorage.getItem("fairyAccess");
-    const time   = localStorage.getItem("fairyTime");
-
-    if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
-        localStorage.clear();
-        window.location.href = "zona-streamer.html";
-        return;
-    }
-
+document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("passwordModal").style.display = "none";
     document.getElementById("mainContent").style.display   = "block";
-}
+});
 
 // ─────────────────────────────────────────
 //  LOGOUT
@@ -460,4 +464,3 @@ function toggleSub(id) {
 
 </body>
 </html>
-
