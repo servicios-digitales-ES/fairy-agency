@@ -9,245 +9,249 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* BASE */
-body { 
-  margin:0; 
-  font-family:'Inter', sans-serif; 
-  background:#0a0a0a; 
-  color:#eaeaea; 
-  overflow:hidden;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  overflow: hidden;
+  height: 100vh;
 }
 
-/* 1. HEADER (COPIADO EXACTAMENTE) */
+/* ══════════════════════════════════════
+   LOGIN MODAL
+══════════════════════════════════════ */
+#passwordModal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.98);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+.modal-content {
+  background: #111;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  border: 1px solid #222;
+}
+.modal-content img { width: 160px; margin-bottom: 20px; filter: brightness(1.15); }
+.modal-content h2  { color: #ffd700; margin-bottom: 6px; font-size: 20px; font-weight: 700; }
+.modal-content p   { color: #888; font-size: 13px; margin-bottom: 4px; }
+#passInput {
+  width: 100%;
+  padding: 14px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 10px;
+  color: white;
+  margin: 12px 0 6px;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
+}
+#passInput:focus { outline: none; border-color: #ffd700; }
+.btn-entrar {
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  margin-top: 6px;
+}
+.btn-entrar:active { opacity: 0.85; }
+#loginError {
+  display: none;
+  color: #ff4d4d;
+  font-size: 13px;
+  margin: 8px 0 4px;
+}
+#btnContactoModal {
+  display: none;
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  background: transparent;
+  border: 1px solid #25d366;
+  border-radius: 10px;
+  color: #25d366;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+#btnContactoModal:hover { background: rgba(37,211,102,0.08); }
+
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+#mainContent { display: none; }
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
 .header {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  position:fixed;
-  top:20px;
-  left:20px;
-  z-index:2001;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2001;
 }
+.menu-btn { font-size: 24px; color: #ffd700; cursor: pointer; }
+.logo-header { width: 85px; filter: brightness(1.15); }
 
-.menu-btn {
-  font-size:24px;
-  color:#ffd700;
-  cursor:pointer;
-}
-
-.logo-header { 
-  width:85px; 
-  filter: brightness(1.15); 
-}
-
-/* 1. SIDEBAR (COPIADO EXACTAMENTE) */
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
 .sidebar {
-  position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100%;
-  background:#111;
-  padding:90px 18px 20px;
-  transform:translateX(-100%);
-  transition:0.3s ease;
-  z-index:3000;
-  box-shadow:5px 0 20px rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px;
+  height: 100%;
+  background: #111;
+  padding: 90px 18px 20px;
+  transform: translateX(-100%);
+  transition: 0.3s ease;
+  z-index: 3000;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.5);
   overflow-y: auto;
 }
+.sidebar.active { transform: translateX(0); }
 
-.sidebar.active { transform:translateX(0); }
-
-.logo-menu {
-  width:140px;
-  display:block;
-  margin:0 auto 30px;
-  filter: brightness(1.15);
-}
+.logo-menu { width: 140px; display: block; margin: 0 auto 30px; filter: brightness(1.15); }
 
 .menu-item {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px;
-  border-radius:10px;
-  cursor:pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
   color: white;
   text-decoration: none;
   margin-bottom: 5px;
-  font-family: sans-serif;
-}
-
-.menu-item:hover { background:#222; }
-
-.menu-left {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.menu-left i { color:#ffd700; width: 20px; text-align: center; }
-
-.salsa-s {
-  color: #ffd700;
-  font-weight: bold;
-  font-family: 'Inter', sans-serif;
-  width: 20px;
-  text-align: center;
-}
-
-.submenu {
-  max-height:0;
-  overflow:hidden;
-  transition:0.3s;
-  padding-left:28px;
-  font-family: sans-serif;
-}
-
-.submenu a {
-  display:block;
-  padding:8px 0;
-  color:#ccc;
-  text-decoration:none;
   font-size: 14px;
 }
+.menu-item:hover { background: #222; }
 
-.submenu a:hover { color:#ffd700; }
+.menu-left { display: flex; align-items: center; gap: 10px; }
+.menu-left i { color: #ffd700; width: 20px; text-align: center; }
 
+.salsa-s { color: #ffd700; font-weight: bold; width: 20px; text-align: center; }
+
+.submenu { max-height: 0; overflow: hidden; transition: 0.3s; padding-left: 28px; }
+.submenu a { display: block; padding: 8px 0; color: #ccc; text-decoration: none; font-size: 14px; }
+.submenu a:hover { color: #ffd700; }
+
+.menu-separator { border: none; border-top: 1px solid #222; margin: 8px 0; }
+
+.menu-item-wa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #25d366;
+  margin-bottom: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu-item-wa:hover { background: rgba(37,211,102,0.08); }
+.menu-item-wa i { color: #25d366; width: 16px; text-align: center; }
+
+/* ══════════════════════════════════════
+   OVERLAY
+══════════════════════════════════════ */
 .overlay {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.7);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-  z-index:2500;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 2500;
 }
+.overlay.active { opacity: 1; visibility: visible; }
 
-.overlay.active { opacity:1; visibility:visible; }
-
-/* LOGIN MODAL */
-#passwordModal {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.98);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:4000;
-}
-
-.modal-content {
-  background:#111;
-  padding:40px 30px;
-  border-radius:20px;
-  text-align:center;
-  max-width:340px;
-  width:90%;
-  border: 1px solid #333;
-}
-
-.modal-content img { width:150px; margin-bottom:25px; }
-
-.modal-content h2 {
-  color:#ffd700;
-  margin-bottom:15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-#passInput {
-  width:100%;
-  padding:15px;
-  background:#222;
-  border:none;
-  border-radius:10px;
-  color:white;
-  margin:15px 0;
-  text-align:center;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.btn-entrar {
-  background:#ffd700;
-  color:black;
-  padding:14px 50px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-  width: 100%;
-  text-transform: uppercase;
-}
-
-/* CONTENIDO PRINCIPAL */
-#mainContent {
-  display: none;
-}
-
-/* 2. SISTEMA DE PÁGINAS (SLIDER) */
+/* ══════════════════════════════════════
+   SLIDER
+══════════════════════════════════════ */
 .slider-container {
   height: 100vh;
   width: 100vw;
-  position:relative;
-  overflow:hidden;
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   background: #000;
 }
 
 .slides {
-  display:flex;
-  transition:0.45s ease;
-  height:100%;
+  display: flex;
+  transition: 0.45s ease;
+  height: 100%;
 }
 
 .slide {
-  min-width:100vw;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* 4. DISEÑO DE CARDS */
+/* ══════════════════════════════════════
+   CARDS — ESTILO ZONA LIVE
+══════════════════════════════════════ */
 .pagina {
-  background: white;
-  color: black;
+  background: #111;
+  color: #eaeaea;
   width: 90%;
   max-width: 450px;
-  border-radius: 20px;
-  font-family: sans-serif;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  border-radius: 25px;
+  border: 1px solid #222;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
 .guia-superior {
-  background: #fdfaf0;
-  padding: 20px;
-  border-bottom: 2px solid #f1ebd5;
+  padding: 22px 20px 18px;
+  border-bottom: 1px solid #222;
   text-align: center;
 }
 
-.guia-superior h4 { 
-  color: #d4af37; 
-  font-size: 19px; 
-  margin: 0 0 5px; 
-  font-weight: 800;
-  text-transform: none;
+.guia-superior h4 {
+  color: #ffd700;
+  font-size: 19px;
+  margin: 0 0 5px;
+  font-weight: 700;
 }
 
-.guia-superior p { 
-  color: #777; 
-  font-size: 12px; 
-  margin: 0; 
-  text-transform: uppercase; 
+.guia-superior p {
+  color: #666;
+  font-size: 12px;
+  margin: 0;
+  text-transform: uppercase;
   letter-spacing: 1.5px;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .contenido-pagina {
@@ -255,100 +259,109 @@ body {
   overflow-y: auto;
 }
 
-.contenido-pagina p { 
-  font-size:14.5px; 
-  line-height:1.6; 
-  margin-bottom: 15px; 
-  color: #333; 
+.contenido-pagina p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #ccc;
 }
 
-.contenido-pagina ul { 
-  padding-left:10px; 
-  margin-bottom: 20px; 
+.contenido-pagina ul {
+  padding-left: 10px;
+  margin-bottom: 20px;
   list-style: none;
 }
 
-.contenido-pagina li { 
-  font-size: 14px; 
-  margin-bottom: 10px; 
-  color: #444;
+.contenido-pagina li {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #bbb;
   position: relative;
   padding-left: 15px;
 }
 
 .contenido-pagina li::before {
   content: "•";
-  color: #d4af37;
+  color: #ffd700;
   position: absolute;
   left: 0;
   font-weight: bold;
 }
 
 .btn-accion {
-  display:block;
+  display: block;
   text-align: center;
-  background:#ffd700;
-  color:black;
-  padding:15px;
-  border-radius:12px;
-  font-weight:bold;
-  text-decoration:none;
-  margin-top:5px;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-top: 5px;
   font-size: 15px;
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 12px rgba(255,215,0,0.2);
 }
 
-/* CONTROLES */
+/* ══════════════════════════════════════
+   CONTROLES SLIDER
+══════════════════════════════════════ */
 .arrow {
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:26px;
-  color:white;
-  background:rgba(0,0,0,0.3);
-  padding:12px;
-  border-radius:50%;
-  cursor:pointer;
-  z-index:10;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,215,0,0.1);
+  color: #ffd700;
+  border: 1px solid rgba(255,215,0,0.4);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 18px;
+  transition: 0.3s;
 }
-.arrow.left { left:10px; }
-.arrow.right { right:10px; }
+.arrow:active { background: #ffd700; color: #000; }
+.arrow.left  { left: 10px; }
+.arrow.right { right: 10px; }
 
 .indicador {
-  position:absolute;
-  bottom:20px;
-  width:100%;
-  text-align:center;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
 }
 
 .barras {
-  display:flex;
-  justify-content:center;
-  gap:8px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
   margin-top: 8px;
 }
 
 .barra {
-  width:20px;
-  height:4px;
-  background:#333;
-  border-radius:3px;
+  width: 20px;
+  height: 4px;
+  background: #333;
+  border-radius: 3px;
 }
 
-.barra.active { background:#fff; }
+.barra.active { background: #ffd700; }
 
 #numero {
   font-size: 14px;
   font-weight: bold;
-  color: white;
-  font-family: sans-serif;
+  color: #ffd700;
+  letter-spacing: 2px;
 }
 
 img.tabla-niveles {
   width: 100%;
   border-radius: 12px;
   margin-top: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 </style>
 </head>
@@ -368,91 +381,108 @@ img.tabla-niveles {
 
 <body>
 
-<!-- MODAL DE LOGIN -->
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO LOGIN MODAL
+════════════════════════════════════════════ -->
 <div id="passwordModal">
   <div class="modal-content">
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
-    <h2>Área Privada</h2>
-    <input type="password" id="passInput" placeholder="Contraseña">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="logo">
+    <h2>Zona Privada</h2>
+    <p>Ingresa tu ID para continuar</p>
+    <input type="text" id="passInput" placeholder="Tu ID de acceso"
+           onkeydown="if(event.key==='Enter') checkPassword()">
+    <div id="loginError">ID incorrecto. Verifica tu número de identificación.</div>
     <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+    <a id="btnContactoModal" href="https://wa.me/50370482075" target="_blank">
+      <i class="fa-brands fa-whatsapp"></i> Tengo problemas para ingresar
+    </a>
   </div>
 </div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN LOGIN MODAL
+════════════════════════════════════════════ -->
 
-<div class="header">
-  <div class="menu-btn" onclick="toggleMenu()">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
-</div>
 
-<div class="sidebar" id="sidebar">
-
-  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
-
-  <div class="menu-item" onclick="toggleSub('inicio')">
-    <div class="menu-left">
-      <i class="fa-solid fa-house"></i>Inicio
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="inicio">
-    <a href="zona-streamer.html">Zona Streamer</a>
-    <a href="fairy-academy.html">Fairy Academy</a>
-    <a href="salsa.html">SALSA</a>
-    <a href="reportes-salsa.html">Reportes</a>
-    <a href="binance-streamer.html">Binance</a>
-    <a href="noticias.html">Noticias</a>
-    <a href="reglamento-interno.html">Reglamento</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('fairy')">
-    <div class="menu-left">
-      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="fairy">
-    <a href="capacitaciones.html">Capacitaciones</a>
-    <a href="tutoriales.html">Tutoriales</a>
-    <a href="tips-fairy.html">Tips Fairy</a>
-  </div>
-
-  <div class="menu-item" onclick="toggleSub('salsa')">
-    <div class="menu-left">
-      <span class="salsa-s">S</span>SALSA
-    </div>
-    ▼
-  </div>
-
-  <div class="submenu" id="salsa">
-    <a href="capacitaciones-salsa.html">Capacitaciones</a>
-    <a href="tutoriales-salsa.html">Tutoriales</a>
-    <a href="reglas-salsa.html">Reglas SALSA</a>
-    <a href="herramientas-salsa.html">Herramientas</a>
-  </div>
-
-  <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
-    <div class="menu-left">
-      <i class="fa-solid fa-right-from-bracket"></i>Salir
-    </div>
-  </div>
-
-</div>
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-<!-- CONTENIDO PROTEGIDO -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — INICIO CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
 <div id="mainContent">
 
+  <!-- INICIO HEADER -->
+  <div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+  </div>
+  <!-- FIN HEADER -->
+
+  <!-- INICIO SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+
+    <!-- Contactar Agencia — primer botón -->
+    <a href="https://wa.me/50370482075" target="_blank" class="menu-item-wa">
+      <i class="fa-brands fa-whatsapp"></i> Contactar Agencia
+    </a>
+
+    <hr class="menu-separator">
+
+    <div class="menu-item" onclick="toggleSub('inicio')">
+      <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+    </div>
+    <div class="submenu" id="inicio">
+      <a href="zona-streamer.html">Zona Streamer</a>
+      <a href="fairy-academy.html">Fairy Academy</a>
+      <a href="salsa.html">SALSA</a>
+      <a href="reportes-salsa.html">Reportes</a>
+      <a href="binance-streamer.html">Binance</a>
+      <a href="noticias.html">Noticias</a>
+      <a href="reglamento-interno.html">Reglamento</a>
+    </div>
+
+    <div class="menu-item" onclick="toggleSub('fairy')">
+      <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+    </div>
+    <div class="submenu" id="fairy">
+      <a href="capacitaciones.html">Capacitaciones</a>
+      <a href="tutoriales.html">Tutoriales</a>
+      <a href="tips-fairy.html">Tips Fairy</a>
+    </div>
+
+    <div class="menu-item" onclick="toggleSub('salsa')">
+      <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+    </div>
+    <div class="submenu" id="salsa">
+      <a href="capacitaciones-salsa.html">Capacitaciones</a>
+      <a href="tutoriales-salsa.html">Tutoriales</a>
+      <a href="reglas-salsa.html">Reglas SALSA</a>
+      <a href="herramientas-salsa.html">Herramientas</a>
+    </div>
+
+    <hr class="menu-separator">
+
+    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d; margin-top:4px;">
+      <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+    </div>
+
+  </div>
+  <!-- FIN SIDEBAR -->
+
+  <!-- INICIO OVERLAY -->
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <!-- FIN OVERLAY -->
+
+  <!-- ✅ EDITABLE — SLIDER -->
   <div class="slider-container">
-    
+
     <div class="arrow left" onclick="prevSlide()">❮</div>
     <div class="arrow right" onclick="nextSlide()">❯</div>
 
     <div class="slides" id="slides">
 
+      <!-- SECCIÓN 01 — VERIFICACIÓN -->
       <div class="slide">
         <div class="pagina">
           <div class="guia-superior">
@@ -473,6 +503,7 @@ img.tabla-niveles {
         </div>
       </div>
 
+      <!-- SECCIÓN 02 — REPORTE DIARIO -->
       <div class="slide">
         <div class="pagina">
           <div class="guia-superior">
@@ -494,6 +525,7 @@ img.tabla-niveles {
         </div>
       </div>
 
+      <!-- SECCIÓN 03 — GANANCIAS -->
       <div class="slide">
         <div class="pagina">
           <div class="guia-superior">
@@ -508,6 +540,40 @@ img.tabla-niveles {
         </div>
       </div>
 
+      <!-- SECCIÓN 04 — PERMANENCIA EN EL CAMPUS -->
+      <div class="slide">
+        <div class="pagina">
+          <div class="guia-superior">
+            <h4>Permanencia en el campus</h4>
+            <p>SECCIÓN 04 — CONDICIONES DE ACCESO</p>
+          </div>
+          <div class="contenido-pagina">
+            <p>El acceso al campus Fairy es un beneficio exclusivo para las streamers activas de la agencia.</p>
+            <p>No se exigen resultados desde el inicio. Lo que sí se evalúa es el compromiso real. Durante la primera semana, verificamos que estés haciendo el intento a través de al menos una de estas variables:</p>
+            <ul>
+              <li>Horas de conexión reflejadas en el reporte diario</li>
+              <li>Actividad visible en matches dentro de la app</li>
+              <li>Generación de monedas, sin importar el monto</li>
+            </ul>
+            <p>Si dentro de la primera semana no encontramos ningún indicio de actividad o intención de trabajo, serás retirada del sistema.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 05 — SALIDA Y REINGRESO -->
+      <div class="slide">
+        <div class="pagina">
+          <div class="guia-superior">
+            <h4>Salida y reingreso</h4>
+            <p>SECCIÓN 05 — TU CUENTA Y TUS DERECHOS</p>
+          </div>
+          <div class="contenido-pagina">
+            <p>Tu cuenta en SALSA seguirá existiendo sin ningún problema. Lo único que se pierde al salir de la agencia es el acceso al campus y los demás beneficios que Fairy Agency ofrece a sus streamers activas.</p>
+            <p>Si en algún momento decides volver, puedes aplicar nuevamente. Al ser aceptada, se te otorgarán los mismos beneficios que reciben todas las streamers dentro de nuestra agencia.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="indicador">
@@ -518,36 +584,60 @@ img.tabla-niveles {
   </div>
 
 </div><!-- fin #mainContent -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — FIN CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
 
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO SCRIPTS
+════════════════════════════════════════════ -->
 <script>
-/* 1. FUNCIONES JS OBLIGATORIAS (COPIADAS EXACTAMENTE) */
-function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
-}
 
-function toggleSub(id){
-  const el = document.getElementById(id);
-  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
-}
+// =============================
+// 🔐 INICIO CONTROL DE ACCESO POR ID
+// 👉 Agrega o elimina usuarias aquí
+// =============================
 
-function logout(){
-  localStorage.clear();
-  window.location.href="zona-streamer.html";
-}
+// ⚠️ IMPORTANTE:
+// ✔ Cada objeto va separado por coma ","
+// ✔ EL ÚLTIMO elemento NO debe llevar coma
+// ✔ Si agregas uno nuevo, debes poner coma al anterior
 
-/* SISTEMA DE SESIÓN */
-const PASSWORD = "fairy2025";
-const DURACION = 3 * 60 * 60 * 1000; // 3 horas (10800000 ms)
+const USUARIOS = [
+  { id: "8249303152", nombre: "Daniela", apellido: "Magaña" },
+  { id: "890710327",  nombre: "Heidy",   apellido: "Trujillo" }
+  /*
+  ,
+  { id: "123456789", nombre: "Nombre", apellido: "Apellido" }
+  */
+];
 
-function checkPassword(){
-  if (document.getElementById('passInput').value === PASSWORD) {
+// =============================
+// 🔐 FIN CONTROL DE ACCESO POR ID
+// =============================
+
+const DURACION = 3 * 60 * 60 * 1000;
+
+// ─────────────────────────────────────────
+//  LOGIN
+// ─────────────────────────────────────────
+function checkPassword() {
+  const input   = document.getElementById('passInput').value.trim();
+  const usuario = USUARIOS.find(u => u.id === input);
+
+  if (usuario) {
+    const bienvenida = `Hola ${usuario.nombre} ${usuario.apellido} 👋`;
     localStorage.setItem("fairyAccess", "true");
-    localStorage.setItem("fairyTime", Date.now());
-    document.getElementById("passwordModal").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
+    localStorage.setItem("fairyTime",   Date.now());
+    localStorage.setItem("fairyNombre", bienvenida);
+
+    document.getElementById("loginError").style.display       = "none";
+    document.getElementById("btnContactoModal").style.display = "none";
+    window.location.href = "zona-streamer.html";
   } else {
-    alert("Contraseña incorrecta");
+    document.getElementById("loginError").style.display       = "block";
+    document.getElementById("btnContactoModal").style.display = "block";
   }
 }
 
@@ -557,38 +647,62 @@ function checkPassword(){
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("passwordModal").style.display = "none";
   document.getElementById("mainContent").style.display   = "block";
+  actualizar();
 });
 
-/* 2. LÓGICA DEL SLIDER */
+// ─────────────────────────────────────────
+//  LOGOUT
+// ─────────────────────────────────────────
+function logout() {
+  localStorage.clear();
+  window.location.href = "zona-streamer.html";
+}
+
+// ─────────────────────────────────────────
+//  SIDEBAR
+// ─────────────────────────────────────────
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function toggleSub(id) {
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+// ─────────────────────────────────────────
+//  SLIDER
+// ─────────────────────────────────────────
 let index = 0;
-const slides = document.getElementById("slides");
-const total = slides.children.length;
-const numero = document.getElementById("numero");
+const slides          = document.getElementById("slides");
+const total           = slides.children.length;
+const numero          = document.getElementById("numero");
 const barrasContainer = document.getElementById("barras");
 
-// Crear barras indicadoras
-for(let i=0; i<total; i++){
+for (let i = 0; i < total; i++) {
   const b = document.createElement("div");
   b.className = "barra";
-  if(i===0) b.classList.add("active");
+  if (i === 0) b.classList.add("active");
   barrasContainer.appendChild(b);
 }
 
 const barras = document.querySelectorAll(".barra");
 
-function actualizar(){
+function actualizar() {
   slides.style.transform = `translateX(-${index * 100}vw)`;
   numero.textContent = `${index + 1} / ${total}`;
   barras.forEach(b => b.classList.remove("active"));
   barras[index].classList.add("active");
 }
 
-function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
-function prevSlide(){ if(index > 0){ index--; actualizar(); } }
+function nextSlide() { if (index < total - 1) { index++; actualizar(); } }
+function prevSlide() { if (index > 0)          { index--; actualizar(); } }
 
-// Inicializar
-actualizar();
 </script>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN SCRIPTS
+════════════════════════════════════════════ -->
 
 </body>
 </html>
