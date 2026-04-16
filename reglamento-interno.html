@@ -6,12 +6,13 @@
 <title>Reglamento Interno — Fairy Agency</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* BASE */
 body { 
   margin:0; 
-  font-family:'Georgia',serif; 
+  font-family:'Inter', sans-serif; 
   background:#0a0a0a; 
   color:#eaeaea; 
   overflow:hidden;
@@ -90,7 +91,7 @@ body {
 .salsa-s {
   color: #ffd700;
   font-weight: bold;
-  font-family: 'Georgia', serif;
+  font-family: 'Inter', sans-serif;
   width: 20px;
   text-align: center;
 }
@@ -126,13 +127,13 @@ body {
 
 .overlay.active { opacity:1; visibility:visible; }
 
-/* MODAL PASSWORD */
+/* LOGIN MODAL */
 #passwordModal {
   position:fixed;
   top:0; left:0;
   width:100%; height:100%;
   background:rgba(0,0,0,0.98);
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
   z-index:4000;
@@ -145,18 +146,16 @@ body {
   text-align:center;
   max-width:340px;
   width:90%;
+  border: 1px solid #333;
 }
 
-.modal-content img {
-  width:180px;
-  margin-bottom:25px;
-  filter: brightness(1.15);
-}
+.modal-content img { width:150px; margin-bottom:25px; }
 
-/* ESTILOS DEL MODAL QUE FALTABAN */
-h2 {
+.modal-content h2 {
   color:#ffd700;
   margin-bottom:15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 #passInput {
@@ -168,6 +167,8 @@ h2 {
   color:white;
   margin:15px 0;
   text-align:center;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 .btn-entrar {
@@ -178,6 +179,13 @@ h2 {
   border-radius:10px;
   font-weight:bold;
   cursor:pointer;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+/* CONTENIDO PRINCIPAL */
+#mainContent {
+  display: none;
 }
 
 /* 2. SISTEMA DE PÁGINAS (SLIDER) */
@@ -345,9 +353,22 @@ img.tabla-niveles {
 </style>
 </head>
 
-<body onload="checkSession()">
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
 
-<!-- MODAL -->
+<body>
+
+<!-- MODAL DE LOGIN -->
 <div id="passwordModal">
   <div class="modal-content">
     <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
@@ -357,73 +378,73 @@ img.tabla-niveles {
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
-<div id="mainContent" style="display:none;">
+<div class="header">
+  <div class="menu-btn" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+</div>
 
-  <div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">
-      <i class="fa-solid fa-bars"></i>
+<div class="sidebar" id="sidebar">
+
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+
+  <div class="menu-item" onclick="toggleSub('inicio')">
+    <div class="menu-left">
+      <i class="fa-solid fa-house"></i>Inicio
     </div>
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+    ▼
   </div>
 
-  <div class="sidebar" id="sidebar">
-
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
-
-    <div class="menu-item" onclick="toggleSub('inicio')">
-      <div class="menu-left">
-        <i class="fa-solid fa-house"></i>Inicio
-      </div>
-      ▼
-    </div>
-
-    <div class="submenu" id="inicio">
-      <a href="zona-streamer.html">Zona Streamer</a>
-      <a href="fairy-academy.html">Fairy Academy</a>
-      <a href="salsa.html">SALSA</a>
-      <a href="reportes-salsa.html">Reportes</a>
-      <a href="binance-streamer.html">Binance</a>
-      <a href="noticias.html">Noticias</a>
-      <a href="reglamento-interno.html">Reglamento</a>
-    </div>
-
-    <div class="menu-item" onclick="toggleSub('fairy')">
-      <div class="menu-left">
-        <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
-      </div>
-      ▼
-    </div>
-
-    <div class="submenu" id="fairy">
-      <a href="capacitaciones.html">Capacitaciones</a>
-      <a href="tutoriales.html">Tutoriales</a>
-      <a href="tips-fairy.html">Tips Fairy</a>
-    </div>
-
-    <div class="menu-item" onclick="toggleSub('salsa')">
-      <div class="menu-left">
-        <span class="salsa-s">S</span>SALSA
-      </div>
-      ▼
-    </div>
-
-    <div class="submenu" id="salsa">
-      <a href="capacitaciones-salsa.html">Capacitaciones</a>
-      <a href="tutoriales-salsa.html">Tutoriales</a>
-      <a href="reglas-salsa.html">Reglas SALSA</a>
-      <a href="herramientas-salsa.html">Herramientas</a>
-    </div>
-
-    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
-      <div class="menu-left">
-        <i class="fa-solid fa-right-from-bracket"></i>Salir
-      </div>
-    </div>
-
+  <div class="submenu" id="inicio">
+    <a href="zona-streamer.html">Zona Streamer</a>
+    <a href="fairy-academy.html">Fairy Academy</a>
+    <a href="salsa.html">SALSA</a>
+    <a href="reportes-salsa.html">Reportes</a>
+    <a href="binance-streamer.html">Binance</a>
+    <a href="noticias.html">Noticias</a>
+    <a href="reglamento-interno.html">Reglamento</a>
   </div>
 
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <div class="menu-item" onclick="toggleSub('fairy')">
+    <div class="menu-left">
+      <i class="fa-solid fa-graduation-cap"></i>Fairy Academy
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="fairy">
+    <a href="capacitaciones.html">Capacitaciones</a>
+    <a href="tutoriales.html">Tutoriales</a>
+    <a href="tips-fairy.html">Tips Fairy</a>
+  </div>
+
+  <div class="menu-item" onclick="toggleSub('salsa')">
+    <div class="menu-left">
+      <span class="salsa-s">S</span>SALSA
+    </div>
+    ▼
+  </div>
+
+  <div class="submenu" id="salsa">
+    <a href="capacitaciones-salsa.html">Capacitaciones</a>
+    <a href="tutoriales-salsa.html">Tutoriales</a>
+    <a href="reglas-salsa.html">Reglas SALSA</a>
+    <a href="herramientas-salsa.html">Herramientas</a>
+  </div>
+
+  <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d;">
+    <div class="menu-left">
+      <i class="fa-solid fa-right-from-bracket"></i>Salir
+    </div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- CONTENIDO PROTEGIDO -->
+<div id="mainContent">
 
   <div class="slider-container">
     
@@ -496,13 +517,10 @@ img.tabla-niveles {
 
   </div>
 
-</div>
+</div><!-- fin #mainContent -->
 
 <script>
-const PASSWORD = "fairy2025";
-const DURACION = 3 * 60 * 60 * 1000;
-
-/* 1. FUNCIONES JS OBLIGATORIAS */
+/* 1. FUNCIONES JS OBLIGATORIAS (COPIADAS EXACTAMENTE) */
 function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
@@ -518,6 +536,10 @@ function logout(){
   window.location.href="zona-streamer.html";
 }
 
+/* SISTEMA DE SESIÓN */
+const PASSWORD = "fairy2025";
+const DURACION = 3 * 60 * 60 * 1000; // 3 horas (10800000 ms)
+
 function checkPassword(){
   if (document.getElementById('passInput').value === PASSWORD) {
     localStorage.setItem("fairyAccess", "true");
@@ -529,19 +551,13 @@ function checkPassword(){
   }
 }
 
-function checkSession(){
-  const access = localStorage.getItem("fairyAccess");
-  const time = localStorage.getItem("fairyTime");
-
-  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
-    localStorage.clear();
-    document.getElementById("passwordModal").style.display = "flex";
-    document.getElementById("mainContent").style.display = "none";
-  } else {
-    document.getElementById("passwordModal").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-  }
-}
+// ─────────────────────────────────────────
+//  MOSTRAR CONTENIDO — sesión ya validada en <head>
+// ─────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").style.display   = "block";
+});
 
 /* 2. LÓGICA DEL SLIDER */
 let index = 0;
