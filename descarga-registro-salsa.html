@@ -5,132 +5,182 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Descarga y Registro — Fairy Agency</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  font-family:'Inter',sans-serif;
-  background:#0a0a0a;
-  color:#fff;
-  overflow:hidden;
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  overflow: hidden;
+  height: 100vh;
 }
 
-.header{
-  position:fixed;
-  top:0;
-  width:100%;
-  height:110px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
-.logo{height:75px;}
+.logo { height: 70px; }
 
-.container{
-  height:100vh;
-  padding-top:110px;
-  padding-bottom:110px;
-}
-
-.slider{
-  display:flex;
-  height:100%;
-  width:600vw;
-  transition:0.5s ease;
-}
-
-.slide{
-  min-width:100vw;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:0 20px;
+/* ══════════════════════════════════════
+   SLIDER
+══════════════════════════════════════ */
+.container {
+  height: 100vh;
+  padding-top: 90px;
+  padding-bottom: 100px;
+  overflow: hidden;
 }
 
-.card{
-  width:100%;
-  max-width:390px;
-  background:#111;
-  border-radius:28px;
-  padding:30px;
-  border:1px solid #222;
-  box-shadow:0 20px 60px rgba(0,0,0,0.8);
+.slider {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.title{
-  font-size:24px;
-  font-weight:700;
-  margin-bottom:20px;
+.slide {
+  min-width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
 }
 
-.text{
-  font-size:15.5px;
-  line-height:1.7;
-  color:#ddd;
-  margin-bottom:20px;
+/* ══════════════════════════════════════
+   CARD — estándar sistema
+══════════════════════════════════════ */
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: #111;
+  border-radius: 25px;
+  padding: 45px 30px;
+  border: 1px solid #222;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
 }
 
-.btn{
-  display:block;
-  width:100%;
-  padding:18px;
-  border-radius:18px;
-  text-align:center;
-  text-decoration:none;
-  font-weight:700;
-  margin-top:10px;
+.card-video {
+  width: 100%;
+  max-width: 400px;
+  background: #111;
+  border-radius: 25px;
+  padding: 15px;
+  border: 1px solid #222;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.download{background:#ffd700;color:#000;}
-.whatsapp{background:#25D366;color:#fff;}
-
-.video-box{
-  width:100%;
-  height:560px;
-  border-radius:20px;
-  overflow:hidden;
+.title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffd700;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #222;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
-iframe{
-  width:100%;
-  height:100%;
-  border:none;
+.text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #ccc;
 }
 
-.nav{
-  position:fixed;
-  bottom:85px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:60px;
+/* ══════════════════════════════════════
+   BOTONES
+══════════════════════════════════════ */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
 }
 
-.arrow{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  border:2px solid #ffd700;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#ffd700;
-  font-size:28px;
-  cursor:pointer;
+.download { background: linear-gradient(90deg, #FFD700, #FFA500); color: #000; }
+.whatsapp { background: #25D366; color: #fff; }
+
+/* ══════════════════════════════════════
+   VIDEO
+══════════════════════════════════════ */
+.video-box {
+  width: 100%;
+  flex: 1;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-.pagination{
-  position:fixed;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#111;
-  padding:8px 20px;
-  border-radius:20px;
-  border:1px solid #333;
-  color:#ffd700;
+.video-box iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ══════════════════════════════════════
+   NAVEGACIÓN
+══════════════════════════════════════ */
+.nav {
+  position: fixed;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 50px;
+  z-index: 10;
+}
+
+.arrow {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,215,0,0.4);
+  background: rgba(255,215,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffd700;
+  font-size: 26px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.arrow:active { background: #ffd700; color: #000; }
+
+.pagination {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffd700;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-family: 'Inter', sans-serif;
+  z-index: 10;
 }
 </style>
 </head>
@@ -138,144 +188,136 @@ iframe{
 <body>
 
 <div class="header">
-<img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo">
+  <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo" loading="lazy" decoding="async">
 </div>
 
 <div class="container">
-<div class="slider" id="slider">
+  <div class="slider" id="slider">
 
-<!-- 1 -->
-<div class="slide">
-<div class="card">
-<div class="title">Comienza tu proceso</div>
-<div class="text">
-Aquí encontrarás el enlace para descargar la aplicación y el tutorial para completar tu registro correctamente.
-<br><br>
-Tendrás acceso a nuestro <b>campus online</b> con guías, estrategias y acompañamiento personalizado.
-<br><br>
-💡 Todo es completamente <b>GRATUITO</b>.
-<br><br>
-La única inversión es tu tiempo.
-<br><br>
-Sigue los pasos sin saltarte ninguno.
-</div>
-</div>
-</div>
+    <!-- SLIDE 1 -->
+    <div class="slide">
+      <div class="card">
+        <div class="title">Comienza tu proceso</div>
+        <div class="text">
+          Aquí encontrarás el enlace para descargar la aplicación y el tutorial para completar tu registro correctamente.
+          <br><br>
+          Tendrás acceso a nuestro <b>campus online</b> con guías, estrategias y acompañamiento personalizado.
+          <br><br>
+          💡 Todo es completamente <b>GRATUITO</b>.
+          <br><br>
+          La única inversión es tu tiempo.
+          <br><br>
+          Sigue los pasos sin saltarte ninguno.
+        </div>
+      </div>
+    </div>
 
-<!-- 2 -->
-<div class="slide">
-<div class="card">
-<div class="title">Paso 1 — Descarga</div>
-<div class="text">Descarga la aplicación desde el botón.</div>
-<a href="https://slsa.link/s/8249303152" class="btn download" target="_blank">
-Descargar aplicación
-</a>
-</div>
-</div>
+    <!-- SLIDE 2 -->
+    <div class="slide">
+      <div class="card">
+        <div class="title">Paso 1 — Descarga</div>
+        <div class="text">Descarga la aplicación desde el botón.</div>
+        <a href="https://slsa.link/s/8249303152" class="btn download" target="_blank">
+          Descargar aplicación
+        </a>
+      </div>
+    </div>
 
-<!-- 3 -->
-<div class="slide">
-<div class="card">
-<div class="title">Paso 2 — Tutorial</div>
-<div class="text">
-Sigue el tutorial completo para crear tu cuenta correctamente.
-</div>
-</div>
-</div>
+    <!-- SLIDE 3 -->
+    <div class="slide">
+      <div class="card">
+        <div class="title">Paso 2 — Tutorial</div>
+        <div class="text">
+          Sigue el tutorial completo para crear tu cuenta correctamente.
+        </div>
+      </div>
+    </div>
 
-<!-- 4 -->
-<div class="slide">
-<div class="card" style="padding:15px;">
-<div class="video-box">
-<iframe src="https://drive.google.com/file/d/1_nh1Y1JXZw4c7WWQ12tXF_G1XcM4zlLG/preview"></iframe>
-</div>
-</div>
-</div>
+    <!-- SLIDE 4 — VIDEO -->
+    <div class="slide">
+      <div class="card-video">
+        <div class="video-box">
+          <iframe src="https://drive.google.com/file/d/1_nh1Y1JXZw4c7WWQ12tXF_G1XcM4zlLG/preview" allow="autoplay"></iframe>
+        </div>
+      </div>
+    </div>
 
-<!-- 5 CORREGIDO -->
-<div class="slide">
-<div class="card">
-<div class="title">Paso 3 — Acceso al campus</div>
+    <!-- SLIDE 5 -->
+    <div class="slide">
+      <div class="card">
+        <div class="title">Paso 3 — Acceso al campus</div>
+        <div class="text">
+          Para otorgarte acceso al campus online, donde aprenderás estrategias paso a paso, todas las funciones de la aplicación, tutoriales y capacitaciones:
+          <br><br>
+          Es necesario que nos envíes una captura de tu perfil donde se vea tu ID.
+          <br><br>
+          Esto nos permite activarte correctamente dentro del sistema.
+          <br><br>
+          📩 En el siguiente paso encontrarás el botón de WhatsApp para enviar tu captura.
+        </div>
+      </div>
+    </div>
 
-<div class="text">
-Para otorgarte acceso al campus online, donde aprenderás estrategias paso a paso, todas las funciones de la aplicación, tutoriales y capacitaciones:
-<br><br>
+    <!-- SLIDE 6 -->
+    <div class="slide">
+      <div class="card">
+        <div class="title">Último paso</div>
+        <div class="text">
+          Envía tu captura por WhatsApp para activar tu acceso.
+          <br><br>
+          💡 El acceso es completamente <b>GRATUITO</b>.
+          <br><br>
+          No pedimos ningún tipo de inversión.
+          <br><br>
+          Al enviar tu captura, incluye:
+          <br><br>
+          • Tu nombre y apellido<br>
+          • Tu país
+        </div>
+        <a href="https://wa.me/50370482075?text=Hola,%20ya%20me%20registr%C3%A9%20en%20Salsa.%20Aqu%C3%AD%20est%C3%A1%20la%20captura%20de%20mi%20perfil.%0A%0AMi%20nombre%20es:%0ASoy%20de:%0A%0A%C2%A1Quiero%20acceso%20al%20campus%20Fairy%20y%20aprender%20a%20usar%20Salsa!"
+           class="btn whatsapp" target="_blank">
+          Enviar captura
+        </a>
+      </div>
+    </div>
 
-Es necesario que nos envíes una captura de tu perfil donde se vea tu ID.
-<br><br>
-
-Esto nos permite activarte correctamente dentro del sistema.
-<br><br>
-
-📩 En el siguiente paso encontrarás el botón de WhatsApp para enviar tu captura.
-</div>
-
-</div>
-</div>
-
-<!-- 6 FINAL -->
-<div class="slide">
-<div class="card">
-<div class="title">Último paso</div>
-
-<div class="text">
-Envía tu captura por WhatsApp para activar tu acceso.
-<br><br>
-
-💡 El acceso es completamente <b>GRATUITO</b>.
-<br><br>
-
-No pedimos ningún tipo de inversión.
-<br><br>
-
-Al enviar tu captura, incluye:
-<br><br>
-
-• Tu nombre y apellido  
-• Tu país  
-</div>
-
-<a href="https://wa.me/50370482075?text=Hola,%20ya%20me%20registr%C3%A9%20en%20Salsa.%20Aqu%C3%AD%20est%C3%A1%20la%20captura%20de%20mi%20perfil.%0A%0AMi%20nombre%20es:%0ASoy%20de:%0A%0A%C2%A1Quiero%20acceso%20al%20campus%20Fairy%20y%20aprender%20a%20usar%20Salsa!"
-class="btn whatsapp" target="_blank">
-Enviar captura
-</a>
-
-</div>
-</div>
-
-</div>
+  </div>
 </div>
 
 <div class="nav">
-<div class="arrow" onclick="prev()">‹</div>
-<div class="arrow" onclick="next()">›</div>
+  <div class="arrow" onclick="prev()">‹</div>
+  <div class="arrow" onclick="next()">›</div>
 </div>
 
-<div class="pagination" id="page">1 / 6</div>
+<div class="pagination" id="page"></div>
 
 <script>
-let i=0;
-const total=6;
-const slider=document.getElementById("slider");
-const page=document.getElementById("page");
+let i = 0;
+let total = 0;
+const slider = document.getElementById("slider");
+const page   = document.getElementById("page");
 
-function update(){
-slider.style.transform=`translateX(-${i*100}vw)`;
-page.innerText=`${i+1} / ${total}`;
+function update() {
+  slider.style.transform = `translateX(-${i * 100}%)`;
+  page.innerText = `${i + 1} / ${total}`;
 }
 
-function next(){if(i<total-1){i++;update();}}
-function prev(){if(i>0){i--;update();}}
+function next() { if (i < total - 1) { i++; update(); } }
+function prev() { if (i > 0)         { i--; update(); } }
 
-let start=0;
-document.addEventListener("touchstart",e=>start=e.touches[0].clientX);
-document.addEventListener("touchend",e=>{
-let end=e.changedTouches[0].clientX;
-if(start-end>50)next();
-if(end-start>50)prev();
+// Swipe táctil
+let startX = 0;
+document.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+document.addEventListener("touchend",   e => {
+  const endX = e.changedTouches[0].clientX;
+  if (startX - endX > 50) next();
+  if (endX - startX > 50) prev();
 });
 
-update();
+document.addEventListener("DOMContentLoaded", function() {
+  total = slider.children.length;
+  update();
+});
 </script>
 
 </body>
