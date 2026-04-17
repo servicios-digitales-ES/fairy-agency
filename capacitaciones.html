@@ -1,277 +1,462 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contenido en Desarrollo — Fairy Agency</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contenido en Desarrollo — Fairy Agency</title>
 
-    <style>
-        /* ESTILOS GLOBALES SISTEMA FAIRY */
-        body { 
-            margin:0; 
-            font-family:'Georgia',serif; 
-            background:#0a0a0a; 
-            color:#eaeaea; 
-            overflow:hidden;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        /* SISTEMA DE LOGIN (EXACTO AL PROYECTO) */
-        #passwordModal {
-            position:fixed;
-            top:0; left:0;
-            width:100%; height:100%;
-            background:rgba(0,0,0,0.98);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            z-index:4000;
-        }
-        .modal-content {
-            background:#111;
-            padding:40px 30px;
-            border-radius:20px;
-            text-align:center;
-            max-width:340px;
-            width:90%;
-        }
-        .modal-content img {
-            width:180px;
-            margin-bottom:25px;
-            filter: brightness(1.15);
-        }
-        h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
-        #passInput {
-            width:100%;
-            padding:15px;
-            background:#222;
-            border:none;
-            border-radius:10px;
-            color:white;
-            margin:15px 0;
-            text-align:center;
-            box-sizing: border-box;
-        }
-        .btn-entrar {
-            background:#ffd700;
-            color:black;
-            padding:14px 50px;
-            border:none;
-            border-radius:10px;
-            font-weight:bold;
-            cursor:pointer;
-        }
-        #mainContent { display:none; width: 100%; height: 100%; }
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
 
-        /* HEADER */
-        .header {
-            display:flex; align-items:center; gap:12px;
-            position:fixed; top:20px; left:20px; z-index:2001;
-        }
-        .menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
-        .logo-header { width:85px; filter: brightness(1.15); }
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* SIDEBAR COMPLETO */
-        .sidebar {
-            position:fixed; top:0; left:0; width:260px; height:100%;
-            background:#111; padding:90px 18px 20px;
-            transform:translateX(-100%); transition:0.3s ease;
-            z-index:3000; box-shadow:5px 0 20px rgba(0,0,0,0.5);
-            overflow-y: auto;
-        }
-        .sidebar.active { transform:translateX(0); }
-        .logo-menu { width:140px; display:block; margin:0 auto 30px; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .menu-item {
-            display:flex; justify-content:space-between; align-items:center;
-            padding:12px; border-radius:10px; cursor:pointer;
-            color: white; text-decoration: none; margin-bottom: 5px;
-            font-family: sans-serif;
-        }
-        .menu-item:hover { background:#222; }
-        .menu-left { display:flex; align-items:center; gap:10px; }
-        .menu-left i { color:#ffd700; width: 20px; text-align: center; }
-        .salsa-s { color:#ffd700; font-weight:bold; width:20px; text-align:center; }
+/* ══════════════════════════════════════
+   LOGIN MODAL
+══════════════════════════════════════ */
+#passwordModal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.98);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+.modal-content {
+  background: #111;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  border: 1px solid #222;
+}
+.modal-content img { width: 160px; margin-bottom: 20px; filter: brightness(1.15); }
+.modal-content h2  { color: #ffd700; margin-bottom: 6px; font-size: 20px; font-weight: 700; }
+.modal-content p   { color: #888; font-size: 13px; margin-bottom: 4px; }
+#passInput {
+  width: 100%;
+  padding: 14px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 10px;
+  color: white;
+  margin: 12px 0 6px;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
+}
+#passInput:focus { outline: none; border-color: #ffd700; }
+.btn-entrar {
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  margin-top: 6px;
+}
+.btn-entrar:active { opacity: 0.85; }
+#loginError {
+  display: none;
+  color: #ff4d4d;
+  font-size: 13px;
+  margin: 8px 0 4px;
+}
+#btnContactoModal {
+  display: none;
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  background: transparent;
+  border: 1px solid #25d366;
+  border-radius: 10px;
+  color: #25d366;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+#btnContactoModal:hover { background: rgba(37,211,102,0.08); }
 
-        .submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
-        .submenu a {
-            display:block; padding:8px 0; color:#ccc;
-            text-decoration:none; font-size: 14px; font-family: sans-serif;
-        }
-        .submenu a:hover { color:#ffd700; }
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+#mainContent { display: none; width: 100%; height: 100%; }
 
-        .overlay {
-            position:fixed; top:0; left:0; width:100%; height:100%;
-            background:rgba(0,0,0,0.7); opacity:0; visibility:hidden;
-            transition:0.3s; z-index:2500;
-        }
-        .overlay.active { opacity:1; visibility:visible; }
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2001;
+}
+.menu-btn { font-size: 24px; color: #ffd700; cursor: pointer; }
+.logo-header { width: 85px; filter: brightness(1.15); }
 
-        /* TARJETA CENTRAL DE CONTENIDO */
-        .container-center {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px;
+  height: 100%;
+  background: #111;
+  padding: 90px 18px 20px;
+  transform: translateX(-100%);
+  transition: 0.3s ease;
+  z-index: 3000;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+.sidebar.active { transform: translateX(0); }
 
-        .card-placeholder {
-            background: white;
-            color: #1a1a1a;
-            padding: 40px 30px;
-            border-radius: 25px;
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            font-family: sans-serif;
-        }
+.logo-menu { width: 140px; display: block; margin: 0 auto 30px; filter: brightness(1.15); }
 
-        .card-placeholder i {
-            font-size: 50px;
-            color: #ffd700;
-            margin-bottom: 20px;
-            display: block;
-        }
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #eaeaea;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+.menu-item:hover { background: #222; }
 
-        .card-placeholder h1 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #000;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
+.menu-left { display: flex; align-items: center; gap: 10px; }
+.menu-left i { color: #ffd700; width: 16px; text-align: center; }
 
-        .card-placeholder p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #444;
-            margin-bottom: 0;
-        }
-    </style>
+.salsa-s {
+  color: #ffd700 !important;
+  font-size: 16px;
+  font-weight: 900;
+  width: 16px;
+  text-align: center;
+}
+
+.submenu { max-height: 0; overflow: hidden; transition: 0.3s; padding-left: 28px; }
+.submenu a { display: block; padding: 8px 0; color: #ccc; text-decoration: none; font-size: 13px; }
+.submenu a:hover { color: #ffd700; }
+
+.menu-separator { border: none; border-top: 1px solid #222; margin: 8px 0; }
+
+.menu-item-wa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #25d366;
+  margin-bottom: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu-item-wa:hover { background: rgba(37,211,102,0.08); }
+.menu-item-wa i { color: #25d366; width: 16px; text-align: center; }
+
+/* ══════════════════════════════════════
+   OVERLAY
+══════════════════════════════════════ */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 2500;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+/* ══════════════════════════════════════
+   CARD PLACEHOLDER — estándar sistema oscuro
+══════════════════════════════════════ */
+.container-center {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card-placeholder {
+  background: #111;
+  color: #eaeaea;
+  padding: 50px 30px;
+  border-radius: 25px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  min-height: 70vh;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  border: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card-placeholder i {
+  font-size: 50px;
+  color: #ffd700;
+  display: block;
+}
+
+.card-placeholder h1 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffd700;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #222;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.card-placeholder p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #ccc;
+  margin: 0;
+}
+</style>
 </head>
 
-<body onload="checkSession()">
+<body>
 
-    <div id="passwordModal">
-        <div class="modal-content">
-            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Logo Fairy">
-            <h2>Área Privada</h2>
-            <input type="password" id="passInput" placeholder="Contraseña">
-            <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
-        </div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO LOGIN MODAL
+════════════════════════════════════════════ -->
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="logo" loading="lazy" decoding="async">
+    <h2>Zona Privada</h2>
+    <p>Ingresa tu ID para continuar</p>
+    <input type="text" id="passInput" placeholder="Tu ID de acceso"
+           onkeydown="if(event.key==='Enter') checkPassword()">
+    <div id="loginError">ID incorrecto. Verifica tu número de identificación.</div>
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+    <a id="btnContactoModal" href="https://wa.me/50370482075" target="_blank">
+      <i class="fa-brands fa-whatsapp"></i> Tengo problemas para ingresar
+    </a>
+  </div>
+</div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN LOGIN MODAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — INICIO CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+<div id="mainContent">
+
+  <!-- INICIO HEADER -->
+  <div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header" loading="lazy" decoding="async">
+  </div>
+  <!-- FIN HEADER -->
+
+  <!-- INICIO SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu" loading="lazy" decoding="async">
+
+    <a href="https://wa.me/50370482075" target="_blank" class="menu-item-wa">
+      <i class="fa-brands fa-whatsapp"></i> Contactar Agencia
+    </a>
+
+    <hr class="menu-separator">
+
+    <div class="menu-item" onclick="toggleSub('inicio')">
+      <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+    </div>
+    <div class="submenu" id="inicio">
+      <a href="zona-streamer.html">Zona Streamer</a>
+      <a href="fairy-academy.html">Fairy Academy</a>
+      <a href="salsa.html">SALSA</a>
+      <a href="reportes-salsa.html">Reportes</a>
+      <a href="binance-streamer.html">Binance</a>
+      <a href="noticias.html">Noticias</a>
+      <a href="reglamento-interno.html">Reglamento</a>
     </div>
 
-    <div id="mainContent">
-        <div class="header">
-            <div class="menu-btn" onclick="toggleMenu()">
-                <i class="fa-solid fa-bars"></i>
-            </div>
-            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header" alt="Fairy Logo">
-        </div>
-
-        <div class="sidebar" id="sidebar">
-            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
-            <div class="menu-item" onclick="toggleSub('inicio')">
-                <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
-            </div>
-            <div class="submenu" id="inicio">
-                <a href="zona-streamer.html">Zona Streamer</a>
-                <a href="fairy-academy.html">Fairy Academy</a>
-                <a href="salsa.html">SALSA</a>
-                <a href="reportes-salsa.html">Reportes</a>
-                <a href="binance-streamer.html">Binance</a>
-                <a href="noticias.html">Noticias</a>
-                <a href="reglamento-interno.html">Reglamento</a>
-            </div>
-            <div class="menu-item" onclick="toggleSub('fairy')">
-                <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
-            </div>
-            <div class="submenu" id="fairy">
-                <a href="capacitaciones.html">Capacitaciones</a>
-                <a href="tutoriales.html">Tutoriales</a>
-                <a href="tips-fairy.html">Tips Fairy</a>
-            </div>
-            <div class="menu-item" onclick="toggleSub('salsa-sub')">
-                <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
-            </div>
-            <div class="submenu" id="salsa-sub">
-                <a href="capacitaciones-salsa.html">Capacitaciones</a>
-                <a href="tutoriales-salsa.html">Tutoriales</a>
-                <a href="reglas-salsa.html">Reglas SALSA</a>
-                <a href="herramientas-salsa.html">Herramientas</a>
-            </div>
-            <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;">
-                <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
-            </div>
-        </div>
-
-        <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-
-        <div class="container-center">
-            <div class="card-placeholder">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <h1>Contenido en desarrollo</h1>
-                <p>
-                    Muy pronto encontrarás aquí todas las capacitaciones necesarias para mejorar tu desempeño dentro del mundo del streaming para adultos.
-                    <br><br>
-                    Prepárate para acceder a contenido exclusivo creado por Fairy Agency.
-                </p>
-            </div>
-        </div>
+    <div class="menu-item" onclick="toggleSub('fairy')">
+      <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+    </div>
+    <div class="submenu" id="fairy">
+      <a href="capacitaciones.html">Capacitaciones</a>
+      <a href="tutoriales.html">Tutoriales</a>
+      <a href="tips-fairy.html">Tips Fairy</a>
     </div>
 
-    <script>
-        /* LÓGICA DE SEGURIDAD FAIRY */
-        const PASSWORD = "fairy2025";
-        const DURACION = 3600 * 3 * 1000; // 3 Horas
+    <div class="menu-item" onclick="toggleSub('salsa')">
+      <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+    </div>
+    <div class="submenu" id="salsa">
+      <a href="capacitaciones-salsa.html">Capacitaciones</a>
+      <a href="tutoriales-salsa.html">Tutoriales</a>
+      <a href="reglas-salsa.html">Reglas SALSA</a>
+      <a href="herramientas-salsa.html">Herramientas</a>
+    </div>
 
-        function checkPassword(){
-            if(document.getElementById('passInput').value === PASSWORD){
-                localStorage.setItem("fairyAccess", "true");
-                localStorage.setItem("fairyTime", Date.now());
-                document.getElementById("passwordModal").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-            } else {
-                alert("Contraseña incorrecta");
-            }
-        }
+    <hr class="menu-separator">
 
-        function checkSession(){
-            const access = localStorage.getItem("fairyAccess");
-            const time = localStorage.getItem("fairyTime");
-            if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
-                localStorage.clear();
-                document.getElementById("passwordModal").style.display = "flex";
-            } else {
-                document.getElementById("passwordModal").style.display = "none";
-                document.getElementById("mainContent").style.display = "block";
-            }
-        }
+    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d; margin-top:4px;">
+      <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+    </div>
 
-        /* MENÚ INTERACTIVO */
-        function toggleMenu(){
-            document.getElementById("sidebar").classList.toggle("active");
-            document.getElementById("overlay").classList.toggle("active");
-        }
+  </div>
+  <!-- FIN SIDEBAR -->
 
-        function toggleSub(id){
-            const el = document.getElementById(id);
-            el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
-        }
+  <!-- INICIO OVERLAY -->
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <!-- FIN OVERLAY -->
 
-        function logout(){ 
-            localStorage.clear(); 
-            window.location.href = "zona-streamer.html"; 
-        }
-    </script>
+  <!-- ✅ EDITABLE — CONTENIDO -->
+  <div class="container-center">
+    <div class="card-placeholder">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <h1>Contenido en desarrollo</h1>
+      <p>
+        Muy pronto encontrarás aquí todas las capacitaciones necesarias para mejorar tu desempeño dentro del mundo del streaming para adultos.
+        <br><br>
+        Prepárate para acceder a contenido exclusivo creado por Fairy Agency.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /mainContent -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — FIN CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+
+// =============================
+// 🔐 INICIO CONTROL DE ACCESO POR ID
+// 👉 Agrega o elimina usuarias aquí
+// =============================
+const USUARIOS = [
+  { id: "8249303152", nombre: "Daniela", apellido: "Magaña" },
+  { id: "890710327",  nombre: "Heidy",   apellido: "Trujillo" }
+  /*
+  ,
+  { id: "123456789", nombre: "Nombre", apellido: "Apellido" }
+  */
+];
+// =============================
+// 🔐 FIN CONTROL DE ACCESO POR ID
+// =============================
+
+const DURACION = 3 * 60 * 60 * 1000;
+
+// ─────────────────────────────────────────
+//  LOGIN
+// ─────────────────────────────────────────
+function checkPassword() {
+  const input   = document.getElementById('passInput').value.trim();
+  const usuario = USUARIOS.find(u => u.id === input);
+
+  if (usuario) {
+    const bienvenida = `Hola ${usuario.nombre} ${usuario.apellido} 👋`;
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime",   Date.now());
+    localStorage.setItem("fairyNombre", bienvenida);
+
+    document.getElementById("loginError").style.display       = "none";
+    document.getElementById("btnContactoModal").style.display = "none";
+    window.location.href = "zona-streamer.html";
+  } else {
+    document.getElementById("loginError").style.display       = "block";
+    document.getElementById("btnContactoModal").style.display = "block";
+  }
+}
+
+// ─────────────────────────────────────────
+//  MOSTRAR CONTENIDO — sesión ya validada en <head>
+// ─────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").style.display   = "block";
+});
+
+// ─────────────────────────────────────────
+//  LOGOUT
+// ─────────────────────────────────────────
+function logout() {
+  localStorage.clear();
+  window.location.href = "zona-streamer.html";
+}
+
+// ─────────────────────────────────────────
+//  SIDEBAR
+// ─────────────────────────────────────────
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function toggleSub(id) {
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+</script>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN SCRIPTS
+════════════════════════════════════════════ -->
+
 </body>
 </html>
