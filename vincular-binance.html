@@ -6,140 +6,258 @@
 <title>Vinculación Binance — Fairy Agency</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
 
 <style>
-/* BASE FIEL AL SISTEMA - SIN CAMBIOS */
-body { 
-  margin:0; 
-  font-family:'Georgia',serif; 
-  background:#0a0a0a; 
-  color:#eaeaea; 
-  overflow:hidden;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  overflow: hidden;
   height: 100vh;
 }
 
-/* SISTEMA DE LOGIN ORIGINAL */
+/* ══════════════════════════════════════
+   LOGIN MODAL
+══════════════════════════════════════ */
 #passwordModal {
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.98);
-  display:none; /* Ajustado para control por JS */
-  align-items:center;
-  justify-content:center;
-  z-index:4000;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.98);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
 }
-
 .modal-content {
-  background:#111;
-  padding:40px 30px;
-  border-radius:20px;
-  text-align:center;
-  max-width:340px;
-  width:90%;
+  background: #111;
+  padding: 40px 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  border: 1px solid #222;
 }
-
-.modal-content img {
-  width:180px;
-  margin-bottom:25px;
-  filter: brightness(1.15);
-}
-
-h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
-
+.modal-content img { width: 160px; margin-bottom: 20px; filter: brightness(1.15); }
+.modal-content h2  { color: #ffd700; margin-bottom: 6px; font-size: 20px; font-weight: 700; }
+.modal-content p   { color: #888; font-size: 13px; margin-bottom: 4px; }
 #passInput {
-  width:100%;
-  padding:15px;
-  background:#222;
-  border:none;
-  border-radius:10px;
-  color:white;
-  margin:15px 0;
-  text-align:center;
-  box-sizing: border-box;
+  width: 100%;
+  padding: 14px;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 10px;
+  color: white;
+  margin: 12px 0 6px;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
 }
-
+#passInput:focus { outline: none; border-color: #ffd700; }
 .btn-entrar {
-  background:#ffd700;
-  color:black;
-  padding:14px 50px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  margin-top: 6px;
 }
-
-#mainContent {
-  display:none;
+.btn-entrar:active { opacity: 0.85; }
+#loginError {
+  display: none;
+  color: #ff4d4d;
+  font-size: 13px;
+  margin: 8px 0 4px;
 }
+#btnContactoModal {
+  display: none;
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  background: transparent;
+  border: 1px solid #25d366;
+  border-radius: 10px;
+  color: #25d366;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+#btnContactoModal:hover { background: rgba(37,211,102,0.08); }
 
-/* HEADER */
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+#mainContent { display: none; }
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
 .header {
-  display:flex; align-items:center; gap:12px;
-  position:fixed; top:20px; left:20px; z-index:2001;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2001;
 }
-.menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
-.logo-header { width:85px; filter: brightness(1.15); }
+.menu-btn { font-size: 24px; color: #ffd700; cursor: pointer; }
+.logo-header { width: 85px; filter: brightness(1.15); }
 
-/* SIDEBAR ESTÁNDAR */
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
 .sidebar {
-  position:fixed; top:0; left:0; width:260px; height:100%;
-  background:#111; padding:90px 18px 20px;
-  transform:translateX(-100%); transition:0.3s ease;
-  z-index:3000; box-shadow:5px 0 20px rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px;
+  height: 100%;
+  background: #111;
+  padding: 90px 18px 20px;
+  transform: translateX(-100%);
+  transition: 0.3s ease;
+  z-index: 3000;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.5);
   overflow-y: auto;
 }
-.sidebar.active { transform:translateX(0); }
-.logo-menu { width:140px; display:block; margin:0 auto 30px; }
+.sidebar.active { transform: translateX(0); }
+
+.logo-menu { width: 140px; display: block; margin: 0 auto 30px; filter: brightness(1.15); }
 
 .menu-item {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:12px; border-radius:10px; cursor:pointer;
-  color: white; text-decoration: none; margin-bottom: 5px;
-  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #eaeaea;
+  margin-bottom: 4px;
+  font-size: 14px;
 }
-.menu-item:hover { background:#222; }
-.menu-left { display:flex; align-items:center; gap:10px; }
-.menu-left i { color:#ffd700; width: 20px; text-align: center; }
-.salsa-s { color:#ffd700; font-weight:bold; width:20px; text-align:center; }
+.menu-item:hover { background: #222; }
 
-.submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
-.submenu a {
-  display:block; padding:8px 0; color:#ccc;
-  text-decoration:none; font-size: 14px; font-family: sans-serif;
+.menu-left { display: flex; align-items: center; gap: 10px; }
+.menu-left i { color: #ffd700; width: 16px; text-align: center; }
+
+.salsa-s {
+  color: #ffd700 !important;
+  font-size: 16px;
+  font-weight: 900;
+  width: 16px;
+  text-align: center;
 }
-.submenu a:hover { color:#ffd700; }
 
+.submenu { max-height: 0; overflow: hidden; transition: 0.3s; padding-left: 28px; }
+.submenu a { display: block; padding: 8px 0; color: #ccc; text-decoration: none; font-size: 13px; }
+.submenu a:hover { color: #ffd700; }
+
+.menu-separator { border: none; border-top: 1px solid #222; margin: 8px 0; }
+
+.menu-item-wa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #25d366;
+  margin-bottom: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu-item-wa:hover { background: rgba(37,211,102,0.08); }
+.menu-item-wa i { color: #25d366; width: 16px; text-align: center; }
+
+/* ══════════════════════════════════════
+   OVERLAY
+══════════════════════════════════════ */
 .overlay {
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.7); opacity:0; visibility:hidden;
-  transition:0.3s; z-index:2500;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 2500;
 }
-.overlay.active { opacity:1; visibility:visible; }
+.overlay.active { opacity: 1; visibility: visible; }
 
-/* SLIDER SISTEMA LIBRO */
-.slider-container { 
-  height: 100vh; 
-  width: 100vw; 
-  display: flex; 
-  align-items: center; 
-  background: #000; 
-  position: relative; 
-  overflow: hidden; 
+/* ══════════════════════════════════════
+   SLIDER
+══════════════════════════════════════ */
+.slider-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  background: #000;
+  position: relative;
+  overflow: hidden;
 }
-.slides { 
-  display:flex; 
-  transition:0.45s ease; 
-  height:100%; 
+.slides {
+  display: flex;
+  transition: 0.45s ease;
+  height: 100%;
 }
-.slide { 
-  min-width:100vw; 
-  display:flex; 
-  justify-content:center; 
-  align-items:center; 
+.slide {
+  min-width: 100vw;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* CONTENEDOR DE IMAGEN (PASOS) */
+/* ══════════════════════════════════════
+   CARD INTRO — estándar sistema oscuro
+══════════════════════════════════════ */
+.card-intro {
+  background: #111;
+  color: #eaeaea;
+  padding: 45px 30px;
+  border-radius: 25px;
+  text-align: center;
+  width: 88%;
+  max-width: 400px;
+  min-height: 70vh;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  border: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ══════════════════════════════════════
+   CONTENEDOR DE IMAGEN — estructura original
+══════════════════════════════════════ */
 .paso-container {
   width: 90%;
   max-width: 450px;
@@ -158,84 +276,192 @@ h2 { color:#ffd700; margin-bottom:15px; font-family: sans-serif; }
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
 
-/* ESTILO VIDEO Y LIBRO */
-.pagina-video {
-  background: white; color: black; width: 90%; max-width: 450px;
-  border-radius: 20px; font-family: sans-serif;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  display: flex; flex-direction: column; overflow: hidden;
-  height: 72vh; margin-top: 25px;
+/* ══════════════════════════════════════
+   CARD TEXTO INTERNO — estándar oscuro
+══════════════════════════════════════ */
+.card-texto-interno {
+  background: #111;
+  color: #ccc;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #222;
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 300px;
+  text-align: left;
 }
-.guia-superior { background: #fdfaf0; padding: 18px; border-bottom: 2px solid #f1ebd5; text-align: center; }
-.guia-superior h4 { color: #d4af37; font-size: 17px; margin: 0; font-weight: 800; text-transform: uppercase; }
-.video-wrapper { width: 100%; height: 100%; background: #000; }
-iframe { width: 100%; height: 100%; border: none; }
+.card-texto-interno b { color: #ffd700; }
 
-/* BOTÓN PREMIUM */
+/* ══════════════════════════════════════
+   SLIDE VIDEO — ocupa toda la pantalla
+══════════════════════════════════════ */
+.pagina-video {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.guia-superior {
+  background: #000;
+  padding: 18px;
+  border-bottom: 2px solid #ffd700;
+  text-align: center;
+  flex-shrink: 0;
+}
+.guia-superior h4 {
+  color: #ffd700;
+  font-size: 17px;
+  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.video-wrapper {
+  flex: 1;
+  width: 100%;
+  background: #000;
+}
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ══════════════════════════════════════
+   BOTÓN INTERACTIVO — estándar sistema
+══════════════════════════════════════ */
 .btn-interactivo {
-  background: linear-gradient(145deg, #ffd700, #ffcc00);
+  background: linear-gradient(90deg, #FFD700, #FFA500);
   color: black;
   padding: 14px 20px;
-  border-radius: 14px;
+  border-radius: 12px;
   font-weight: bold;
   font-size: 14px;
   text-align: center;
   cursor: pointer;
-  font-family: sans-serif;
+  font-family: 'Inter', sans-serif;
   width: 85%;
   max-width: 320px;
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.6);
-  transition: all 0.2s ease;
-  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   text-decoration: none;
+  border: none;
+  box-shadow: 0 4px 12px rgba(255,215,0,0.2);
+  transition: all 0.2s ease;
 }
-
-.btn-interactivo:active { transform: scale(0.97); }
+.btn-interactivo:active { transform: scale(0.97); opacity: 0.9; }
 .btn-interactivo i { animation: pulse 1.2s infinite; }
 
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
-
-/* CONTROLES */
-.arrow { 
-  position:absolute; top:50%; transform:translateY(-50%); font-size:26px; color:white; 
-  background:rgba(0,0,0,0.4); padding:12px; border-radius:50%; cursor:pointer; z-index:10; 
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
-.arrow.left { left:15px; }
-.arrow.right { right:15px; }
 
-.indicador { position:absolute; bottom:25px; width:100%; text-align:center; }
-.barras { display:flex; justify-content:center; gap: 8px; margin-top: 10px; }
-.barra { width:15px; height:4px; background:#333; border-radius:3px; transition: 0.3s; }
-.barra.active { background:#ffd700; width: 25px; }
-#numero { font-size: 14px; font-weight: bold; color: #ffd700; font-family: sans-serif; letter-spacing: 1px; }
+/* ══════════════════════════════════════
+   FLECHAS
+══════════════════════════════════════ */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 26px;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  -webkit-tap-highlight-color: transparent;
+}
+.arrow.left  { left: 15px; }
+.arrow.right { right: 15px; }
+
+/* ══════════════════════════════════════
+   INDICADOR
+══════════════════════════════════════ */
+.indicador {
+  position: absolute;
+  bottom: 25px;
+  width: 100%;
+  text-align: center;
+}
+.barras {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.barra {
+  width: 15px;
+  height: 4px;
+  background: #333;
+  border-radius: 3px;
+  transition: 0.3s;
+}
+.barra.active { background: #ffd700; width: 25px; }
+#numero {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffd700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 1px;
+}
 </style>
 </head>
 
-<body onload="checkSession()">
+<body>
 
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO LOGIN MODAL
+════════════════════════════════════════════ -->
 <div id="passwordModal">
   <div class="modal-content">
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png">
-    <h2>Área Privada</h2>
-    <input type="password" id="passInput" placeholder="Contraseña">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="logo" loading="lazy" decoding="async">
+    <h2>Zona Privada</h2>
+    <p>Ingresa tu ID para continuar</p>
+    <input type="text" id="passInput" placeholder="Tu ID de acceso"
+           onkeydown="if(event.key==='Enter') checkPassword()">
+    <div id="loginError">ID incorrecto. Verifica tu número de identificación.</div>
     <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+    <a id="btnContactoModal" href="https://wa.me/50370482075" target="_blank">
+      <i class="fa-brands fa-whatsapp"></i> Tengo problemas para ingresar
+    </a>
   </div>
 </div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN LOGIN MODAL
+════════════════════════════════════════════ -->
 
+
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — INICIO CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
 <div id="mainContent">
+
+  <!-- INICIO HEADER -->
   <div class="header">
     <div class="menu-btn" onclick="toggleMenu()">
       <i class="fa-solid fa-bars"></i>
     </div>
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header" loading="lazy" decoding="async">
   </div>
+  <!-- FIN HEADER -->
 
+  <!-- INICIO SIDEBAR -->
   <div class="sidebar" id="sidebar">
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu" loading="lazy" decoding="async">
+
+    <a href="https://wa.me/50370482075" target="_blank" class="menu-item-wa">
+      <i class="fa-brands fa-whatsapp"></i> Contactar Agencia
+    </a>
+
+    <hr class="menu-separator">
+
     <div class="menu-item" onclick="toggleSub('inicio')">
       <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
     </div>
@@ -248,6 +474,7 @@ iframe { width: 100%; height: 100%; border: none; }
       <a href="noticias.html">Noticias</a>
       <a href="reglamento-interno.html">Reglamento</a>
     </div>
+
     <div class="menu-item" onclick="toggleSub('fairy')">
       <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
     </div>
@@ -256,50 +483,77 @@ iframe { width: 100%; height: 100%; border: none; }
       <a href="tutoriales.html">Tutoriales</a>
       <a href="tips-fairy.html">Tips Fairy</a>
     </div>
-    <div class="menu-item" onclick="toggleSub('salsa-sub')">
+
+    <div class="menu-item" onclick="toggleSub('salsa')">
       <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
     </div>
-    <div class="submenu" id="salsa-sub">
+    <div class="submenu" id="salsa">
       <a href="capacitaciones-salsa.html">Capacitaciones</a>
       <a href="tutoriales-salsa.html">Tutoriales</a>
       <a href="reglas-salsa.html">Reglas SALSA</a>
       <a href="herramientas-salsa.html">Herramientas</a>
     </div>
-    <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;">
+
+    <hr class="menu-separator">
+
+    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d; margin-top:4px;">
       <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
     </div>
+
   </div>
+  <!-- FIN SIDEBAR -->
 
+  <!-- INICIO OVERLAY -->
   <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <!-- FIN OVERLAY -->
 
+  <!-- ✅ EDITABLE — SLIDER -->
   <div class="slider-container">
-    <div class="arrow left" onclick="prevSlide()">❮</div>
+    <div class="arrow left"  onclick="prevSlide()">❮</div>
     <div class="arrow right" onclick="nextSlide()">❯</div>
 
     <div class="slides" id="slides">
+
+      <!-- SLIDE 1 — INTRODUCCIÓN -->
       <div class="slide">
-        <div class="paso-container">
-          <div style="background:white; color:black; padding:30px 25px; border-radius:20px; font-family:sans-serif; font-size:15px; line-height:1.6; text-align:left; max-width:320px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);">
-            Aquí se explica paso a paso cómo agregar tu dirección de Binance a Salsa.
-            <br><br>
-            Sigue cada paso con exactitud para completar el proceso de manera exitosa.
-            <br><br>
-            Al final encontrarás un video de apoyo por si necesitas reforzar algún paso.
-          </div>
+        <div class="card-intro">
+          Aquí se explica paso a paso cómo agregar tu dirección de Binance a Salsa.
+          <br><br>
+          Sigue cada paso con exactitud para completar el proceso de manera exitosa.
+          <br><br>
+          Al final encontrarás un video de apoyo por si necesitas reforzar algún paso.
         </div>
       </div>
 
-      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/tgzPX1n3/Paso-1-y-2.png" alt="Paso 1 y 2"></div></div>
-      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/jjhNsWn4/Paso-3-y-4.png" alt="Paso 3 y 4"></div></div>
-      
+      <!-- SLIDE 2 — PASO 1 Y 2 -->
       <div class="slide">
         <div class="paso-container">
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;">
-            <div style="background: white; color: black; padding: 15px; border-radius: 12px; font-family: sans-serif; font-size: 13px; line-height: 1.4; max-width: 300px; text-align: left;">
-              Fairy Agency generalmente recomienda seleccionar <b>USDT (Tether) BEP20 (Binance Smart Chain)</b>.
-              Siempre debes elegir la red donde Binance te cobre la <b>comisión más baja posible</b>.
+          <img src="https://i.postimg.cc/tgzPX1n3/Paso-1-y-2.png" alt="Paso 1 y 2" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — PASO 3 Y 4 -->
+      <div class="slide">
+        <div class="paso-container">
+          <img src="https://i.postimg.cc/jjhNsWn4/Paso-3-y-4.png" alt="Paso 3 y 4" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — PASO 5 -->
+      <div class="slide">
+        <div class="paso-container">
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:15px;">
+            <div class="card-texto-interno">
+              Fairy Agency generalmente recomienda seleccionar
+              <b>USDT (Tether) BEP20 (Binance Smart Chain)</b>,
+              pero esta opción puede variar dependiendo del país.
+              <br><br>
+              Siempre debes elegir la red donde Binance te cobre la
+              <b>comisión más baja posible</b>.
             </div>
-            <img src="https://i.postimg.cc/BvCDq8P5/Paso-5.png" alt="Paso 5" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+            <img src="https://i.postimg.cc/BvCDq8P5/Paso-5.png" alt="Paso 5"
+                 style="max-width:100%; max-height:100%; object-fit:contain; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.8);"
+                 loading="lazy" decoding="async">
             <a href="divisas-binance.html" class="btn-interactivo">
               Cómo conseguir la dirección de las divisas, revísalo aquí <i class="fa-solid fa-hand-pointer"></i>
             </a>
@@ -307,125 +561,209 @@ iframe { width: 100%; height: 100%; border: none; }
         </div>
       </div>
 
-      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/tgzPX1nt/Paso-6.png" alt="Paso 6"></div></div>
-      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/GpjYcBTq/Paso-7-8-y-9.gif" alt="Paso 7, 8 y 9"></div></div>
-      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/25xvzqLJ/Paso-10.png" alt="Paso 10"></div></div>
-      <div class="slide"><div class="paso-container"><img src="https://i.postimg.cc/g0KRYwLf/paso-11.png" alt="Paso 11"></div></div>
+      <!-- SLIDE 5 — PASO 6 -->
+      <div class="slide">
+        <div class="paso-container">
+          <img src="https://i.postimg.cc/tgzPX1nt/Paso-6.png" alt="Paso 6" loading="lazy" decoding="async">
+        </div>
+      </div>
 
+      <!-- SLIDE 6 — PASO 7, 8 Y 9 -->
+      <div class="slide">
+        <div class="paso-container">
+          <img src="https://i.postimg.cc/GpjYcBTq/Paso-7-8-y-9.gif" alt="Paso 7, 8 y 9" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- SLIDE 7 — PASO 10 -->
+      <div class="slide">
+        <div class="paso-container">
+          <img src="https://i.postimg.cc/25xvzqLJ/Paso-10.png" alt="Paso 10" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- SLIDE 8 — PASO 11 -->
+      <div class="slide">
+        <div class="paso-container">
+          <img src="https://i.postimg.cc/g0KRYwLf/paso-11.png" alt="Paso 11" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <!-- SLIDE 9 — VIDEO FINAL -->
       <div class="slide">
         <div class="pagina-video">
-          <div class="guia-superior"><h4>VIDEO FINAL — REFUERZO</h4></div>
+          <div class="guia-superior">
+            <h4>VIDEO FINAL — REFUERZO</h4>
+          </div>
           <div class="video-wrapper">
-            <iframe src="https://drive.google.com/file/d/1gbUa-j0icwVC8NrLEc-asdBX6TsovM01/preview" allow="autoplay"></iframe>
+            <iframe data-src="https://drive.google.com/file/d/1gbUa-j0icwVC8NrLEc-asdBX6TsovM01/preview" allow="autoplay"></iframe>
           </div>
         </div>
       </div>
-    </div>
+
+    </div><!-- /slides -->
 
     <div class="indicador">
       <div id="numero"></div>
       <div class="barras" id="barras"></div>
     </div>
   </div>
-</div>
 
+</div><!-- /mainContent -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — FIN CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO SCRIPTS
+════════════════════════════════════════════ -->
 <script>
-const PASSWORD="fairy2025";
-const DURACION=3600 * 3 * 1000;
 
-// VARIABLES GLOBALES (Se inicializan en initSlider)
-let index = 0;
-let total = 0;
-let slidesEl, numeroEl, barrasContainer;
+// =============================
+// 🔐 INICIO CONTROL DE ACCESO POR ID
+// 👉 Agrega o elimina usuarias aquí
+// =============================
+const USUARIOS = [
+  { id: "8249303152", nombre: "Daniela", apellido: "Magaña" },
+  { id: "890710327",  nombre: "Heidy",   apellido: "Trujillo" }
+  /*
+  ,
+  { id: "123456789", nombre: "Nombre", apellido: "Apellido" }
+  */
+];
+// =============================
+// 🔐 FIN CONTROL DE ACCESO POR ID
+// =============================
 
-function initSlider() {
-    slidesEl = document.getElementById("slides");
-    numeroEl = document.getElementById("numero");
-    barrasContainer = document.getElementById("barras");
-    
-    if (!slidesEl) return;
+const DURACION = 3 * 60 * 60 * 1000;
 
-    total = slidesEl.children.length;
-    index = 0;
+// ─────────────────────────────────────────
+//  LOGIN
+// ─────────────────────────────────────────
+function checkPassword() {
+  const input   = document.getElementById('passInput').value.trim();
+  const usuario = USUARIOS.find(u => u.id === input);
 
-    // Generar barras dinámicamente
-    barrasContainer.innerHTML = "";
-    for(let i=0; i<total; i++){
-      const b = document.createElement("div");
-      b.className = "barra";
-      barrasContainer.appendChild(b);
-    }
-    
-    // Iniciar gestos táctiles
-    let touchStartX = 0;
-    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-    document.addEventListener('touchend', e => {
-      let touchEndX = e.changedTouches[0].screenX;
-      if (touchStartX - touchEndX > 50) nextSlide();
-      if (touchEndX - touchStartX > 50) prevSlide();
-    }, {passive: true});
+  if (usuario) {
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime",   Date.now());
+    localStorage.setItem("fairyNombre", `Hola ${usuario.nombre} ${usuario.apellido} 👋`);
 
-    actualizar();
-}
-
-function checkPassword(){
-  if(document.getElementById('passInput').value===PASSWORD){
-    localStorage.setItem("fairyAccess","true");
-    localStorage.setItem("fairyTime",Date.now());
-    document.getElementById("passwordModal").style.display="none";
-    document.getElementById("mainContent").style.display="block";
-    initSlider(); // Cargar slider tras login
-  }else{
-    alert("Contraseña incorrecta");
-  }
-}
-
-function checkSession(){
-  const access = localStorage.getItem("fairyAccess");
-  const time = localStorage.getItem("fairyTime");
-  const modal = document.getElementById("passwordModal");
-  const content = document.getElementById("mainContent");
-
-  if(!access || !time || (Date.now() - parseInt(time) > DURACION)){
-    localStorage.clear();
-    modal.style.display = "flex";
-    content.style.display = "none";
+    document.getElementById("loginError").style.display       = "none";
+    document.getElementById("btnContactoModal").style.display = "none";
+    window.location.href = "zona-streamer.html";
   } else {
-    modal.style.display = "none";
-    content.style.display = "block";
-    initSlider(); // Cargar slider si la sesión es válida
+    document.getElementById("loginError").style.display       = "block";
+    document.getElementById("btnContactoModal").style.display = "block";
   }
 }
 
-function actualizar(){
-  const barras = document.querySelectorAll(".barra");
-  if(slidesEl) slidesEl.style.transform = `translateX(-${index * 100}vw)`;
-  if(numeroEl) numeroEl.textContent = `${index + 1} / ${total}`;
-  
-  barras.forEach((b, i) => {
-    b.classList.remove("active");
-    if(i === index) b.classList.add("active");
-  });
+// ─────────────────────────────────────────
+//  MOSTRAR CONTENIDO — sesión ya validada en <head>
+// ─────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").style.display   = "block";
+  iniciarSlider();
+});
+
+// ─────────────────────────────────────────
+//  LOGOUT
+// ─────────────────────────────────────────
+function logout() {
+  localStorage.clear();
+  window.location.href = "zona-streamer.html";
 }
 
-function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
-function prevSlide(){ if(index > 0){ index--; actualizar(); } }
-
-function toggleMenu(){
+// ─────────────────────────────────────────
+//  SIDEBAR
+// ─────────────────────────────────────────
+function toggleMenu() {
   document.getElementById("sidebar").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
 }
 
-function toggleSub(id){
+function toggleSub(id) {
   const el = document.getElementById(id);
   el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
 }
 
-function logout(){ 
-  localStorage.clear(); 
-  window.location.href="zona-streamer.html"; 
+// ─────────────────────────────────────────
+//  SLIDER CON LAZY LOAD DE IFRAME
+// ─────────────────────────────────────────
+let index    = 0;
+let total    = 0;
+let barras   = [];
+let animando = false;
+
+function iniciarSlider() {
+  const slidesEl        = document.getElementById("slides");
+  const barrasContainer = document.getElementById("barras");
+  total = slidesEl.children.length;
+
+  for (let i = 0; i < total; i++) {
+    const b = document.createElement("div");
+    b.className = "barra";
+    if (i === 0) b.classList.add("active");
+    barrasContainer.appendChild(b);
+  }
+  barras = document.querySelectorAll(".barra");
+  actualizar();
 }
+
+function cargarIframeActivo() {
+  const slidesEl = document.getElementById("slides");
+  const slide    = slidesEl.children[index];
+  if (!slide) return;
+  const iframe = slide.querySelector("iframe");
+  if (iframe && !iframe.src) {
+    iframe.src = iframe.dataset.src;
+  }
+}
+
+function actualizar() {
+  const slidesEl = document.getElementById("slides");
+  slidesEl.style.transform = `translateX(-${index * 100}vw)`;
+  document.getElementById("numero").textContent = `${index + 1} / ${total}`;
+  barras.forEach(b => b.classList.remove("active"));
+  if (barras[index]) barras[index].classList.add("active");
+  cargarIframeActivo();
+}
+
+function nextSlide() {
+  if (animando || index >= total - 1) return;
+  animando = true;
+  index++;
+  actualizar();
+  setTimeout(() => { animando = false; }, 500);
+}
+
+function prevSlide() {
+  if (animando || index <= 0) return;
+  animando = true;
+  index--;
+  actualizar();
+  setTimeout(() => { animando = false; }, 500);
+}
+
+// ─────────────────────────────────────────
+//  SWIPE TÁCTIL — original intacto
+// ─────────────────────────────────────────
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+document.addEventListener('touchend',   e => {
+  const touchEndX = e.changedTouches[0].screenX;
+  if (touchStartX - touchEndX > 50) nextSlide();
+  if (touchEndX - touchStartX > 50) prevSlide();
+});
+
 </script>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN SCRIPTS
+════════════════════════════════════════════ -->
 
 </body>
 </html>
+
+ 
