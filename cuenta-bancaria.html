@@ -6,111 +6,224 @@
 <title>Pago Bancario — Fairy Agency</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
 
 <style>
-/* BASE */
-body { 
-  margin:0; 
-  font-family:'Georgia',serif; 
-  background:#0a0a0a; 
-  color:#eaeaea; 
-  overflow:hidden;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  overflow: hidden;
 }
 
-/* HEADER */
+/* ══════════════════════════════════════
+   LOGIN MODAL
+══════════════════════════════════════ */
+#passwordModal {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.98);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 4000;
+}
+.modal-content {
+  background: #111; padding: 40px 30px; border-radius: 20px;
+  text-align: center; max-width: 340px; width: 90%; border: 1px solid #222;
+}
+.modal-content img { width: 160px; margin-bottom: 20px; filter: brightness(1.15); }
+.modal-content h2  { color: #ffd700; margin-bottom: 6px; font-size: 20px; font-weight: 700; }
+.modal-content p   { color: #888; font-size: 13px; margin-bottom: 4px; }
+#passInput {
+  width: 100%; padding: 14px; background: #222; border: 1px solid #333;
+  border-radius: 10px; color: white; margin: 12px 0 6px;
+  text-align: center; font-size: 15px; font-family: 'Inter', sans-serif; letter-spacing: 1px;
+}
+#passInput:focus { outline: none; border-color: #ffd700; }
+.btn-entrar {
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black; padding: 13px; border: none; border-radius: 10px;
+  font-weight: 700; cursor: pointer; font-size: 15px;
+  width: 100%; font-family: 'Inter', sans-serif; margin-top: 6px;
+}
+.btn-entrar:active { opacity: 0.85; }
+#loginError { display: none; color: #ff4d4d; font-size: 13px; margin: 8px 0 4px; }
+#btnContactoModal {
+  display: none; width: 100%; margin-top: 10px; padding: 11px;
+  background: transparent; border: 1px solid #25d366; border-radius: 10px;
+  color: #25d366; font-size: 13px; font-weight: 600;
+  text-decoration: none; text-align: center; font-family: 'Inter', sans-serif;
+}
+#btnContactoModal:hover { background: rgba(37,211,102,0.08); }
+
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+#mainContent { display: none; }
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
 .header {
-  display:flex; align-items:center; gap:12px;
-  position:fixed; top:20px; left:20px; z-index:2001;
+  display: flex; align-items: center; gap: 12px;
+  position: fixed; top: 20px; left: 20px; z-index: 2001;
 }
-.menu-btn { font-size:24px; color:#ffd700; cursor:pointer; }
-.logo-header { width:85px; filter: brightness(1.15); }
+.menu-btn { font-size: 24px; color: #ffd700; cursor: pointer; }
+.logo-header { width: 85px; filter: brightness(1.15); }
 
-/* SIDEBAR */
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
 .sidebar {
-  position:fixed; top:0; left:0; width:260px; height:100%;
-  background:#111; padding:90px 18px 20px;
-  transform:translateX(-100%); transition:0.3s ease;
-  z-index:3000; box-shadow:5px 0 20px rgba(0,0,0,0.5);
-  overflow-y: auto;
+  position: fixed; top: 0; left: 0; width: 260px; height: 100%;
+  background: #111; padding: 90px 18px 20px;
+  transform: translateX(-100%); transition: 0.3s ease;
+  z-index: 3000; box-shadow: 5px 0 20px rgba(0,0,0,0.5); overflow-y: auto;
 }
-.sidebar.active { transform:translateX(0); }
-.logo-menu { width:140px; display:block; margin:0 auto 30px; }
-
+.sidebar.active { transform: translateX(0); }
+.logo-menu { width: 140px; display: block; margin: 0 auto 30px; filter: brightness(1.15); }
 .menu-item {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:12px; border-radius:10px; cursor:pointer;
-  color: white; text-decoration: none; margin-bottom: 5px;
-  font-family: sans-serif;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  color: #eaeaea; margin-bottom: 4px; font-size: 14px;
 }
-.menu-item:hover { background:#222; }
-.menu-left { display:flex; align-items:center; gap:10px; }
-.menu-left i { color:#ffd700; width: 20px; text-align: center; }
-.salsa-s { color:#ffd700; font-weight:bold; width:20px; text-align:center; }
-
-.submenu { max-height:0; overflow:hidden; transition:0.3s; padding-left:28px; }
-.submenu a {
-  display:block; padding:8px 0; color:#ccc;
-  text-decoration:none; font-size: 14px; font-family: sans-serif;
+.menu-item:hover { background: #222; }
+.menu-left { display: flex; align-items: center; gap: 10px; }
+.menu-left i { color: #ffd700; width: 16px; text-align: center; }
+.salsa-s { color: #ffd700 !important; font-size: 16px; font-weight: 900; width: 16px; text-align: center; }
+.submenu { max-height: 0; overflow: hidden; transition: 0.3s; padding-left: 28px; }
+.submenu a { display: block; padding: 8px 0; color: #ccc; text-decoration: none; font-size: 13px; }
+.submenu a:hover { color: #ffd700; }
+.menu-separator { border: none; border-top: 1px solid #222; margin: 8px 0; }
+.menu-item-wa {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; font-size: 14px;
+  color: #25d366; margin-bottom: 4px; text-decoration: none; cursor: pointer;
 }
-.submenu a:hover { color:#ffd700; }
+.menu-item-wa:hover { background: rgba(37,211,102,0.08); }
+.menu-item-wa i { color: #25d366; width: 16px; text-align: center; }
 
+/* ══════════════════════════════════════
+   OVERLAY
+══════════════════════════════════════ */
 .overlay {
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background:rgba(0,0,0,0.7); opacity:0; visibility:hidden;
-  transition:0.3s; z-index:2500;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); opacity: 0; visibility: hidden;
+  transition: 0.3s; z-index: 2500;
 }
-.overlay.active { opacity:1; visibility:visible; }
+.overlay.active { opacity: 1; visibility: visible; }
 
-/* SLIDER Y CARDS */
-.slider-container { height: 100vh; width: 100vw; display: flex; align-items: center; background: #000; position: relative; overflow: hidden; }
-.slides { display:flex; transition:0.45s ease; height:100%; }
-.slide { min-width:100vw; display:flex; justify-content:center; align-items:center; }
+/* ══════════════════════════════════════
+   SLIDER — estructura original intacta
+══════════════════════════════════════ */
+.slider-container {
+  height: 100vh; width: 100vw;
+  display: flex; align-items: center;
+  background: #000; position: relative; overflow: hidden;
+}
+.slides { display: flex; transition: 0.45s ease; height: 100%; }
+.slide { min-width: 100vw; display: flex; justify-content: center; align-items: center; }
 
 .pagina {
   background: white; color: black; width: 90%; max-width: 450px;
-  border-radius: 20px; font-family: sans-serif;
+  border-radius: 20px; font-family: 'Inter', sans-serif;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   display: flex; flex-direction: column; overflow: hidden;
   max-height: 85vh; margin-top: 25px;
 }
 .guia-superior { background: #fdfaf0; padding: 18px; border-bottom: 2px solid #f1ebd5; text-align: center; }
 .guia-superior h4 { color: #d4af37; font-size: 19px; margin: 0 0 4px; font-weight: 800; }
-.guia-superior p { color: #777; font-size: 11.5px; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; }
+.guia-superior p  { color: #777; font-size: 11.5px; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; }
 
 .contenido-pagina { padding: 22px 25px; overflow-y: auto; }
-.contenido-pagina p { font-size:14.5px; line-height:1.55; margin-bottom: 15px; color: #333; }
+.contenido-pagina p { font-size: 14.5px; line-height: 1.55; margin-bottom: 15px; color: #333; }
 
 .paises-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
 .paises-grid div { font-size: 14px; color: #444; position: relative; padding-left: 18px; }
 .paises-grid div::before { content: "•"; color: #d4af37; position: absolute; left: 0; font-weight: bold; }
 
 .video-wrapper { width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; }
-iframe { width: 100%; height: 100%; border: none; }
+.video-wrapper iframe { width: 100%; height: 100%; border: none; }
 
-.arrow { position:absolute; top:50%; transform:translateY(-50%); font-size:26px; color:white; background:rgba(0,0,0,0.3); padding:12px; border-radius:50%; cursor:pointer; z-index:10; }
-.arrow.left { left:10px; }
-.arrow.right { right:10px; }
+.arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  font-size: 26px; color: white; background: rgba(0,0,0,0.3);
+  padding: 12px; border-radius: 50%; cursor: pointer; z-index: 10;
+  -webkit-tap-highlight-color: transparent;
+}
+.arrow.left  { left: 10px; }
+.arrow.right { right: 10px; }
 
-.indicador { position:absolute; bottom:20px; width:100%; text-align:center; }
-.barras { display:flex; justify-content:center; gap: 8px; margin-top: 8px; }
-.barra { width:20px; height:4px; background:#333; border-radius:3px; }
-.barra.active { background:#fff; }
-#numero { font-size: 14px; font-weight: bold; color: white; font-family: sans-serif; }
+.indicador { position: absolute; bottom: 20px; width: 100%; text-align: center; }
+.barras { display: flex; justify-content: center; gap: 8px; margin-top: 8px; }
+.barra { width: 20px; height: 4px; background: #333; border-radius: 3px; }
+.barra.active { background: #ffd700; }
+#numero { font-size: 14px; font-weight: bold; color: #ffd700; font-family: 'Inter', sans-serif; letter-spacing: 2px; }
 </style>
 </head>
 
-<body onload="checkSession()">
+<body>
 
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO LOGIN MODAL
+════════════════════════════════════════════ -->
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="logo" loading="lazy" decoding="async">
+    <h2>Zona Privada</h2>
+    <p>Ingresa tu ID para continuar</p>
+    <input type="text" id="passInput" placeholder="Tu ID de acceso"
+           onkeydown="if(event.key==='Enter') checkPassword()">
+    <div id="loginError">ID incorrecto. Verifica tu número de identificación.</div>
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+    <a id="btnContactoModal" href="https://wa.me/50370482075" target="_blank">
+      <i class="fa-brands fa-whatsapp"></i> Tengo problemas para ingresar
+    </a>
+  </div>
+</div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN LOGIN MODAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — INICIO CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
 <div id="mainContent">
+
+  <!-- INICIO HEADER -->
   <div class="header">
     <div class="menu-btn" onclick="toggleMenu()">
       <i class="fa-solid fa-bars"></i>
     </div>
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-header" loading="lazy" decoding="async">
   </div>
+  <!-- FIN HEADER -->
 
+  <!-- INICIO SIDEBAR -->
   <div class="sidebar" id="sidebar">
-    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu" loading="lazy" decoding="async">
+
+    <a href="https://wa.me/50370482075" target="_blank" class="menu-item-wa">
+      <i class="fa-brands fa-whatsapp"></i> Contactar Agencia
+    </a>
+    <hr class="menu-separator">
+
     <div class="menu-item" onclick="toggleSub('inicio')">
       <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
     </div>
@@ -123,6 +236,7 @@ iframe { width: 100%; height: 100%; border: none; }
       <a href="noticias.html">Noticias</a>
       <a href="reglamento-interno.html">Reglamento</a>
     </div>
+
     <div class="menu-item" onclick="toggleSub('fairy')">
       <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
     </div>
@@ -131,27 +245,37 @@ iframe { width: 100%; height: 100%; border: none; }
       <a href="tutoriales.html">Tutoriales</a>
       <a href="tips-fairy.html">Tips Fairy</a>
     </div>
-    <div class="menu-item" onclick="toggleSub('salsa-sub')">
+
+    <div class="menu-item" onclick="toggleSub('salsa')">
       <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
     </div>
-    <div class="submenu" id="salsa-sub">
+    <div class="submenu" id="salsa">
       <a href="capacitaciones-salsa.html">Capacitaciones</a>
       <a href="tutoriales-salsa.html">Tutoriales</a>
       <a href="reglas-salsa.html">Reglas SALSA</a>
       <a href="herramientas-salsa.html">Herramientas</a>
     </div>
-    <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:10px;">
+
+    <hr class="menu-separator">
+
+    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d; margin-top:4px;">
       <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
     </div>
   </div>
+  <!-- FIN SIDEBAR -->
 
+  <!-- INICIO OVERLAY -->
   <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <!-- FIN OVERLAY -->
 
+  <!-- ✅ EDITABLE — SLIDER -->
   <div class="slider-container">
-    <div class="arrow left" onclick="prevSlide()">❮</div>
+    <div class="arrow left"  onclick="prevSlide()">❮</div>
     <div class="arrow right" onclick="nextSlide()">❯</div>
 
     <div class="slides" id="slides">
+
+      <!-- SLIDE 1 — INFORMACIÓN GENERAL -->
       <div class="slide">
         <div class="pagina">
           <div class="guia-superior">
@@ -173,78 +297,155 @@ iframe { width: 100%; height: 100%; border: none; }
           </div>
         </div>
       </div>
+
+      <!-- SLIDE 2 — VIDEO TUTORIAL 1 -->
       <div class="slide">
-        <div class="pagina" style="height: 72vh;">
-          <div class="guia-superior"><h4>VIDEO TUTORIAL 1</h4><p>PROCESO DE PAGO</p></div>
-          <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/1JZ6-Iy8CnWh6sbKUTJk0qCtb_O2qAcKW/preview"></iframe></div>
+        <div class="pagina" style="height:72vh;">
+          <div class="guia-superior">
+            <h4>VIDEO TUTORIAL 1</h4>
+            <p>PROCESO DE PAGO</p>
+          </div>
+          <div class="video-wrapper">
+            <iframe data-src="https://drive.google.com/file/d/1JZ6-Iy8CnWh6sbKUTJk0qCtb_O2qAcKW/preview" allow="autoplay"></iframe>
+          </div>
         </div>
       </div>
+
+      <!-- SLIDE 3 — VIDEO TUTORIAL 2 -->
       <div class="slide">
-        <div class="pagina" style="height: 72vh;">
-          <div class="guia-superior"><h4>VIDEO TUTORIAL 2</h4><p>PROCESO DE PAGO</p></div>
-          <div class="video-wrapper"><iframe src="https://drive.google.com/file/d/137OMNFwVyNox7kwE63l7eLH64Fbooc2j/preview"></iframe></div>
+        <div class="pagina" style="height:72vh;">
+          <div class="guia-superior">
+            <h4>VIDEO TUTORIAL 2</h4>
+            <p>PROCESO DE PAGO</p>
+          </div>
+          <div class="video-wrapper">
+            <iframe data-src="https://drive.google.com/file/d/137OMNFwVyNox7kwE63l7eLH64Fbooc2j/preview" allow="autoplay"></iframe>
+          </div>
         </div>
       </div>
-    </div>
+
+    </div><!-- /slides -->
 
     <div class="indicador">
       <div id="numero"></div>
       <div class="barras" id="barras"></div>
     </div>
   </div>
-</div>
 
+</div><!-- /mainContent -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — FIN CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO SCRIPTS
+════════════════════════════════════════════ -->
 <script>
-/* LÓGICA DE SESIÓN GLOBAL */
-function checkSession(){
-  const access = localStorage.getItem("fairyAccess");
-  const time = localStorage.getItem("fairyTime");
 
-  if(!access || !time || (Date.now() - parseInt(time) > 10800000)){
-      localStorage.clear();
-      window.location.href = "zona-streamer.html";
+// =============================
+// 🔐 INICIO CONTROL DE ACCESO POR ID
+// =============================
+const USUARIOS = [
+  { id: "8249303152", nombre: "Daniela", apellido: "Magaña" },
+  { id: "890710327",  nombre: "Heidy",   apellido: "Trujillo" }
+  /*
+  ,
+  { id: "123456789", nombre: "Nombre", apellido: "Apellido" }
+  */
+];
+// =============================
+// 🔐 FIN CONTROL DE ACCESO POR ID
+// =============================
+
+const DURACION = 3 * 60 * 60 * 1000;
+
+function checkPassword() {
+  const input   = document.getElementById('passInput').value.trim();
+  const usuario = USUARIOS.find(u => u.id === input);
+  if (usuario) {
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime",   Date.now());
+    localStorage.setItem("fairyNombre", `Hola ${usuario.nombre} ${usuario.apellido} 👋`);
+    document.getElementById("loginError").style.display       = "none";
+    document.getElementById("btnContactoModal").style.display = "none";
+    window.location.href = "zona-streamer.html";
   } else {
-      document.getElementById("mainContent").style.display = "block";
-      actualizar(); // Inicia el slider si hay sesión
+    document.getElementById("loginError").style.display       = "block";
+    document.getElementById("btnContactoModal").style.display = "block";
   }
 }
 
-function toggleMenu(){
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").style.display   = "block";
+  iniciarSlider();
+});
+
+function logout() { localStorage.clear(); window.location.href = "zona-streamer.html"; }
+
+function toggleMenu() {
   document.getElementById("sidebar").classList.toggle("active");
   document.getElementById("overlay").classList.toggle("active");
 }
-function toggleSub(id){
+function toggleSub(id) {
   const el = document.getElementById(id);
   el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
 }
-function logout(){ localStorage.clear(); window.location.href="zona-streamer.html"; }
 
-// SLIDER LOGIC
-let index = 0;
-const slides = document.getElementById("slides");
-const total = slides.children.length;
-const numero = document.getElementById("numero");
-const barrasContainer = document.getElementById("barras");
+// ─── SLIDER CON LAZY LOAD ───
+let index    = 0;
+let total    = 0;
+let barras   = [];
+let animando = false;
 
-for(let i=0; i<total; i++){
-  const b = document.createElement("div");
-  b.className = "barra";
-  if(i===0) b.classList.add("active");
-  barrasContainer.appendChild(b);
+function iniciarSlider() {
+  const slidesEl        = document.getElementById("slides");
+  const barrasContainer = document.getElementById("barras");
+  total = slidesEl.children.length;
+  for (let i = 0; i < total; i++) {
+    const b = document.createElement("div");
+    b.className = "barra";
+    if (i === 0) b.classList.add("active");
+    barrasContainer.appendChild(b);
+  }
+  barras = document.querySelectorAll(".barra");
+  cargarIframeActivo();
+  actualizar();
 }
-const barras = document.querySelectorAll(".barra");
 
-function actualizar(){
-  slides.style.transform = `translateX(-${index * 100}vw)`;
-  numero.textContent = `${index + 1} / ${total}`;
+function cargarIframeActivo() {
+  const slidesEl = document.getElementById("slides");
+  const slide    = slidesEl.children[index];
+  if (!slide) return;
+  const iframe = slide.querySelector("iframe");
+  if (iframe && !iframe.src) iframe.src = iframe.dataset.src;
+}
+
+function actualizar() {
+  document.getElementById("slides").style.transform = `translateX(-${index * 100}vw)`;
+  document.getElementById("numero").textContent = `${index + 1} / ${total}`;
   barras.forEach(b => b.classList.remove("active"));
-  if(barras[index]) barras[index].classList.add("active");
+  if (barras[index]) barras[index].classList.add("active");
 }
 
-function nextSlide(){ if(index < total-1){ index++; actualizar(); } }
-function prevSlide(){ if(index > 0){ index--; actualizar(); } }
+function nextSlide() {
+  if (animando || index >= total - 1) return;
+  animando = true; index++;
+  cargarIframeActivo(); actualizar();
+  setTimeout(() => { animando = false; }, 500);
+}
+function prevSlide() {
+  if (animando || index <= 0) return;
+  animando = true; index--;
+  cargarIframeActivo(); actualizar();
+  setTimeout(() => { animando = false; }, 500);
+}
+
 </script>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN SCRIPTS
+════════════════════════════════════════════ -->
 
 </body>
-  </html>
-  
+</html>
