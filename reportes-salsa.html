@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Diario — Fairy Agency</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a0a;
+  color: #eaeaea;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ══════════════════════════════════════
+   LOGIN MODAL
+══════════════════════════════════════ */
+#passwordModal {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.98);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 4000;
+}
+.modal-content {
+  background: #111; padding: 40px 30px; border-radius: 20px;
+  text-align: center; max-width: 340px; width: 90%; border: 1px solid #222;
+}
+.modal-content img { width: 160px; margin-bottom: 20px; filter: brightness(1.15); }
+.modal-content h2  { color: #ffd700; margin-bottom: 6px; font-size: 20px; font-weight: 700; }
+.modal-content p   { color: #888; font-size: 13px; margin-bottom: 4px; }
+#passInput {
+  width: 100%; padding: 14px; background: #222; border: 1px solid #333;
+  border-radius: 10px; color: white; margin: 12px 0 6px;
+  text-align: center; font-size: 15px; font-family: 'Inter', sans-serif; letter-spacing: 1px;
+}
+#passInput:focus { outline: none; border-color: #ffd700; }
+.btn-entrar {
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black; padding: 13px; border: none; border-radius: 10px;
+  font-weight: 700; cursor: pointer; font-size: 15px;
+  width: 100%; font-family: 'Inter', sans-serif; margin-top: 6px;
+}
+.btn-entrar:active { opacity: 0.85; }
+#loginError { display: none; color: #ff4d4d; font-size: 13px; margin: 8px 0 4px; }
+#btnContactoModal {
+  display: none; width: 100%; margin-top: 10px; padding: 11px;
+  background: transparent; border: 1px solid #25d366; border-radius: 10px;
+  color: #25d366; font-size: 13px; font-weight: 600;
+  text-decoration: none; text-align: center; font-family: 'Inter', sans-serif;
+}
+#btnContactoModal:hover { background: rgba(37,211,102,0.08); }
+
+/* ══════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════ */
+#mainContent { display: none; height: 100vh; width: 100vw; }
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.header {
+  display: flex; align-items: center; gap: 12px;
+  position: fixed; top: 25px; left: 20px; z-index: 2001;
+}
+.menu-btn { font-size: 24px; color: #ffd700; cursor: pointer; }
+.logo { width: 85px; filter: brightness(1.15); }
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 260px; height: 100%;
+  background: #111; padding: 90px 18px 20px;
+  transform: translateX(-100%); transition: 0.3s ease; z-index: 3000;
+  overflow-y: auto; box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+}
+.sidebar.active { transform: translateX(0); }
+.logo-menu { width: 140px; display: block; margin: 0 auto 30px; filter: brightness(1.15); }
+.menu-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  color: #eaeaea; margin-bottom: 4px; font-size: 14px;
+}
+.menu-item:hover { background: #222; }
+.menu-left { display: flex; align-items: center; gap: 10px; }
+.menu-left i { color: #ffd700; width: 16px; text-align: center; }
+.salsa-s { color: #ffd700 !important; font-size: 16px; font-weight: 900; width: 16px; text-align: center; }
+.submenu { max-height: 0; overflow: hidden; transition: 0.3s; padding-left: 28px; }
+.submenu a { display: block; padding: 8px 0; color: #aaa; text-decoration: none; font-size: 13px; }
+.submenu a:hover { color: #ffd700; }
+.menu-separator { border: none; border-top: 1px solid #222; margin: 8px 0; }
+.menu-item-wa {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; font-size: 14px;
+  color: #25d366; margin-bottom: 4px; text-decoration: none; cursor: pointer;
+}
+.menu-item-wa:hover { background: rgba(37,211,102,0.08); }
+.menu-item-wa i { color: #25d366; width: 16px; text-align: center; }
+
+/* ══════════════════════════════════════
+   OVERLAY
+══════════════════════════════════════ */
+.overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); opacity: 0; visibility: hidden;
+  transition: 0.3s; z-index: 2500;
+}
+.overlay.active { opacity: 1; visibility: visible; }
+
+/* ══════════════════════════════════════
+   SLIDER
+══════════════════════════════════════ */
+.slider-container {
+  height: 100vh; width: 100vw;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center;
+}
+.slides { display: flex; transition: 0.5s cubic-bezier(0.25, 1, 0.5, 1); height: 100%; }
+.slide {
+  min-width: 100vw; width: 100vw; height: 100%;
+  display: flex; justify-content: center; align-items: center;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════
+   CARD IMPACT — estándar sistema
+══════════════════════════════════════ */
+.card-impact {
+  background: #111;
+  color: #eaeaea;
+  padding: 45px 55px;
+  border-radius: 25px;
+  text-align: center;
+  width: 88%;
+  max-width: 400px;
+  min-height: 70vh;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  border: 1px solid #222;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.card-impact h3 {
+  font-size: 19px;
+  color: #ffd700;
+  font-weight: 700;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #222;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+.card-impact p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #ccc;
+  margin: 0;
+}
+.card-impact ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  display: inline-block;
+}
+.card-impact ul li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #ccc;
+  padding-left: 15px;
+  position: relative;
+  margin-bottom: 6px;
+}
+.card-impact ul li::before {
+  content: "•";
+  color: #ffd700;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Slide imagen con descripción y botón */
+.card-slide {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 25px;
+  width: 88%;
+  max-width: 400px;
+  min-height: 70vh;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  padding: 30px 25px;
+}
+.card-slide img {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid #333;
+  object-fit: contain;
+  max-height: 42vh;
+}
+.card-slide p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ccc;
+  text-align: center;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   BOTÓN FORMULARIO
+══════════════════════════════════════ */
+.btn-form {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  color: black; padding: 13px 20px; border-radius: 12px;
+  font-weight: 700; font-size: 13px; text-decoration: none;
+  border: none; font-family: 'Inter', sans-serif;
+  width: 100%;
+}
+.btn-form:active { opacity: 0.85; }
+
+/* ══════════════════════════════════════
+   FLECHAS
+══════════════════════════════════════ */
+.arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 55px; height: 55px; font-size: 24px;
+  color: #ffd700; background: rgba(0,0,0,0.85);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; cursor: pointer; z-index: 100;
+  border: 1px solid #ffd700;
+  -webkit-tap-highlight-color: transparent;
+}
+.arrow.left  { left: 10px; }
+.arrow.right { right: 10px; }
+
+/* ══════════════════════════════════════
+   CONTADOR
+══════════════════════════════════════ */
+.contador {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffd700;
+  letter-spacing: 2px;
+  z-index: 10;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO LOGIN MODAL
+════════════════════════════════════════════ -->
+<div id="passwordModal">
+  <div class="modal-content">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="logo" loading="lazy" decoding="async">
+    <h2>Zona Privada</h2>
+    <p>Ingresa tu ID para continuar</p>
+    <input type="text" id="passInput" placeholder="Tu ID de acceso"
+           onkeydown="if(event.key==='Enter') checkPassword()">
+    <div id="loginError">ID incorrecto. Verifica tu número de identificación.</div>
+    <button onclick="checkPassword()" class="btn-entrar">Entrar</button>
+    <a id="btnContactoModal" href="https://wa.me/50370482075" target="_blank">
+      <i class="fa-brands fa-whatsapp"></i> Tengo problemas para ingresar
+    </a>
+  </div>
+</div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN LOGIN MODAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — INICIO CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+<div id="mainContent">
+
+  <!-- INICIO HEADER -->
+  <div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo" loading="lazy" decoding="async">
+  </div>
+  <!-- FIN HEADER -->
+
+  <!-- INICIO SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu" loading="lazy" decoding="async">
+
+    <a href="https://wa.me/50370482075" target="_blank" class="menu-item-wa">
+      <i class="fa-brands fa-whatsapp"></i> Contactar Agencia
+    </a>
+    <hr class="menu-separator">
+
+    <div class="menu-item" onclick="toggleSub('inicio')">
+      <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+    </div>
+    <div class="submenu" id="inicio">
+      <a href="zona-streamer.html">Zona Streamer</a>
+      <a href="fairy-academy.html">Fairy Academy</a>
+      <a href="salsa.html">SALSA</a>
+      <a href="reportes-salsa.html">Reportes</a>
+      <a href="binance-streamer.html">Binance</a>
+      <a href="noticias.html">Noticias</a>
+      <a href="reglamento-interno.html">Reglamento</a>
+    </div>
+
+    <div class="menu-item" onclick="toggleSub('fairy')">
+      <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+    </div>
+    <div class="submenu" id="fairy">
+      <a href="capacitaciones.html">Capacitaciones</a>
+      <a href="tutoriales.html">Tutoriales</a>
+      <a href="tips-fairy.html">Tips Fairy</a>
+    </div>
+
+    <div class="menu-item" onclick="toggleSub('salsa')">
+      <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+    </div>
+    <div class="submenu" id="salsa">
+      <a href="capacitaciones-salsa.html">Capacitaciones</a>
+      <a href="tutoriales-salsa.html">Tutoriales</a>
+      <a href="reglas-salsa.html">Reglas SALSA</a>
+      <a href="herramientas-salsa.html">Herramientas</a>
+    </div>
+
+    <hr class="menu-separator">
+
+    <div class="menu-item logout" onclick="logout()" style="color:#ff4d4d; margin-top:4px;">
+      <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+    </div>
+  </div>
+  <!-- FIN SIDEBAR -->
+
+  <!-- INICIO OVERLAY -->
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+  <!-- FIN OVERLAY -->
+
+  <!-- ✅ EDITABLE — SLIDER -->
+  <div class="slider-container">
+    <div class="arrow left"  onclick="mover(-1)">❮</div>
+    <div class="arrow right" onclick="mover(1)">❯</div>
+
+    <div class="slides" id="slides">
+
+      <!-- SLIDE 1 — INTRODUCCIÓN -->
+      <div class="slide">
+        <div class="card-impact">
+          <h3>Reporte Diario en Salsa</h3>
+          <p>Antes de comenzar, revisa esta guía completa.</p>
+          <p>Este reporte es la herramienta que utilizamos para analizar tu desempeño, entender tu actividad y brindarte un coaching personalizado que te ayude a crecer dentro de la app.</p>
+          <p>Mientras más claro y completo sea tu reporte, mejor podremos acompañarte en tu proceso.</p>
+          <ul>
+            <li>Debes completar el reporte todos los días antes del corte (7:00 p.m. hora Colombia) — <a href="salsa.html" style="color:#ffd700;">Ver horario en mi país 🌍</a></li>
+            <li>Usa siempre el mismo correo para todos tus reportes</li>
+            <li>Revisa todas las capturas antes de comenzar</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 — INICIO DEL REPORTE -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Aquí se presentan las reglas principales del reporte y lo que debes tener en cuenta antes de comenzarlo.</p>
+          <img src="https://i.postimg.cc/CxFXd5gR/1-20260418-170909-0000.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — HORARIO DE ENVÍO -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Consulta el horario de corte según tu país para asegurarte de enviar el reporte a tiempo. También puedes verificarlo en el <a href="salsa.html" style="color:#ffd700;">reloj Salsa</a>.</p>
+          <img src="https://i.postimg.cc/JzLmxRCg/2-20260418-165212-0001.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — VALIDACIÓN DE PERFIL -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Aquí debes subir una captura actual de tu perfil para validar que tu cuenta está activa y correctamente configurada.</p>
+          <img src="https://i.postimg.cc/MpSx5zJF/3-20260418-165212-0002.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 5 — PERFIL CORRECTO -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Ejemplo visual de cómo debe verse tu perfil en la captura para cumplir con los requisitos.</p>
+          <img src="https://i.postimg.cc/P5jhydn6/4-20260418-165212-0003.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 6 — ACTIVIDAD DEL DÍA -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Se valida tu actividad diaria dentro de la app a través del centro de streamer.</p>
+          <img src="https://i.postimg.cc/RZB9dvxg/5-20260418-165212-0004.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 7 — RENDIMIENTO EN RANKING -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Permite evaluar tu posición frente a otros streamers y hacer seguimiento a tu progreso.</p>
+          <img src="https://i.postimg.cc/fRNZCMQ2/6-20260418-165212-0005.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 8 — ESTADÍSTICAS DEL DÍA -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Introduce la sección donde se recopilan tus métricas completas del día.</p>
+          <img src="https://i.postimg.cc/RZB9dvxX/7-20260418-165212-0006.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 9 — RENDIMIENTO DIARIO -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Muestra tus resultados principales del día y permite evaluar tu desempeño general.</p>
+          <img src="https://i.postimg.cc/wjpH29Yn/8-20260418-165212-0007.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 10 — DETALLE DE GANANCIAS -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Permite analizar de dónde provienen tus ingresos dentro de la app.</p>
+          <img src="https://i.postimg.cc/Z5SZHJz1/9-20260418-165213-0008.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 11 — TIEMPO DE CONEXIÓN -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Se explica cómo registrar tu tiempo de uso y medir tu nivel de actividad diaria.</p>
+          <img src="https://i.postimg.cc/zGr57q1m/10-20260418-165213-0009.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 12 — ACTIVIDAD EN LA APP -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Muestra el tiempo real que estuviste activa dentro de la aplicación.</p>
+          <img src="https://i.postimg.cc/L8pRDmMK/11-20260418-165213-0010.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+       <!-- SLIDE 13 — ANÁLISIS DE ACTIVIDAD -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Permite identificar tus horarios más productivos y entender mejor tu rendimiento.</p>
+          <img src="https://i.postimg.cc/3xT713HQ/12-20260418-165213-0011.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 14 — REPORTE DE INCIDENCIAS -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Espacio para reportar cualquier problema o situación que haya afectado tu jornada.</p>
+          <img src="https://i.postimg.cc/3xT713HH/13-20260418-165213-0012.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+      <!-- SLIDE 15 — CIERRE Y SEGUIMIENTO -->
+      <div class="slide">
+        <div class="card-slide">
+          <p>Sección final para dejar información adicional y permitir el seguimiento por parte de la agencia.</p>
+          <img src="https://i.postimg.cc/8zSD4TVG/14-20260418-165213-0013.png" loading="lazy" decoding="async">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeiWCKf8LlbvEWudangC0SQn1U5ylEJHNxtrrw04Kls9ivG2Q/viewform"
+             target="_blank" class="btn-form">
+            <i class="fa-solid fa-file-lines"></i> Ir al formulario
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /slides -->
+
+    <div class="contador" id="contador"></div>
+
+  </div><!-- /slider-container -->
+
+</div><!-- /mainContent -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — FIN CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+
+// =============================
+// 🔐 INICIO CONTROL DE ACCESO POR ID
+// =============================
+const USUARIOS = [
+  { id: "8249303152", nombre: "Daniela", apellido: "Magaña" },
+  { id: "890710327",  nombre: "Heidy",   apellido: "Trujillo" }
+  /*
+  ,
+  { id: "123456789", nombre: "Nombre", apellido: "Apellido" }
+  */
+];
+// =============================
+// 🔐 FIN CONTROL DE ACCESO POR ID
+// =============================
+
+const DURACION = 3 * 60 * 60 * 1000;
+
+// ─────────────────────────────────────────
+//  LOGIN
+// ─────────────────────────────────────────
+function checkPassword() {
+  const input   = document.getElementById('passInput').value.trim();
+  const usuario = USUARIOS.find(u => u.id === input);
+  if (usuario) {
+    localStorage.setItem("fairyAccess", "true");
+    localStorage.setItem("fairyTime",   Date.now());
+    localStorage.setItem("fairyNombre", `Hola ${usuario.nombre} ${usuario.apellido} 👋`);
+    document.getElementById("loginError").style.display       = "none";
+    document.getElementById("btnContactoModal").style.display = "none";
+    window.location.href = "zona-streamer.html";
+  } else {
+    document.getElementById("loginError").style.display       = "block";
+    document.getElementById("btnContactoModal").style.display = "block";
+  }
+}
+
+// ─────────────────────────────────────────
+//  MOSTRAR CONTENIDO — sesión ya validada en <head>
+// ─────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("mainContent").style.display   = "block";
+  iniciarSlider();
+});
+
+// ─────────────────────────────────────────
+//  LOGOUT
+// ─────────────────────────────────────────
+function logout() {
+  localStorage.clear();
+  window.location.href = "zona-streamer.html";
+}
+
+// ─────────────────────────────────────────
+//  SIDEBAR
+// ─────────────────────────────────────────
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+function toggleSub(id) {
+  const el = document.getElementById(id);
+  el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+// ─────────────────────────────────────────
+//  SLIDER
+// ─────────────────────────────────────────
+let index    = 0;
+let total    = 0;
+let animando = false;
+
+function iniciarSlider() {
+  const slidesEl = document.getElementById("slides");
+  total = slidesEl.children.length;
+  actualizarContador();
+}
+
+function actualizarContador() {
+  document.getElementById("contador").textContent = (index + 1) + " / " + total;
+}
+
+function mover(dir) {
+  if (animando) return;
+  index += dir;
+  if (index < 0) index = 0;
+  if (index >= total) index = total - 1;
+  animando = true;
+  document.getElementById("slides").style.transform = `translateX(-${index * 100}vw)`;
+  actualizarContador();
+  setTimeout(function() { animando = false; }, 550);
+}
+
+</script>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN SCRIPTS
+════════════════════════════════════════════ -->
+
+</body>
+</html>
