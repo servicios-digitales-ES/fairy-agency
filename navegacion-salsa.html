@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Navegación SALSA — Fairy Agency</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #eaeaea;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ── LOGIN MODAL ── */
+        #passwordModal {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98);
+            display: none; align-items: center; justify-content: center;
+            z-index: 4000;
+        }
+        .modal-content {
+            background: #111; padding: 40px 30px; border-radius: 20px;
+            text-align: center; max-width: 340px; width: 90%; border: 1px solid #222;
+        }
+        .modal-content img { width: 160px; margin-bottom: 20px; filter: brightness(1.15); }
+        .modal-content h2 { color: #ffd700; margin-bottom: 6px; font-size: 20px; }
+        .modal-content p { color: #888; font-size: 13px; margin-bottom: 4px; }
+        #passInput {
+            width: 100%; padding: 14px; background: #222; border: 1px solid #333;
+            border-radius: 10px; color: white; margin: 12px 0 6px;
+            text-align: center; font-size: 15px; font-family: 'Inter', sans-serif; letter-spacing: 1px;
+        }
+        #passInput:focus { outline: none; border-color: #ffd700; }
+        .btn-entrar {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            color: black; padding: 13px; border: none; border-radius: 10px;
+            font-weight: bold; cursor: pointer; font-size: 15px;
+            width: 100%; font-family: 'Inter', sans-serif; margin-top: 6px;
+        }
+        .btn-entrar:active { opacity: 0.85; }
+        #loginError { display: none; color: #ff4d4d; font-size: 13px; margin: 8px 0 4px; }
+        #btnContactoModal {
+            display: none; width: 100%; margin-top: 10px; padding: 11px;
+            background: transparent; border: 1px solid #25d366; border-radius: 10px;
+            color: #25d366; font-size: 13px; font-weight: 600; cursor: pointer;
+            font-family: 'Inter', sans-serif; text-decoration: none; text-align: center;
+        }
+        #btnContactoModal:hover { background: rgba(37,211,102,0.08); }
+        .menu-separator { border: none; border-top: 1px solid #222; margin: 8px 0; }
+        .menu-item-wa {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 10px; cursor: pointer;
+            font-size: 14px; color: #25d366; margin-bottom: 4px; text-decoration: none;
+        }
+        .menu-item-wa:hover { background: rgba(37,211,102,0.08); }
+        .menu-item-wa i { color: #25d366; width: 16px; text-align: center; }
+
+        /* ── MAIN CONTENT ── */
+        #mainContent { display: none; }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex; align-items: center; gap: 12px;
+            position: fixed; top: 20px; left: 20px; z-index: 2001;
+        }
+        .menu-btn { font-size: 24px; color: #ffd700; cursor: pointer; background: none; border: none; }
+        .logo { width: 80px; filter: brightness(1.2); }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: fixed; top: 0; left: 0; width: 270px; height: 100%;
+            background: #111; border-right: 1px solid #222;
+            padding: 90px 16px 30px; transform: translateX(-100%);
+            transition: 0.3s ease; z-index: 3000; overflow-y: auto;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+        }
+        .sidebar.active { transform: translateX(0); }
+        .logo-menu { width: 130px; display: block; margin: 0 auto 28px; filter: brightness(1.2); }
+        .menu-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 12px; border-radius: 10px; cursor: pointer;
+            font-size: 14px; color: #eaeaea; user-select: none; margin-bottom: 4px;
+        }
+        .menu-item:hover { background: #222; }
+        .menu-left { display: flex; align-items: center; gap: 10px; }
+        .menu-left i { color: #ffd700; width: 16px; text-align: center; }
+        .salsa-s { color: #ffd700; font-size: 16px; font-weight: bold; width: 16px; text-align: center; }
+        .submenu { max-height: 0; overflow: hidden; transition: 0.3s; padding-left: 32px; }
+        .submenu a { display: block; padding: 7px 0; color: #aaa; text-decoration: none; font-size: 13px; }
+        .submenu a:hover { color: #ffd700; }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); opacity: 0; visibility: hidden;
+            transition: 0.3s; z-index: 2500;
+        }
+        .overlay.active { opacity: 1; visibility: visible; }
+
+        /* ── VIEWS ── */
+        .view {
+            position: fixed; inset: 0;
+            display: none; flex-direction: column;
+            align-items: center; justify-content: flex-start;
+            padding: 80px 20px 20px; overflow-y: auto;
+        }
+        .view.active { display: flex; }
+        .view-title { color: #ffd700; font-size: 22px; text-align: center; margin-bottom: 4px; }
+        .view-sub { color: #666; font-size: 12px; text-align: center; margin-bottom: 12px; }
+        .img-desc {
+            color: #ccc; font-size: 13px; text-align: center;
+            min-height: 36px; max-width: 340px; line-height: 1.4;
+            margin-bottom: 10px; display: flex; align-items: center; justify-content: center;
+        }
+
+        .carousel-wrapper {
+            position: relative; width: 100%; max-width: 380px;
+            height: 56vh; border-radius: 18px; overflow: hidden;
+            border: 1px solid #2a2a2a; box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            flex-shrink: 0;
+        }
+        .carousel-track {
+            display: flex; height: 100%;
+            transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+        }
+        .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #000; }
+        .slide img { width: 100%; height: 100%; object-fit: contain; }
+
+        .nav-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255,215,0,0.12); color: #ffd700;
+            border: 1px solid rgba(255,215,0,0.4); width: 34px; height: 34px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10; font-size: 13px;
+        }
+        .nav-arrow:active { background: rgba(255,215,0,0.25); }
+        .prev-arrow { left: 8px; }
+        .next-arrow { right: 8px; }
+
+        .pagination { text-align: center; margin-top: 8px; color: #ffd700; font-size: 12px; font-weight: bold; }
+
+        .action-area {
+            margin-top: 10px; width: 100%; max-width: 380px;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+        }
+
+        .btn-gold {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border: none; border-radius: 12px; padding: 9px 20px;
+            color: #000; font-size: 13px; font-weight: bold; cursor: pointer;
+            width: 100%; text-align: center;
+            animation: blinkGold 0.4s ease 3, glowPulse 2s infinite 1.2s;
+        }
+        .btn-gold:active { opacity: 0.85; }
+        .btn-row { display: flex; gap: 8px; width: 100%; }
+        .btn-red {
+            background: transparent; border: 1px solid #ff4d4d; color: #ff4d4d;
+            padding: 9px 16px; border-radius: 12px; font-size: 13px; font-weight: bold;
+            cursor: pointer; flex: 1; text-align: center;
+        }
+        .btn-red:active { background: rgba(255,77,77,0.1); }
+        .btn-next {
+            background: transparent; border: 1px solid #ffd700; color: #ffd700;
+            padding: 9px 16px; border-radius: 12px; font-size: 13px; font-weight: bold;
+            cursor: pointer; flex: 1; text-align: center;
+        }
+        .btn-next:active { background: rgba(255,215,0,0.1); }
+        .btn-link {
+            background: none; border: none; color: #555; font-size: 11px;
+            cursor: pointer; text-decoration: underline; margin-top: 4px;
+        }
+        .btn-link:hover { color: #888; }
+
+        @keyframes glowPulse {
+            0%   { box-shadow: 0 0 5px #FFD700; }
+            50%  { box-shadow: 0 0 22px #FFD700, 0 0 8px #FFA500; }
+            100% { box-shadow: 0 0 5px #FFD700; }
+        }
+        @keyframes blinkGold {
+            0%   { opacity: 1; }
+            50%  { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+
+<!-- Verificación instantánea — corre antes de renderizar -->
+<script>
+(function() {
+  var access = localStorage.getItem("fairyAccess");
+  var time   = localStorage.getItem("fairyTime");
+  var DURACION = 3 * 60 * 60 * 1000;
+  if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+    localStorage.clear();
+    window.location.replace("zona-streamer.html");
+  }
+})();
+</script>
+
+<body>
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO LOGIN MODAL
+════════════════════════════════════════════ -->
+<div id="passwordModal">
+    <div class="modal-content">
+        <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="logo" loading="lazy" decoding="async">
+        <h2>Zona Privada</h2>
+        <p>Ingresa tu ID para continuar</p>
+        <input type="text" id="passInput" placeholder="Tu ID de acceso"
+               onkeydown="if(event.key==='Enter') checkPassword()">
+        <div id="loginError">ID incorrecto. Verifica tu número de identificación.</div>
+        <button class="btn-entrar" onclick="checkPassword()">Entrar</button>
+        <a id="btnContactoModal" href="https://wa.me/50370482075" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i> Tengo problemas para ingresar
+        </a>
+    </div>
+</div>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN LOGIN MODAL
+════════════════════════════════════════════ -->
+
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — INICIO CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+<div id="mainContent">
+
+    <!-- INICIO HEADER -->
+    <div class="header">
+        <div class="menu-btn" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+        <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo" loading="lazy" decoding="async">
+    </div>
+    <!-- FIN HEADER -->
+
+    <!-- INICIO SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="logo-menu" loading="lazy" decoding="async">
+        <a href="https://wa.me/50370482075" target="_blank" class="menu-item-wa">
+            <i class="fa-brands fa-whatsapp"></i> Contactar Agencia
+        </a>
+        <hr class="menu-separator">
+        <div class="menu-item" onclick="toggleSub('inicio')">
+            <div class="menu-left"><i class="fa-solid fa-house"></i>Inicio</div>▼
+        </div>
+        <div class="submenu" id="inicio">
+            <a href="zona-streamer.html">Zona Streamer</a>
+            <a href="fairy-academy.html">Fairy Academy</a>
+            <a href="salsa.html">SALSA</a>
+            <a href="reportes-salsa.html">Reportes</a>
+            <a href="binance-streamer.html">Binance</a>
+            <a href="noticias.html">Noticias</a>
+            <a href="reglamento-interno.html">Reglamento</a>
+        </div>
+        <div class="menu-item" onclick="toggleSub('fairy')">
+            <div class="menu-left"><i class="fa-solid fa-graduation-cap"></i>Fairy Academy</div>▼
+        </div>
+        <div class="submenu" id="fairy">
+            <a href="capacitaciones.html">Capacitaciones</a>
+            <a href="tutoriales.html">Tutoriales</a>
+            <a href="tips-fairy.html">Tips Fairy</a>
+        </div>
+        <div class="menu-item" onclick="toggleSub('salsa')">
+            <div class="menu-left"><span class="salsa-s">S</span>SALSA</div>▼
+        </div>
+        <div class="submenu" id="salsa">
+            <a href="capacitaciones-salsa.html">Capacitaciones</a>
+            <a href="tutoriales-salsa.html">Tutoriales</a>
+            <a href="reglas-salsa.html">Reglas SALSA</a>
+            <a href="herramientas-salsa.html">Herramientas</a>
+        </div>
+        <hr class="menu-separator">
+        <div class="menu-item" onclick="logout()" style="color:#ff4d4d; margin-top:4px;">
+            <div class="menu-left"><i class="fa-solid fa-right-from-bracket"></i>Salir</div>
+        </div>
+    </div>
+    <!-- FIN SIDEBAR -->
+
+    <!-- INICIO OVERLAY -->
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <!-- FIN OVERLAY -->
+
+    <!-- ════════════════════════════════════════════
+         NIVEL 1 — CARRUSEL PRINCIPAL (slides 1 → 11-5)
+         ⚠️ Para editar descripciones busca el comentario
+         de cada slide y modifica el texto en MAIN_DESCS[]
+    ════════════════════════════════════════════ -->
+    <div id="mainView" class="view">
+        <h1 class="view-title">Navegación SALSA</h1>
+        <p class="view-sub">Guía completa de la aplicación</p>
+        <div class="img-desc" id="mainDesc"></div>
+
+        <div class="carousel-wrapper">
+            <div class="nav-arrow prev-arrow" onclick="mainMove(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="nav-arrow next-arrow" onclick="mainMove(1)"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="carousel-track" id="mainTrack">
+
+                <!-- SLIDE 1 — Inicio | DESCRIPCIÓN → MAIN_DESCS[0] -->
+                <div class="slide"><img src="https://i.postimg.cc/PxbXfTJF/1-Inicio.png" loading="lazy"></div>
+
+                <!-- SLIDE 2 — Tu nombre de streamer | DESCRIPCIÓN → MAIN_DESCS[1] | BOTÓN → "Ver opciones del perfil" → submenú perfil -->
+                <div class="slide"><img src="https://i.postimg.cc/ZnTTC2vj/2-tu-nombre-de-streamer.png" loading="lazy"></div>
+
+                <!-- SLIDE 3 — Casino | DESCRIPCIÓN → MAIN_DESCS[2] -->
+                <div class="slide"><img src="https://i.postimg.cc/PJttP9vb/3-casino.png" loading="lazy"></div>
+
+                <!-- SLIDE 4 — Botón pulsa para comenzar | DESCRIPCIÓN → MAIN_DESCS[3] -->
+                <div class="slide"><img src="https://i.postimg.cc/MHWWvNfb/4-boton-pulsa-para-comenzar.png" loading="lazy"></div>
+
+                <!-- SLIDE 5 — Al tocarlo aparecen ambas zonas | DESCRIPCIÓN → MAIN_DESCS[4] -->
+                <div class="slide"><img src="https://i.postimg.cc/nrHHCg9d/5-al-tocarlo-aparecen-ambas-zonas.png" loading="lazy"></div>
+
+                <!-- SLIDE 6 — Entrar a zona Match | DESCRIPCIÓN → MAIN_DESCS[5] | BOTÓN → "Conoce más sobre la zona Match" → match-salsa.html -->
+                <div class="slide"><img src="https://i.postimg.cc/GtccHVTS/6-entrar-a-zona-match.png" loading="lazy"></div>
+
+                <!-- SLIDE 7 — Entrar a zona Live | DESCRIPCIÓN → MAIN_DESCS[6] | BOTÓN → "Conoce más sobre la zona Live" → lives-salsa.html -->
+                <div class="slide"><img src="https://i.postimg.cc/qqkkzS6D/7-entrar-a-zona-live.png" loading="lazy"></div>
+
+                <!-- SLIDE 8 — Siguiendo | DESCRIPCIÓN → MAIN_DESCS[7] -->
+                <div class="slide"><img src="https://i.postimg.cc/x8h0MH7G/8-Siguiendo.png" loading="lazy"></div>
+
+                <!-- SLIDE 9 — Mensajes | DESCRIPCIÓN → MAIN_DESCS[8] | BOTÓN → "Aprende sobre tu bandeja de entrada de chat" → submenú mensajes -->
+                <div class="slide"><img src="https://i.postimg.cc/90rmD1xx/9-Mensajes.png" loading="lazy"></div>
+
+                <!-- SLIDE 10 — Tabla de líderes | DESCRIPCIÓN → MAIN_DESCS[9] -->
+                <div class="slide"><img src="https://i.postimg.cc/sxvjMKnH/10-tabla-de-lideres.png" loading="lazy"></div>
+
+                <!-- SLIDE 11 — Tabla líderes 24 horas | DESCRIPCIÓN → MAIN_DESCS[10] -->
+                <div class="slide"><img src="https://i.postimg.cc/wM7q1FWf/10-1-24-horas.png" loading="lazy"></div>
+
+                <!-- SLIDE 12 — Tabla líderes esta semana | DESCRIPCIÓN → MAIN_DESCS[11] -->
+                <div class="slide"><img src="https://i.postimg.cc/5yTxLvGq/10-2-esta-semana.png" loading="lazy"></div>
+
+                <!-- SLIDE 13 — Historial de llamadas | DESCRIPCIÓN → MAIN_DESCS[12] -->
+                <div class="slide"><img src="https://i.postimg.cc/L5wHLf7v/11-Accede-a-todo-tu-historial-de-llamadas.png" loading="lazy"></div>
+
+                <!-- SLIDE 14 — Selecciona Todo | DESCRIPCIÓN → MAIN_DESCS[13] -->
+                <div class="slide"><img src="https://i.postimg.cc/Zn2Tp3gV/11-1-Selecciona-Todo.png" loading="lazy"></div>
+
+                <!-- SLIDE 15 — Llamada recibida | DESCRIPCIÓN → MAIN_DESCS[14] -->
+                <div class="slide"><img src="https://i.postimg.cc/GtVcGYNX/11-2-Llamada-recibida.png" loading="lazy"></div>
+
+                <!-- SLIDE 16 — Llamada aleatoria | DESCRIPCIÓN → MAIN_DESCS[15] -->
+                <div class="slide"><img src="https://i.postimg.cc/VvpYnMTG/11-3-llamada-aleatoria.png" loading="lazy"></div>
+
+                <!-- SLIDE 17 — Llamada perdida | DESCRIPCIÓN → MAIN_DESCS[16] -->
+                <div class="slide"><img src="https://i.postimg.cc/cC2swYjV/11-4-llamada-perdida.png" loading="lazy"></div>
+
+                <!-- SLIDE 18 — Todas las perdidas | DESCRIPCIÓN → MAIN_DESCS[17] -->
+                <div class="slide"><img src="https://i.postimg.cc/VvpYnMpy/11-5-Todas-las-perdidas.png" loading="lazy"></div>
+
+            </div>
+        </div>
+
+        <div class="pagination" id="mainPag">1 / 18</div>
+        <div class="action-area" id="mainActions"></div>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         NIVEL 2 — SUBVIEW (perfil / mensajes)
+         ⚠️ Para editar descripciones de cada subvista
+         busca el bloque correspondiente en SUBVIEWS{}
+         y modifica el array descs[]
+    ════════════════════════════════════════════ -->
+    <div id="subView" class="view">
+        <h1 class="view-title" id="subTitle"></h1>
+        <div class="img-desc" id="subParentDesc" style="display:none; color:#ffd700; font-style:italic;"></div>
+        <div class="img-desc" id="subDesc"></div>
+        <div class="carousel-wrapper">
+            <div class="nav-arrow prev-arrow" onclick="subMove(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="nav-arrow next-arrow" onclick="subMove(1)"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="carousel-track" id="subTrack"></div>
+        </div>
+        <div class="pagination" id="subPag"></div>
+        <div class="action-area" id="subActions"></div>
+        <button class="btn-link" onclick="goMain(mainFromSub)">✕ Volver al menú principal</button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         NIVEL 3 — INNERVIEW (sub-opciones del perfil)
+         ⚠️ Para editar descripciones de cada inner
+         busca el bloque correspondiente en INNERVIEWS{}
+         y modifica el array descs[]
+    ════════════════════════════════════════════ -->
+    <div id="innerView" class="view">
+        <h1 class="view-title" id="innerTitle"></h1>
+        <div class="img-desc" id="innerParentDesc" style="display:none; color:#ffd700; font-style:italic;"></div>
+        <div class="img-desc" id="innerDesc"></div>
+        <div class="carousel-wrapper">
+            <div class="nav-arrow prev-arrow" onclick="innerMove(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+                <div class="nav-arrow next-arrow" onclick="innerMove(1)"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="carousel-track" id="innerTrack"></div>
+        </div>
+        <div class="pagination" id="innerPag"></div>
+        <div class="action-area" id="innerActions"></div>
+        <button class="btn-link" onclick="closeInner()">✕ Volver al menú principal</button>
+    </div>
+
+</div><!-- /mainContent -->
+<!-- ════════════════════════════════════════════
+     ✅ EDITABLE — FIN CONTENIDO PRINCIPAL
+════════════════════════════════════════════ -->
+
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — INICIO SCRIPTS
+════════════════════════════════════════════ -->
+<script src="ids.js"></script>
+<script>
+
+const DURACION = 3 * 60 * 60 * 1000;
+
+function checkPassword() {
+    const input   = document.getElementById('passInput').value.trim();
+    const usuario = USUARIOS.find(u => u.id === input);
+    if (usuario) {
+        localStorage.setItem("fairyAccess",  "true");
+        localStorage.setItem("fairyTime",    Date.now());
+        localStorage.setItem("fairyNombre",  `Hola ${usuario.nombre} ${usuario.apellido} 👋`);
+        document.getElementById("loginError").style.display       = "none";
+        document.getElementById("btnContactoModal").style.display = "none";
+        window.location.href = "zona-streamer.html";
+    } else {
+        document.getElementById("loginError").style.display       = "block";
+        document.getElementById("btnContactoModal").style.display = "block";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("mainContent").style.display   = "block";
+    initApp();
+});
+
+function logout() { localStorage.clear(); window.location.href = "zona-streamer.html"; }
+
+setInterval(() => {
+    const access = localStorage.getItem("fairyAccess");
+    const time   = localStorage.getItem("fairyTime");
+    if (!access || !time || (Date.now() - parseInt(time) > DURACION)) {
+        localStorage.clear(); window.location.href = "zona-streamer.html";
+    }
+}, 60000);
+
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("active");
+    document.getElementById("overlay").classList.toggle("active");
+}
+function toggleSub(id) {
+    const el = document.getElementById(id);
+    el.style.maxHeight = el.style.maxHeight ? null : el.scrollHeight + "px";
+}
+
+// ═══════════════════════════════════════
+//  DESCRIPCIONES DEL CARRUSEL PRINCIPAL
+//  ⚠️ EDITAR AQUÍ — cada índice corresponde
+//  al slide marcado en el HTML arriba
+// ═══════════════════════════════════════
+const MAIN_DESCS = [
+    /* [0]  SLIDE 1  — Inicio                   */ "Pantalla de inicio de la aplicación. Es la base para moverse a cualquier sección del sistema.",
+    /* [1]  SLIDE 2  — Tu nombre de streamer    */ "Visualización de tu nombre de streamer. Puedes obtener más información sobre la gestión del perfil tocando el botón de abajo.",
+    /* [2]  SLIDE 3  — Casino                   */ "Sección de casino. Aparecerá al llegar a las 19,500 monedas, pero Fairy Agency recomienda NO entrar. Son apuestas diseñadas para que pierdan sus monedas; están hechas para robarles.",
+    /* [3]  SLIDE 4  — Botón comenzar           */ "Botón principal de inicio. Se debe pulsar cuando se esté lista para comenzar la jornada de trabajo.",
+    /* [4]  SLIDE 5  — Ambas zonas              */ "Al activar el botón central, se despliegan las dos zonas de trabajo disponibles.",
+    /* [5]  SLIDE 6  — Zona Match               */ "Opción para entrar a Zona Match. Recomendamos permanecer mínimo 3 horas sin salir y realizar todos los match posibles. Fairy Agency aclara que la app considera cuentas nuevas a las que tienen menos de 21 días. Puedes obtener más información sobre la zona match tocando el botón de abajo.",
+    /* [6]  SLIDE 7  — Zona Live                */ "Opción para entrar a Zona Live. Puedes obtener más información sobre esta zona tocando el botón de abajo.",
+    /* [7]  SLIDE 8  — Siguiendo                */ "Pestaña de usuarios seguidos. Recomendamos solo seguir a los usuarios más rentables que más gastan en ti; evita seguir a quienes gastan poco o nada.",
+    /* [8]  SLIDE 9  — Mensajes                 */ "Bandeja de entrada. Puedes obtener más información sobre la gestión de mensajes tocando el botón de abajo.",
+    /* [9]  SLIDE 10 — Tabla de líderes         */ "Tabla de líderes para verificar el posicionamiento global.",
+    /* [10] SLIDE 11 — Líderes 24 horas         */ "Ranking de las últimas 24 horas. Es vital que la meta diaria sea estar en los números más altos para mantener una excelente visibilidad. Como nueva, intenta no bajar del puesto 300 o 400; si bajas del 1000, el algoritmo cae y será difícil recibir llamadas.",
+    /* [11] SLIDE 12 — Líderes esta semana      */ "Ranking semanal. Este registro define tu nivel algorítmico semanal. Recomendamos explorar el resto del campus para entender a fondo este funcionamiento.",
+    /* [12] SLIDE 13 — Historial de llamadas    */ "Historial completo de videollamadas. Recuerda que todas las interacciones en esta sección son únicamente por video.",
+    /* [13] SLIDE 14 — Selecciona Todo          */ "Muestra el registro completo de videollamadas realizadas y recibidas.",
+    /* [14] SLIDE 15 — Llamada recibida         */ "Registro de videollamadas aceptadas con éxito.",
+    /* [15] SLIDE 16 — Llamada aleatoria        */ "Registro de las llamadas realizadas en la Zona Match.",
+    /* [16] SLIDE 17 — Llamada perdida          */ "Registro de videollamadas no contestadas.",
+    /* [17] SLIDE 18 — Todas las perdidas       */ "Esta es una súper herramienta para ver únicamente las llamadas perdidas. Puedes comenzar a regresarlas 1 a 1 usando siempre la opción de 'Llamada pagada' para que el usuario pague por hablar contigo."
+];
+
+const TOTAL_MAIN = 18;
+
+// ═══════════════════════════════════════
+//  BOTONES DEL CARRUSEL PRINCIPAL
+//  Solo los slides que tienen botón
+// ═══════════════════════════════════════
+const MAIN_BTNS = {
+    1:  { type: 'sub',  label: "Ver opciones del perfil",                     key: "viewPerfil"   },
+    5:  { type: 'href', label: "Conoce más sobre la zona Match",              href: "match-salsa.html" },
+    6:  { type: 'href', label: "Conoce más sobre la zona Live",               href: "lives-salsa.html" },
+    8:  { type: 'sub',  label: "Aprende sobre tu bandeja de entrada de chat", key: "viewMensajes" }
+};
+
+// ═══════════════════════════════════════
+//  SUBVISTAS
+//  ⚠️ Para editar descripciones de cada
+//  slide de subvista modifica descs[] aquí
+// ═══════════════════════════════════════
+const SUBVIEWS = {
+
+    // ── SUBVISTA: Perfil ──────────────────────────────────────
+    // Se abre desde SLIDE 2 (tu nombre de streamer)
+    // Slide 0 (2-1): BOTÓN → perfil-salsa.html
+    // Slides 1..6: botones encadenados hacia inner views
+    viewPerfil: {
+        title: "Tu Perfil",
+        mainSlide: 1,
+        parentDesc: "Aquí puedes gestionar todas las opciones de tu perfil.",
+        descs: [
+            /* slide 0 — 2-1 Editar perfil           */ "Edición de información, fotos y detalles de la cuenta. Puedes obtener más información sobre la edición de perfil tocando el botón de abajo.",
+            /* slide 1 — 2-2 Cuentas vinculadas      */ "Sección para asegurar la cuenta vinculando accesos. Puedes obtener más información sobre la vinculación tocando el botón de abajo.",
+            /* slide 2 — 2-3 Contenido multimedia    */ "Gestión de fotos y videos que los usuarios ven en su chat privado contigo tras una interacción (llamada, follow o regalo en vivo). Puedes obtener más información tocando el botón de abajo.",
+            /* slide 3 — 2-4 Mensajes automáticos    */ "Configuración del mensaje de bienvenida. Debe ser algo que tú dirías para iniciar una conversación; dale tu toque personal para que se vea genuino. Puedes obtener más información tocando el botón de abajo.",
+            /* slide 4 — 2-5 Top fans                */ "Listado de los usuarios que más monedas han invertido en ti. Puedes obtener más información tocando el botón de abajo.",
+            /* slide 5 — 2-6 Ajustes                 */ "Configuraciones técnicas de la cuenta. Puedes obtener más información tocando el botón de abajo.",
+            /* slide 6 — 2-7 Ganancias y estadísticas*/ "Centro Streamer para revisar ingresos y métricas de rendimiento."
+        ],
+        imgs: [
+            "https://i.postimg.cc/9QmYknQn/2-1-Editar-perfil.png",
+            "https://i.postimg.cc/6pWfPmQK/2-2-cuentas-vinculadas.png",
+            "https://i.postimg.cc/0yk04BNP/2-3-contenido-multimedia.png",
+            "https://i.postimg.cc/y81yGbNH/2-4-mensajes-automaticos.png",
+            "https://i.postimg.cc/4xfQ0SxM/2-5-Top-fans.png",
+            "https://i.postimg.cc/g2zH7T27/2-6-Ajustes.png",
+            "https://i.postimg.cc/Jzr5F2zd/2-7-ganancias-y-estadisticas-(centro-streamer).png"
+        ],
+        hasInner: true,
+        innerBtns: {
+            0: { principal: "Ver perfil completo",         siguiente: "Ver cuentas vinculadas",   key: "viewEditarPerfil", nextKey: "viewCuentas",      href: "perfil-salsa.html", type: "href" },
+            1: { principal: "Ver cómo vincular cuentas",   siguiente: "Ver contenido multimedia", key: "viewCuentas",      nextKey: "viewMultimedia",   type: "sub" },
+            2: { principal: "Ver contenido multimedia",    siguiente: "Ver mensajes automáticos", key: "viewMultimedia",   nextKey: "viewMensajesAuto", type: "sub" },
+            3: { principal: "Ver mensajes automáticos",    siguiente: "Ver top fans",             key: "viewMensajesAuto", nextKey: "viewTopFans",      type: "sub" },
+            4: { principal: "Ver top fans",                siguiente: "Ver ajustes",              key: "viewTopFans",      nextKey: "viewAjustes",      type: "sub" },
+            5: { principal: "Ver ajustes",                 siguiente: null,                       key: "viewAjustes",      nextKey: null,               type: "sub" },
+            6: { principal: "Ver Centro Streamer",         siguiente: null,                       key: null,               nextKey: null,               href: "centro-streamer.html", type: "href" }
+        }
+    },
+
+    // ── SUBVISTA: Mensajes ────────────────────────────────────
+    // Se abre desde SLIDE 9 (Mensajes)
+    viewMensajes: {
+        title: "Bandeja de Mensajes",
+        mainSlide: 8,
+        parentDesc: null,
+        descs: [
+            /* slide 0 — 9-1 */ "Banner informativo. Puedes tocarlo si quieres obtener más información sobre capacitaciones o promociones de Salsa.",
+            /* slide 1 — 9-2 */ "Avisos del sistema sobre nuevos usuarios que siguen tu cuenta.",
+            /* slide 2 — 9-3 */ "Organización de los chats por categorías.",
+            /* slide 3 — 9-4 */ "Acceso a soporte técnico desde el área de mensajería.",
+            /* slide 4 — 9-5 */ "Comunicados oficiales y globales del sistema.",
+            /* slide 5 — 9-6 */ "Chats activos. Debajo se ve cuánto ha gastado ese usuario; recuerda verificar también en el Top Fans para dar prioridad a los usuarios rentables."
+        ],
+        imgs: [
+            "https://i.postimg.cc/gkywspLV/9-1.png",
+            "https://i.postimg.cc/MKJM1HHt/9-2.png",
+            "https://i.postimg.cc/8PdF4GfL/9-3.png",
+            "https://i.postimg.cc/qMctwr6K/9-4.png",
+            "https://i.postimg.cc/Fsbfpvkn/9-5.png",
+            "https://i.postimg.cc/BQ58p3Pz/9-6.png"
+        ],
+        hasInner: false,
+        innerBtns: {}
+    }
+};
+
+// ═══════════════════════════════════════
+//  INNER VIEWS (sub-opciones del perfil)
+//  ⚠️ Para editar descripciones modifica
+//  descs[] en cada bloque correspondiente
+// ═══════════════════════════════════════
+const INNERVIEWS = {
+
+    // ── INNER: Cuentas vinculadas (2-2) ──────────────────────
+    viewCuentas: {
+        title: "Cuentas Vinculadas",
+        parentDesc: "Vincula tus cuentas para mayor seguridad.",
+        descs: [
+            /* slide 0 — Tienes que vincular            */ "Es obligatorio vincular las cuentas para asegurar el acceso y proteger los ingresos.",
+            /* slide 1 — Selecciona Google              */ "Opción para iniciar la vinculación a través de Google.",
+            /* slide 2 — Elige cuenta de Google         */ "Selección de la cuenta de Google principal para asegurar el perfil.",
+            /* slide 3 — Vincula tu número              */ "Vinculación del número telefónico para mayor seguridad.",
+            /* slide 4 — Elige código de país           */ "Selección del prefijo correspondiente al país.",
+            /* slide 5 — Escribe el número              */ "Ingreso del número de celular actual.",
+            /* slide 6 — Selecciona continuar           */ "Confirmación para validar el número ingresado.",
+            /* slide 7 — Por último vincula email       */ "Vinculación de un correo adicional como respaldo.",
+            /* slide 8 — Ingresa dirección y contraseña */ "Definición de credenciales de acceso seguras.",
+            /* slide 9 — Las 3 en verde                 */ "Las tres opciones deben marcarse en verde para confirmar que la cuenta está blindada."
+        ],
+        imgs: [
+            "https://i.postimg.cc/mDHWzSKQ/2-2-1-Tienes-que-vincular-tus-cuentas.png",
+            "https://i.postimg.cc/FRLXdxwZ/2-2-1-selecciona-google.png",
+            "https://i.postimg.cc/QCZGpTrm/2-2-3-elige-una-cuenta-de-tus-correos-de-Google.png",
+            "https://i.postimg.cc/QCZGpTrb/2-2-4-vincula-tu-numero-de-celular.png",
+            "https://i.postimg.cc/8cgQh6Vb/2-2-5-elige-el-codigo-segun-tu-pais.png",
+            "https://i.postimg.cc/brfcQtjF/2-2-6-escribe-el-numero-de-celular.png",
+            "https://i.postimg.cc/ZRdzBLX6/2-2-7-selecciona-continuar.png",
+            "https://i.postimg.cc/KzMhk5CP/2-2-8-Por-ultimo-vincula-un-email.png",
+            "https://i.postimg.cc/MTQJMYg0/2-2-9-ingresa-la-direccion-y-contrasena-de-tu-preferencia.png",
+            "https://i.postimg.cc/4yRkz9TD/2-2-10-una-vez-listo-las-3-deben-aparecerte-en-verde.png"
+        ]
+    },
+
+    // ── INNER: Contenido multimedia (2-3) ────────────────────
+    viewMultimedia: {
+        title: "Contenido Multimedia",
+        parentDesc: "Gestiona tus fotos, videos y contenido automático.",
+        descs: [
+            /* slide 0 — Fotos o videos              */ "Si compartes una foto sensual pero no explícita, déjala gratis como gancho. Si es explícita, DEBES ponerle precio; no regales tu trabajo.",
+            /* slide 1 — Seleccionar un regalo       */ "Selección del costo para desbloquear el archivo.",
+            /* slide 2 — Descripción con contenido   */ "La descripción debe coincidir con la imagen e invitar a llamarte o conocerte.",
+            /* slide 3 — Activar chatbot             */ "Opción para delegar respuestas automáticas mientras no estás disponible.",
+            /* slide 4 — Activar contenido automático*/ "Opción para que la aplicación envíe contenido a los usuarios automáticamente.",
+            /* slide 5 — Explicación envío automático*/ "Detalle sobre cómo el sistema monetiza el contenido enviándolo a usuarios activos."
+        ],
+        imgs: [
+            "https://i.postimg.cc/mrcRk3Q8/2-3-1-fotos-o-videos-que-agregues.png",
+            "https://i.postimg.cc/6Q7wqVdH/2-3-2-seleccionar-un-regalo.png",
+            "https://i.postimg.cc/1zgPX0pv/2-3-3-importante-una-descripcion-con-tus-videos-o-fotos.png",
+            "https://i.postimg.cc/wBtHM5hf/2-3-4-activar-o-desactivar-un-chatbot.png",
+            "https://i.postimg.cc/Jhym03bf/2-3-5-activar-o-desactivar-el-contenido-automatico.png",
+            "https://i.postimg.cc/Zq9ZnP8k/2-3-6-explicacion-de-como-funciona-el-envio-automatico.png"
+        ]
+    },
+
+    // ── INNER: Mensajes automáticos (2-4) ────────────────────
+    viewMensajesAuto: {
+        title: "Mensajes Automáticos",
+        parentDesc: "Configura tus mensajes de bienvenida.",
+        descs: [
+            /* slide 0 — Editar mensaje de bienvenida  */ "Configuración del mensaje de bienvenida. Debe ser algo que tú dirías para iniciar una conversación; dale tu toque personal para que se vea genuino.",
+            /* slide 1 — Activar mensaje de bienvenida */ "Activa esta opción para que el mensaje se envíe automáticamente cada vez que un nuevo usuario llega a tu chat."
+        ],
+        imgs: [
+            "https://i.postimg.cc/d08FGsxm/2-4-1-editar-tu-mensaje-de-bienvenida.png",
+            "https://i.postimg.cc/q78r2J5c/2-4-2-activar-mensaje-de-bienvenida.png"
+        ]
+    },
+
+    // ── INNER: Top fans (2-5) ─────────────────────────────────
+    viewTopFans: {
+        title: "Top Fans",
+        parentDesc: "Los usuarios que más invierten en ti.",
+        descs: [
+            /* slide 0 — Usuarios que más gastan        */ "Vista de los usuarios con mayor nivel de inversión.",
+            /* slide 1 — Mayor gasto semanal            */ "Ranking semanal de inversión por usuario.",
+            /* slide 2 — Mayor gasto diario             */ "Ranking diario de los usuarios que más han gastado.",
+            /* slide 3 — Total de monedas acumuladas    */ "Sumatoria total de las monedas generadas.",
+            /* slide 4 — Ordenados mayor a menor        */ "Listado de los 50 usuarios que más gastan. Enfoca tu energía en quienes generan más rentabilidad."
+        ],
+        imgs: [
+            "https://i.postimg.cc/D03BLhRj/2-5-1-los-usuarios-que-mas-gastan-en-ti.png",
+            "https://i.postimg.cc/yxCvcK2p/2-5-2-Los-que-mas-han-gastado-de-manera-semanal.png",
+            "https://i.postimg.cc/5yWnLJDk/2-5-3-los-que-mas-han-gastado-de-manera-diaria.png",
+            "https://i.postimg.cc/brf3kP4g/2-5-4-el-total-de-monedas-que-llevas-acumuladas.png",
+            "https://i.postimg.cc/fyQBms1p/2-5-5-los-users-ordenados-desde-el-mayor-al-menor.png"
+        ]
+    },
+
+    // ── INNER: Ajustes (2-6) ─────────────────────────────────
+    viewAjustes: {
+        title: "Ajustes",
+        parentDesc: "Configuración de tu cuenta.",
+        descs: [
+            /* slide 0 — Copiar el ID              */ "Copiar ID único.",
+            /* slide 1 — Usuarios bloqueados       */ "Gestión de usuarios restringidos.",
+            /* slide 2 — Activar/desactivar filtros*/ "Ajustes visuales.",
+            /* slide 3 — Imagen en imagen          */ "App visible sobre otras aplicaciones.",
+            /* slide 4 — Soporte de SALSA          */ "Soporte técnico.",
+            /* slide 5 — Términos y condiciones    */ "Marco legal.",
+            /* slide 6 — Eliminar cuenta           */ "Opción definitiva para baja de perfil.",
+            /* slide 7 — Cerrar sesión             */ "Es necesario cerrar sesión para aparecer inactiva. Si estás activa y no contestas, dañas tu algoritmo."
+        ],
+        imgs: [
+            "https://i.postimg.cc/jdpPjv0N/2-6-1-copiar-el-ID.png",
+            "https://i.postimg.cc/02TDNZRS/2-6-2-usuarios-bloqueados.png",
+            "https://i.postimg.cc/28sh5TRB/2-6-3-activar-o-desactivar-filtros.png",
+            "https://i.postimg.cc/c4pwJTyn/2-6-4-imagen-en-imagen.png",
+            "https://i.postimg.cc/jdpPjv0P/2-6-5-soporte-de-salsa.png",
+            "https://i.postimg.cc/wTCLBF8D/2-6-6-terminos-y-condiciones-de-salsa.png",
+            "https://i.postimg.cc/HsqXL3Dw/2-6-7-solo-entrar-si-deseas-eliminar-tu-cuenta.png",
+            "https://i.postimg.cc/8P2MCwQd/2-6-8-cerrar-sesion.png"
+        ]
+    }
+};
+
+// ═══════════════════════════════════════
+//  ESTADO
+// ═══════════════════════════════════════
+let mainIdx         = 0;
+let subIdx          = 0;
+let innerIdx        = 0;
+let currentSubKey   = '';
+let currentInnerKey = '';
+let mainFromSub     = 0;
+
+// ═══════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════
+function show(id)     { document.getElementById(id).classList.add('active'); }
+function hide(id)     { document.getElementById(id).classList.remove('active'); }
+function setTxt(id,v) { document.getElementById(id).textContent = v; }
+
+function buildTrack(id, imgs) {
+    document.getElementById(id).innerHTML =
+        imgs.map(s => `<div class="slide"><img src="${s}" loading="lazy"></div>`).join('');
+}
+function slideTo(id, idx) {
+    document.getElementById(id).style.transform = `translateX(-${idx * 100}%)`;
+}
+
+// ═══════════════════════════════════════
+//  NIVEL 1 — MAIN
+// ═══════════════════════════════════════
+function mainMove(dir) {
+    mainIdx = (mainIdx + dir + TOTAL_MAIN) % TOTAL_MAIN;
+    slideTo('mainTrack', mainIdx);
+    setTxt('mainPag', `${mainIdx + 1} / ${TOTAL_MAIN}`);
+    setTxt('mainDesc', MAIN_DESCS[mainIdx]);
+    renderMainBtns(mainIdx);
+}
+
+function renderMainBtns(idx) {
+    const c = document.getElementById('mainActions');
+    c.innerHTML = '';
+    const cfg = MAIN_BTNS[idx];
+    if (!cfg) return;
+    if (cfg.type === 'href') {
+        c.innerHTML = `<button class="btn-gold" onclick="location.href='${cfg.href}'">${cfg.label}</button>`;
+    } else {
+        c.innerHTML = `<button class="btn-gold" onclick="openSub('${cfg.key}')">${cfg.label}</button>`;
+    }
+}
+
+function goMain(slideIdx) {
+    mainIdx = (slideIdx !== undefined) ? slideIdx : mainFromSub;
+    slideTo('mainTrack', mainIdx);
+    setTxt('mainPag', `${mainIdx + 1} / ${TOTAL_MAIN}`);
+    setTxt('mainDesc', MAIN_DESCS[mainIdx]);
+    renderMainBtns(mainIdx);
+    currentSubKey = ''; currentInnerKey = '';
+    subIdx = 0; innerIdx = 0;
+    hide('subView'); hide('innerView'); show('mainView');
+}
+
+// ═══════════════════════════════════════
+//  NIVEL 2 — SUBVIEW
+// ═══════════════════════════════════════
+function openSub(key) {
+    currentSubKey = key;
+    subIdx = 0;
+    const d = SUBVIEWS[key];
+    mainFromSub = d.mainSlide;
+    setTxt('subTitle', d.title);
+    buildTrack('subTrack', d.imgs);
+    slideTo('subTrack', 0);
+    const pd = document.getElementById('subParentDesc');
+    if (d.parentDesc) { pd.textContent = d.parentDesc; pd.style.display = 'flex'; }
+    else              { pd.textContent = '';            pd.style.display = 'none'; }
+    setTxt('subDesc', d.descs[0] || '');
+    setTxt('subPag', `1 / ${d.imgs.length}`);
+    hide('mainView'); hide('innerView'); show('subView');
+    renderSubBtns(0);
+}
+
+function subMove(dir) {
+    const d = SUBVIEWS[currentSubKey];
+    subIdx = (subIdx + dir + d.imgs.length) % d.imgs.length;
+    slideTo('subTrack', subIdx);
+    setTxt('subPag', `${subIdx + 1} / ${d.imgs.length}`);
+    setTxt('subDesc', d.descs[subIdx] || '');
+    renderSubBtns(subIdx);
+}
+
+function renderSubBtns(idx) {
+    const c = document.getElementById('subActions');
+    c.innerHTML = '';
+    const d = SUBVIEWS[currentSubKey];
+
+    if (d.hasInner && d.innerBtns && d.innerBtns[idx]) {
+        const ib = d.innerBtns[idx];
+        // Slide 0 del perfil — botón especial hacia perfil-salsa.html
+        if (ib.type === 'href') {
+            c.innerHTML += `<button class="btn-gold" onclick="location.href='${ib.href}'">${ib.principal}</button>`;
+        } else {
+            c.innerHTML += `<button class="btn-gold" onclick="openInner('${ib.key}')">${ib.principal}</button>`;
+        }
+        if (ib.siguiente) {
+            c.innerHTML += `<div class="btn-row">
+                <button class="btn-red" onclick="goMain(${d.mainSlide})">← Regresar</button>
+                <button class="btn-next" onclick="${ib.type === 'href' ? "openInner('" + ib.nextKey + "')" : "openInner('" + ib.nextKey + "')"}">${ib.siguiente} →</button>
+            </div>`;
+        } else {
+            c.innerHTML += `<div class="btn-row">
+                <button class="btn-red" style="width:100%" onclick="goMain(${d.mainSlide})">← Regresar</button>
+            </div>`;
+        }
+    } else {
+        c.innerHTML = `<div class="btn-row">
+            <button class="btn-red" style="width:100%" onclick="goMain(${d.mainSlide})">← Volver</button>
+        </div>`;
+    }
+}
+
+// ═══════════════════════════════════════
+//  NIVEL 3 — INNERVIEW
+// ═══════════════════════════════════════
+function openInner(key) {
+    currentInnerKey = key;
+    innerIdx = 0;
+    const d = INNERVIEWS[key];
+    setTxt('innerTitle', d.title);
+    buildTrack('innerTrack', d.imgs);
+    slideTo('innerTrack', 0);
+    setTxt('innerDesc', d.descs[0] || '');
+    setTxt('innerPag', `1 / ${d.imgs.length}`);
+    const pd = document.getElementById('innerParentDesc');
+    if (d.parentDesc) { pd.textContent = d.parentDesc; pd.style.display = 'flex'; }
+    else              { pd.textContent = '';            pd.style.display = 'none'; }
+    hide('subView'); show('innerView');
+    renderInnerBtns();
+}
+
+function innerMove(dir) {
+    const d = INNERVIEWS[currentInnerKey];
+    innerIdx = (innerIdx + dir + d.imgs.length) % d.imgs.length;
+    slideTo('innerTrack', innerIdx);
+    setTxt('innerPag', `${innerIdx + 1} / ${d.imgs.length}`);
+    setTxt('innerDesc', d.descs[innerIdx] || '');
+}
+
+function renderInnerBtns() {
+    document.getElementById('innerActions').innerHTML = `
+        <div class="btn-row">
+            <button class="btn-red" style="width:100%" onclick="closeInner()">← Regresar</button>
+        </div>`;
+}
+
+function closeInner() {
+    currentInnerKey = ''; innerIdx = 0;
+    hide('innerView'); show('subView');
+    renderSubBtns(subIdx);
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+function initApp() {
+    show('mainView');
+    setTxt('mainDesc', MAIN_DESCS[0]);
+    setTxt('mainPag', '1 / ' + TOTAL_MAIN);
+    renderMainBtns(0);
+}
+
+</script>
+<!-- ════════════════════════════════════════════
+     ❌ NO TOCAR — FIN SCRIPTS
+════════════════════════════════════════════ -->
+
+</body>
+</html>
