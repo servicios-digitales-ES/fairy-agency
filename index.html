@@ -14,12 +14,7 @@
             --text-gray: #e0e0e0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -32,176 +27,88 @@
         }
 
         .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed; top: 0; left: 0; right: 0; height: 100px; z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
             background: linear-gradient(to bottom, var(--dark-bg) 70%, transparent);
         }
+        .logo-main { height: 75px; width: auto; }
 
-        .logo-main {
-            height: 75px;
-            width: auto;
-        }
-
-        .main-container {
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            position: relative;
-        }
+        .main-container { height: 100vh; width: 100vw; overflow: hidden; position: relative; }
 
         .slider-track {
-            display: flex;
-            height: 100%;
-            width: 100%;
+            display: flex; height: 100%; width: 100%;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             will-change: transform;
         }
 
         .slide {
-            min-width: 100vw;
-            width: 100vw;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-width: 100vw; width: 100vw; height: 100%;
+            display: flex; align-items: center; justify-content: center;
             padding: 110px 20px 110px;
         }
 
         .card {
-            width: 100%;
-            max-width: 400px;
-            max-height: 70vh;
-            background: var(--card-bg);
-            border-radius: 30px;
-            display: flex;
-            flex-direction: column;
+            width: 100%; max-width: 400px; max-height: 70vh;
+            background: var(--card-bg); border-radius: 30px;
+            display: flex; flex-direction: column;
             border: 1px solid rgba(255, 215, 0, 0.15);
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
 
         .card-scroll-area {
-            padding: 35px 25px;
-            overflow-y: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            touch-action: pan-y; /* Permite scroll vertical, pero no gestos horizontales del navegador */
+            padding: 35px 25px; overflow-y: auto;
+            scrollbar-width: none; -ms-overflow-style: none;
+            touch-action: pan-y;
         }
-
         .card-scroll-area::-webkit-scrollbar { display: none; }
 
         .slide-num {
-            font-size: 11px;
-            color: var(--gold);
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            display: block;
-            text-transform: uppercase;
+            font-size: 11px; color: var(--gold); font-weight: 700;
+            letter-spacing: 2px; margin-bottom: 15px; display: block; text-transform: uppercase;
         }
-
-        .slide-title {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 25px;
-            color: #fff;
-        }
-
-        .slide-body {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-gray);
-            white-space: pre-line;
-        }
+        .slide-title { font-size: 24px; font-weight: 700; line-height: 1.2; margin-bottom: 25px; color: #fff; }
+        .slide-body { font-size: 16px; line-height: 1.7; color: var(--text-gray); white-space: pre-line; }
 
         .nav-controls {
-            position: fixed;
-            top: 50%;
-            left: 0;
-            right: 0;
+            position: fixed; top: 50%; left: 0; right: 0;
             transform: translateY(-50%);
-            display: flex;
-            justify-content: space-between;
-            padding: 0 8px;
-            pointer-events: none;
-            z-index: 1100;
+            display: flex; justify-content: space-between;
+            padding: 0 8px; pointer-events: none; z-index: 1100;
         }
-
         .arrow {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             background: rgba(10, 10, 10, 0.6);
             border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 28px;
-            cursor: pointer;
-            pointer-events: auto;
-            backdrop-filter: blur(4px);
-            opacity: 0.2;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--gold); font-size: 28px; cursor: pointer;
+            pointer-events: auto; backdrop-filter: blur(4px); opacity: 0.2;
         }
-
-        .arrow.blink {
-            animation: arrowBlink 0.5s ease-in-out 3;
-        }
-
+        .arrow.blink { animation: arrowBlink 0.5s ease-in-out 3; }
         @keyframes arrowBlink {
             0%, 100% { opacity: 0.2; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.1); }
         }
 
         .page-indicator {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(17, 17, 17, 0.9);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: var(--gold);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            z-index: 1000;
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(17, 17, 17, 0.9); padding: 8px 20px; border-radius: 20px;
+            font-size: 13px; color: var(--gold);
+            border: 1px solid rgba(255, 215, 0, 0.2); z-index: 1000;
         }
 
         .cta-wrapper { text-align: center; margin-top: 30px; }
         .finger-icon { font-size: 32px; display: block; margin-bottom: 15px; animation: bounce 2s infinite; }
-        
         .btn-final {
-            display: block;
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #000;
-            padding: 22px 15px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 15px;
-            text-decoration: none;
-            line-height: 1.3;
-            animation: pulse-gold 2s infinite;
+            display: block; background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #000; padding: 22px 15px; border-radius: 20px;
+            font-weight: 800; font-size: 15px; text-decoration: none;
+            line-height: 1.3; animation: pulse-gold 2s infinite;
         }
+        .footer-logo { margin: 35px auto 10px; height: 45px; opacity: 0.25; display: block; filter: grayscale(1); }
 
-        .footer-logo {
-            margin: 35px auto 10px;
-            height: 45px;
-            opacity: 0.25;
-            display: block;
-            filter: grayscale(1);
-        }
-
-        @keyframes bounce { 0%,20%,50%,80%,100% {transform:translateY(0)} 40% {transform:translateY(-12px)} 60% {transform:translateY(-6px)} }
-        @keyframes pulse-gold { 0% {transform:scale(1)} 50% {transform:scale(1.03)} 100% {transform:scale(1)} }
+        @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-12px)} 60%{transform:translateY(-6px)} }
+        @keyframes pulse-gold { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
     </style>
 </head>
 <body>
@@ -211,328 +118,324 @@
     </div>
 
     <div class="nav-controls">
-        <div class="arrow blink" id="prevBtn" style="visibility: hidden;">‹</div>
+        <div class="arrow blink" id="prevBtn" style="visibility:hidden;">‹</div>
         <div class="arrow blink" id="nextBtn">›</div>
     </div>
 
     <div class="main-container">
         <div class="slider-track" id="sliderTrack">
-            
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 01 / 20</span><h2 class="slide-title">¿Cómo funciona?</h2><div class="slide-body">Este material te explica cómo funciona realmente este trabajo, sin promesas falsas y sin información engañosa. Aquí vas a entender exactamente en qué consiste, cómo se gana dinero y qué se necesita para que funcione.
 
-Todo es completamente gratuito y contarás con acompañamiento personalizado durante tu proceso. No somos vendedores de cursos, no tienes que pagar nada para empezar y no se trata de ningún sistema piramidal.
+            <!-- SLIDE 01 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 01 / 25</span>
+                <h2 class="slide-title">¿Qué es esto?</h2>
+                <div class="slide-body">Este material te explica cómo funciona realmente este trabajo, sin promesas falsas y sin información engañosa.
 
-Es muy importante que leas toda la información completa con atención, así evitas malos entendidos y te aseguras de no aplicar a un trabajo que realmente no te gustaría realizar. Lee cada parte con detalle antes de continuar.</div></div></div></div>
+Todo es completamente gratuito. No tienes que pagar nada para empezar, no vendemos cursos y no cobramos ningún tipo de inscripción.
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 02 / 20</span><h2 class="slide-title">Antes de continuar</h2><div class="slide-body">Antes de continuar, es muy importante que tengas en cuenta lo siguiente:
+Puedes trabajar desde cualquier país del mundo.</div>
+            </div></div></div>
 
-• Lee toda la información completa  
-• No avances rápido  
-• No te saltes partes  
-• Lee cada slide con atención  
+            <!-- SLIDE 02 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 02 / 25</span>
+                <h2 class="slide-title">Antes de continuar</h2>
+                <div class="slide-body">Lee toda la información completa antes de tomar una decisión.
 
-Esto es importante porque:
+No avances rápido, no te saltes partes y lee cada slide con atención.
 
-• Así entiendes realmente el trabajo  
-• Evitas malos entendidos  
-• No aplicas a algo que no te gustaría hacer  
-• Tomas una decisión consciente antes de comenzar</div></div></div></div>
+Esto es importante porque así entiendes realmente el trabajo, evitas malos entendidos y tomas una decisión consciente.</div>
+            </div></div></div>
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 03 / 20</span><h2 class="slide-title">¿En qué consiste?</h2><div class="slide-body">Este trabajo consiste en interactuar con usuarios dentro de una aplicación mediante:
+            <!-- SLIDE 03 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 03 / 25</span>
+                <h2 class="slide-title">¿En qué consiste?</h2>
+                <div class="slide-body">Este trabajo consiste en interactuar con usuarios dentro de una aplicación mediante videollamadas, mensajes y transmisiones en vivo.
 
-• Videollamadas  
-• Mensajes  
-• Transmisiones en vivo  
+Los usuarios pagan por tu tiempo, tu atención y la experiencia que les brindas.
 
-Los usuarios pagan por tu tiempo, tu atención y la experiencia que les brindas. No se trata solo de estar conectada, necesitas saber interactuar, conversar y mantener el interés del usuario.</div></div></div></div>
+No se trata solo de estar conectada. Necesitas saber interactuar, conversar y mantener el interés del usuario.</div>
+            </div></div></div>
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 04 / 20</span><h2 class="slide-title">Realidad del trabajo</h2><div class="slide-body">La mayoría de usuarios que vas a encontrar al inicio se están masturbando desde el primer minuto, esto es algo normal dentro de la aplicación.
+            <!-- SLIDE 04 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 04 / 25</span>
+                <h2 class="slide-title">Realidad del trabajo</h2>
+                <div class="slide-body">La mayoría de usuarios que vas a encontrar al inicio se están masturbando desde el primer minuto. Esto es normal dentro de la aplicación.
 
-No estás obligada a hacer nada sexual si no quieres, pero sí necesitas aprender a manejar este tipo de situaciones con seguridad, actitud y carácter.
+No estás obligada a hacer nada sexual si no quieres, pero necesitas aprender a manejar este tipo de situaciones con seguridad, actitud y carácter.</div>
+            </div></div></div>
 
-Es importante que tengas una mentalidad abierta. Si este tipo de contenido:
+            <!-- SLIDE 05 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 05 / 25</span>
+                <h2 class="slide-title">Mentalidad necesaria</h2>
+                <div class="slide-body">Es importante que tengas una mentalidad abierta.
 
-• Te incomoda demasiado  
-• Te da asco  
-• Te hace sentir incómoda  
+Si este tipo de contenido te incomoda profundamente o crees que no podrías manejarlo, este trabajo probablemente no es para ti. Es mejor saberlo antes de empezar.
 
-Este trabajo no es para ti, porque es muy probable que te sientas abrumada y quieras dejarlo desde el primer día.
+Si tienes la actitud correcta, en el campus aprendes exactamente cómo manejarlo.</div>
+            </div></div></div>
 
-Más adelante comenzarán a aparecer otros tipos de usuarios que no son tan explícitos, pero al inicio este tipo de usuarios es lo más común.</div></div></div></div>
+            <!-- SLIDE 06 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 06 / 25</span>
+                <h2 class="slide-title">Control y seguridad</h2>
+                <div class="slide-body">La aplicación normalmente te conecta con usuarios de otros países, no con personas cercanas a tu zona.
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 05 / 20</span><h2 class="slide-title">Control y seguridad</h2><div class="slide-body">La aplicación no suele conectarte con personas cercanas a tu zona, normalmente te conecta con usuarios de otros países.
+Puede pasar que aparezcan personas de tu mismo país, pero puedes bloquear a cualquier usuario, reportarlo si te incomoda y no estás obligada a hablar con nadie con quien no te sientas cómoda.
 
-Puede pasar que te aparezcan personas de tu mismo país, pero:
+Tú tienes el control total de con quién hablar y con quién no.</div>
+            </div></div></div>
 
-• Puedes bloquear a cualquier usuario  
-• Puedes reportarlo si te incomoda  
-• No estás obligada a hablar con nadie con quien no te sientas cómoda  
+            <!-- SLIDE 07 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 07 / 25</span>
+                <h2 class="slide-title">Lo que se espera</h2>
+                <div class="slide-body">Este no es un trabajo donde solo entras y ya.
 
-No se puede bloquear un país completo, pero sí puedes bloquear usuario por usuario fácilmente.
+Necesitas tener buena actitud, estar dispuesta a aprender, ser constante todos los días y tomarlo como un trabajo real.
 
-Tú tienes el control total de con quién hablar y con quién no.</div></div></div></div>
+Al inicio necesitas conectarte todos los días porque la aplicación te muestra más cuando detecta actividad constante.</div>
+            </div></div></div>
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 06 / 20</span><h2 class="slide-title">Lo que se espera</h2><div class="slide-body">Este no es un trabajo donde solo entras y ya.
+            <!-- SLIDE 08 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 08 / 25</span>
+                <h2 class="slide-title">Requisitos</h2>
+                <div class="slide-body">• Ser mujer (18 a 55 años)
+• Mostrar rostro (obligatorio)
+• Buena conexión a internet
 
-Necesitas:
+Puedes trabajar desde:
+• Celular Android (Samsung, Xiaomi, Huawei, Motorola, entre otros)
+• iPhone (cualquier modelo de Apple)
+• Laptop o computadora
+• Directamente desde el navegador de tu celular si no deseas instalar la aplicación
 
-• Tener buena actitud  
-• Estar dispuesta a aprender cosas nuevas  
-• Ser constante todos los días  
-• Tomarlo como un trabajo real  
+En todos los casos debes registrarte desde el link oficial que te proporciona la agencia.</div>
+            </div></div></div>
 
-Sobre todo al inicio necesitas conectarte todos los días, ya que la aplicación funciona con un sistema que te muestra más cuando eres constante.
+            <!-- SLIDE 09 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 09 / 25</span>
+                <h2 class="slide-title">Tiempo y resultados</h2>
+                <div class="slide-body">Tiempo recomendado para tener resultados reales:
 
-Si te conectas un día sí y otro no, o solo entras un rato, no vas a generar resultados.</div></div></div></div>
+• 8 a 12 horas diarias → ingresos reales y constantes
+• 4 horas diarias → puede ser un ingreso extra, pero será bajo
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 07 / 20</span><h2 class="slide-title">Requisitos y tiempo</h2><div class="slide-body">• Ser mujer (18 a 55 años)  
-• Mostrar rostro (obligatorio)  
-• Buena conexión a internet  
+Este trabajo depende directamente del tiempo que le dediques y de la constancia con la que lo hagas.</div>
+            </div></div></div>
 
-Tiempo recomendado para tener resultados reales:
 
-• 8 a 12 horas diarias → ingresos reales y constantes  
-• 4 horas diarias → puede ser un ingreso extra, pero ten en cuenta que puede ser bastante bajo  
+            <!-- SLIDE 10 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 10 / 25</span>
+                <h2 class="slide-title">La mentalidad correcta</h2>
+                <div class="slide-body">Lo ideal es que entres con la mentalidad adecuada desde el inicio.
 
-Este trabajo depende directamente de:
+Si quieres que esto sea tu ingreso principal, trátalo como un trabajo a tiempo completo. Si quieres un ingreso extra, trátalo como un trabajo de medio tiempo.
 
-• El tiempo que le dediques  
-• Tu actitud  
-• Tu constancia  
-• Las estrategias que apliques</div></div></div></div>
+Piensa cuántas horas diarias le dedicas a ese tipo de trabajo y con qué responsabilidad vas. En un trabajo normal no fallas sin avisar, no llegas cuando tienes ganas y no decides trabajar solo los días que te apetece. Aquí tampoco.
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 08 / 20</span><h2 class="slide-title">Mito vs realidad</h2><div class="slide-body">Existe el mito de que este es un “trabajo fácil”, pero la realidad es otra.
+La aplicación no te da dinero solo por registrarte ni solo por conectarte. Te da dinero por trabajar y ser productiva.</div>
+            </div></div></div>
 
-Este trabajo requiere:
+            <!-- SLIDE 11 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 11 / 25</span>
+                <h2 class="slide-title">Mito vs realidad</h2>
+                <div class="slide-body">Existe el mito de que este es un trabajo fácil. La realidad es otra.
 
-• Paciencia  
-• Disciplina  
-• Constancia  
-• Esfuerzo  
+Este trabajo requiere paciencia, disciplina, constancia y esfuerzo.
 
-Si no tienes estas cualidades, no vas a generar resultados.
+Las chicas que realmente ganan dinero son las que entienden esto desde el inicio y actúan con compromiso.</div>
+            </div></div></div>
 
-Las chicas que realmente ganan dinero son las que entienden esto desde el inicio y actúan con compromiso hacia el trabajo.</div></div></div></div>
+            <!-- SLIDE 11 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 12 / 25</span>
+                <h2 class="slide-title">Sistema de monedas</h2>
+                <div class="slide-body">Dentro de la app todo funciona con monedas.
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 09 / 20</span><h2 class="slide-title">Sistema de monedas</h2><div class="slide-body">Dentro de la app todo funciona con monedas:
+650 monedas = 1 dólar
 
-650 monedas = 1 dólar  
+Entre más monedas generes, más dinero ganas y más visibilidad te da la aplicación.
 
-Tu objetivo es generar la mayor cantidad de monedas posible.
+La aplicación tiene un mínimo de retiro de $30, equivalente a 19,500 monedas. Esto significa que mientras no alcances esa cantidad no puedes solicitar un retiro.
 
-Entre más monedas generes:
+Una vez que la alcances, tú decides: puedes retirar en ese momento, esperar al domingo (que es lo que nosotros recomendamos), o seguir acumulando y retirar una cantidad mayor cuando tú lo decidas.</div>
+            </div></div></div>
 
-• Más dinero ganas  
-• Más visibilidad te da la aplicación  
-• Más oportunidades tienes de crecer  
+            <!-- SLIDE 12 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 13 / 25</span>
+                <h2 class="slide-title">Cómo generas monedas</h2>
+                <div class="slide-body">Puedes generar monedas de varias formas:
 
-Todo dentro de la aplicación gira alrededor de las monedas. Si entiendes cómo generar más monedas, entiendes cómo generar más dinero.</div></div></div></div>
+• Videollamadas (se pagan por minuto)
+• Regalos en llamadas, mensajes y transmisiones
+• Transmisiones en vivo
+• Contenido premium
+• Bonos por rendimiento
+• Bonos por referidos
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 10 / 20</span><h2 class="slide-title">Cómo generas ingresos</h2><div class="slide-body">Dentro de la aplicación puedes generar ingresos mediante diferentes actividades:
+Todas estas actividades generan monedas y las monedas se convierten en dinero.</div>
+            </div></div></div>
 
-• Videollamadas  
-• Regalos en llamadas, mensajes y transmisiones  
-• Transmisiones en vivo  
-• Contenido premium  
-• Bonos por rendimiento  
-• Bonos por referidos  
+            <!-- SLIDE 13 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 14 / 25</span>
+                <h2 class="slide-title">Videollamadas</h2>
+                <div class="slide-body">Las videollamadas son la fuente principal de ingresos.
 
-Todo dentro de la aplicación genera monedas, y las monedas son lo que luego se convierte en dinero.
+• Llamadas públicas: 60 monedas por minuto
+• Llamadas privadas: 120 monedas por minuto
 
-Esto significa que puedes generar ingresos de varias formas al mismo tiempo.</div></div></div></div>
+Tu objetivo es mantener la llamada el mayor tiempo posible, ser seductora y mantener el interés del usuario para motivarlo a enviarte regalos.</div>
+            </div></div></div>
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 11 / 20</span><h2 class="slide-title">Sistema de referidos</h2><div class="slide-body">Sobre los referidos, es importante que entiendas que:
+            <!-- SLIDE 14 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 15 / 25</span>
+                <h2 class="slide-title">Sistema de referidos</h2>
+                <div class="slide-body">Puedes ganar bonos adicionales por invitar personas a la aplicación, pero es importante que entiendas que no ganas dinero solo por invitar.
 
-• No ganas dinero solo por invitar personas  
-• Las personas que invites deben trabajar y generar monedas  
-• Recibir tu bono de referidos depende directamente del rendimiento de ellas  
+Las personas que invites deben trabajar y generar monedas. Tu bono depende directamente del rendimiento de ellas.
 
-Esto no es un sistema piramidal.
+Esto no es un sistema piramidal. Aquí el dinero viene del trabajo real, no de reclutar personas.</div>
+            </div></div></div>
 
-Aquí no ganas por traer gente, ganas solo si ellas consiguen resultados reales dentro de la aplicación.
+            <!-- SLIDE 15 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 16 / 25</span>
+                <h2 class="slide-title">Cómo retiras tu dinero</h2>
+                <div class="slide-body">Tus ganancias son de autoretiro. Tú administras tu propio dinero directamente desde la app, sin intermediarios.
 
-Nosotros como agencia también te ayudamos en este proceso:
+Si eres de Colombia, Perú, México, Brasil o Egipto puedes retirar directo a tu cuenta bancaria.
 
-• Te enseñamos cómo hacerlo correctamente (dentro del campus puedes aprenderlo)  
-• Tus referidas pueden tener acceso a nuestro campus si se registran contigo dentro de Fairy Agency  
-• Les brindamos orientación para que puedan generar resultados, de la misma forma en la que te enseñaremos a ti durante tu proceso  
+Para cualquier otro país el retiro es a través de Binance, una app gratuita que funciona como billetera digital. Si no tienes cuenta no importa, en el campus aprendes desde cómo crearla hasta cómo transferir a tu banco.</div>
+            </div></div></div>
 
-Todo esto con el objetivo de que ellas también generen ingresos y de esa forma tú puedas aumentar tus ingresos lo más posible a través de los bonos de referidos.
+            <!-- SLIDE 16 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 17 / 25</span>
+                <h2 class="slide-title">Tu privacidad</h2>
+                <div class="slide-body">Tu información y tus ganancias son totalmente privadas.
 
-También es importante que mantengas una buena comunicación con nosotros como agencia para poder ayudarte correctamente con tus referidas.
+Nosotros no tenemos acceso a tu correo, tu contraseña ni tus métodos de pago. No podemos entrar a tu cuenta.
 
-Los referidos son un ingreso adicional, pero tu enfoque principal siempre debe ser generar tus propias monedas.</div></div></div></div>
+Tú eres la única persona que controla tus ingresos, tus retiros y tu cuenta dentro de la aplicación. Nosotros solo te enseñamos cómo hacerlo.</div>
+            </div></div></div>
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 12 / 20</span><h2 class="slide-title">Cómo te pagan</h2><div class="slide-body">Aquí se recompensa directamente tu esfuerzo, ya que se te paga por cada minuto de actividad que tengas dentro de la aplicación.
+            <!-- SLIDE 17 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 18 / 25</span>
+                <h2 class="slide-title">El algoritmo</h2>
+                <div class="slide-body">La aplicación tiene un sistema que decide a quién mostrarle más usuarios y a quién no. Este sistema se llama algoritmo.
 
-Mientras más videollamadas hagas y mientras más largas sean, más oportunidades tienes de generar monedas y ganar dinero.
+Si eres constante y generas monedas, el algoritmo trabaja a tu favor y te da más visibilidad. Si descuidas tu actividad, el algoritmo cae y recibirás menos llamadas, menos oportunidades y por lo tanto menos dinero.
 
-Públicas: 60 monedas por minuto  
-Privadas: 120 monedas por minuto  
+Cuidar tu algoritmo no es opcional. Si tus ganancias bajan, en la mayoría de los casos es porque el algoritmo se descuidó. Y eso depende directamente de ti.</div>
+            </div></div></div>
 
-Además, durante las llamadas puedes recibir regalos.
+            <!-- SLIDE 18 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 19 / 25</span>
+                <h2 class="slide-title">Ventajas</h2>
+                <div class="slide-body">A diferencia de un trabajo tradicional:
 
-Tu objetivo es:
+• No gastas dinero en transporte
+• No pierdes tiempo en tráfico
+• Trabajas desde casa
+• Tú organizas tu horario
 
-• Mantener la llamada el mayor tiempo posible  
-• Ser totalmente seductora  
-• Mantener el foco de atención del usuario en ti  
-• Generar interés para motivarlo a enviarte regalos  
+Pero necesitas ser organizada y separar tu tiempo personal de tu tiempo de trabajo. La disciplina no es opcional. Recuerda que debes tomarlo con la misma responsabilidad que tendrías en cualquier trabajo común.</div>
+            </div></div></div>
 
-Todo esto se aprende dentro del campus.</div></div></div></div>
+            <!-- SLIDE 19 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 20 / 25</span>
+                <h2 class="slide-title">¿Por qué elegir Fairy Agency?</h2>
+                <div class="slide-body">Acompañamiento personalizado y coaching diario basado en tu actividad real. Un equipo con un sistema estructurado, pensado para que tú crezcas.
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 13 / 20</span><h2 class="slide-title">Cómo crecer</h2><div class="slide-body">La aplicación tiene un sistema que decide a quién mostrar más.
+A diferencia de otras agencias que solo te dan un grupo de Telegram con scroll infinito donde la información se pierde, nosotros tenemos un campus donde todo está perfectamente organizado, es intuitivo y está disponible las 24 horas, los 7 días de la semana.
 
-• Si eres constante → la app te muestra más  
-• Si no te conectas → la app deja de mostrarte  
+A la hora que lo necesites, entras, encuentras lo que buscas y listo. Sin esperar que nadie te conteste.</div>
+            </div></div></div>
 
-Pero no depende solo de la constancia.
+            <!-- SLIDE 20 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 21 / 25</span>
+                <h2 class="slide-title">El campus</h2>
+                <div class="slide-body">El campus es una plataforma exclusiva de Fairy Agency. No la encontrarás en ninguna otra agencia.
 
-También influye:
+Cómo usar la aplicación, estrategias reales, Binance, reportes, reglamentos y mucho más, todo en un solo lugar.
 
-• Tu actitud  
-• Las estrategias que emplees  
-• Qué tanto te capacites y apliques lo aprendido  
+Cada sección está guiada paso a paso: cada imagen tiene una explicación, cada botón te lleva exactamente a donde necesitas ir y cada módulo está diseñado para que nunca te sientas perdida. Es como tener a alguien explicándote todo, pero disponible las 24 horas sin que tengas que esperar a nadie.</div>
+            </div></div></div>
 
-Si no eres constante pierdes visibilidad, si pierdes visibilidad no recibes llamadas, si no recibes llamadas no generas monedas y si no generas monedas no ganas dinero.
+            <!-- SLIDE 21 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 22 / 25</span>
+                <h2 class="slide-title">El reporte diario</h2>
+                <div class="slide-body">Para poder hacer nuestro trabajo como agencia necesitamos que envíes tu reporte diario. Con ese reporte analizamos tu actividad y te damos un coaching personalizado basado en datos reales.
 
-Por eso no es solo conectarte, es conectarte bien y 100% comprometida.</div></div></div></div>
+Si no envías el reporte, no podemos analizar tu desempeño ni ayudarte a crecer. No importa si sientes que no trabajaste lo suficiente ese día, el reporte siempre debe enviarse.
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 14 / 20</span><h2 class="slide-title">Claves del éxito</h2><div class="slide-body">Las chicas que tienen resultados son las que:
+Tenemos un reglamento interno disponible en el campus que explica esto y mucho más en detalle.</div>
+            </div></div></div>
 
-• Leen toda la información del campus  
-• Ven los tutoriales que están dentro del campus  
-• Aplican lo aprendido  
-• Son constantes  
+            <!-- SLIDE 22 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 23 / 25</span>
+                <h2 class="slide-title">Lo que debes tener claro</h2>
+                <div class="slide-body">Antes de continuar confirma que:
 
-El campus es:
+• Estás dispuesta a trabajar en un entorno con contenido sexual
+• Entiendes que los resultados dependen de ti
+• Estás lista para seguir un sistema y aprender
+• Tienes un espacio privado donde nadie te interrumpa mientras trabajas
 
-• Tu herramienta principal  
-• Exclusiva de Fairy Agency  
-• No la encontrarás en ninguna otra agencia  
+Si no tienes esas condiciones en este momento, lo mejor es no aplicar por ahora. Trabajamos con cupos limitados y cada lugar le quita la oportunidad a alguien que sí puede aprovecharlo.</div>
+            </div></div></div>
 
-Si no usas el campus, es muy difícil que tengas resultados.</div></div></div></div>
+            <!-- SLIDE 22 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 24 / 25</span>
+                <h2 class="slide-title">Tiempo mínimo necesario</h2>
+                <div class="slide-body">Ten claro cuánto tiempo puedes dedicarle antes de continuar:
 
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 15 / 20</span><h2 class="slide-title">Qué es el campus</h2><div class="slide-body">El campus es una plataforma creada por Fairy Agency.
+• Si quieres vivir de esto: mínimo 8 a 12 horas diarias. De preferencia continuas, pero puedes dividirlas en máximo dos bloques al día. No más de dos.
+• Si quieres un ingreso extra: mínimo 4 horas diarias continuas
 
-Esto significa que:
+No funciona conectarse media hora, salirse y volver después. La aplicación necesita constancia y horas continuas para darte visibilidad.</div>
+            </div></div></div>
 
-• Es una herramienta exclusiva para las chicas que trabajan con nosotros  
-• No la encontrarás en ninguna otra agencia  
-• Está diseñada para que puedas formarte paso a paso desde cero  
+            <!-- SLIDE 23 -->
+            <div class="slide"><div class="card"><div class="card-scroll-area">
+                <span class="slide-num">SLIDE 25 / 25</span>
+                <h2 class="slide-title">¿Lista para empezar?</h2>
+                <div class="slide-body">Si llegaste hasta aquí y decidiste continuar, significa que entiendes en qué consiste el trabajo, lo que se espera de ti y lo que recibirás a cambio.
 
-Incluye:
-
-• Tutoriales paso a paso  
-• Videos explicativos  
-• Estrategias reales  
-• Uso completo de la aplicación  
-
-Está diseñado para que aprendas incluso si no tienes experiencia.
-
-También está pensado para que no dependas de esperar a que alguien te responda.
-
-Dentro del campus tienes explicado:
-
-• Cómo usar la aplicación botón por botón  
-• Cómo funciona cada sección  
-• Qué hacer en cada situación  
-• Qué estrategias aplicar  
-
-Todo está explicado paso a paso.
-
-No hay una sola parte importante que no esté dentro del campus.
-
-Es una herramienta pensada para que puedas aprender de forma autónoma y avanzar por tu cuenta.</div></div></div></div>
-
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 16 / 20</span><h2 class="slide-title">Tu privacidad</h2><div class="slide-body">Tu información y tus ganancias son totalmente privadas.
-
-• Nosotros no tenemos acceso a tu correo  
-• No tenemos acceso a tu contraseña  
-• No vemos tus métodos de pago  
-• No podemos entrar a tu cuenta  
-
-Tú eres la única persona que controla:
-
-• Tus ingresos  
-• Tus retiros  
-• Tu cuenta dentro de la aplicación  
-
-Nosotros solo te enseñamos cómo hacerlo.</div></div></div></div>
-
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 17 / 20</span><h2 class="slide-title">Lo que debes saber</h2><div class="slide-body">Este trabajo requiere que tengas claro lo siguiente:
-
-• Vas a encontrar contenido sexual  
-• Algunos usuarios serán explícitos  
-• Necesitas tener mente abierta  
-• Necesitas saber manejar situaciones incómodas  
-
-También debes tener en cuenta que los mejores horarios suelen ser en la noche, necesitas horas continuas de conexión y necesitas disciplina, paciencia y constancia.
-
-Si no cumples con esto no vas a tener resultados.</div></div></div></div>
-
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 18 / 20</span><h2 class="slide-title">Ventajas</h2><div class="slide-body">A diferencia de un trabajo tradicional:
-
-• No gastas dinero en transporte  
-• No pierdes tiempo en tráfico  
-• Trabajas desde casa  
-
-Puedes organizar tu tiempo, pero necesitas ser organizada y separar tu tiempo personal de tu tiempo de trabajo.
-
-Debes tener horas continuas de conexión.
-
-No sirve conectarte 20 minutos, salirte y volver después, la aplicación necesita constancia real.</div></div></div></div>
-
-            <div class="slide"><div class="card"><div class="card-scroll-area"><span class="slide-num">SLIDE 19 / 20</span><h2 class="slide-title">Lo que recibes</h2><div class="slide-body">Si decides continuar tendrás acceso a:
-
-• Acompañamiento personalizado  
-• Capacitación completa  
-• Estrategias reales  
-• Acceso al campus  
-
-Pero esto solo aplica si decides comprometerte de verdad.</div></div></div></div>
-
-             <div class="slide">
-                <div class="card">
-                    <div class="card-scroll-area">
-                        <span class="slide-num">SLIDE 20 / 20</span>
-                        <h2 class="slide-title">¿Lista para empezar?</h2>
-                        <div class="slide-body">Antes de continuar, asegúrate de que realmente cumples con todo lo siguiente:
-
-• Estás dispuesta a trabajar en un entorno donde habrá contenido sexual  
-• Entiendes que algunos usuarios pueden ser explícitos  
-• Tienes la mente abierta para manejar este tipo de situaciones  
-• Puedes trabajar en horarios nocturnos  
-• Puedes mantener horas continuas de conexión  
-• Estás dispuesta a ser constante, disciplinada y paciente  
-
-También debes tener claro que:
-
-• Este no es un trabajo fácil  
-• No vas a generar dinero solo por registrarte  
-• Tus resultados dependen completamente de tu esfuerzo  
-
-Si después de leer todo esto estás lista para comprometerte:</div>
-                        
-                        <div class="cta-wrapper">
-                            <span class="finger-icon">👇</span>
-                            <a href="descarga-registro-salsa.html" class="btn-final">
-                                Leí toda la información y estoy lista para comprometerme y comenzar
-                            </a>
-                            <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="footer-logo">
-                        </div>
-                    </div>
+Al tocar el botón encontrarás todos los datos para iniciar tu proceso. Es de suma importancia que lo hagas con cuidado y sigas completamente las indicaciones que ahí se mencionan. Todo está explicado paso a paso.</div>
+                <div class="cta-wrapper">
+                    <span class="finger-icon">👇</span>
+                    <a href="descarga-registro-salsa.html" class="btn-final">Leí todo y quiero continuar →</a>
+                    <img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" class="footer-logo">
                 </div>
-            </div>
+            </div></div></div>
 
         </div>
     </div>
 
-    <div class="page-indicator" id="pageIndicator">1 / 20</div>
+    <div class="page-indicator" id="pageIndicator">1 / 25</div>
 
     <script>
         let currentIndex = 0;
-        const totalSlides = 20;
+        const totalSlides = 25;
         const track = document.getElementById('sliderTrack');
         const indicator = document.getElementById('pageIndicator');
         const prevBtn = document.getElementById('prevBtn');
@@ -542,10 +445,10 @@ Si después de leer todo esto estás lista para comprometerte:</div>
         function updateSlider() {
             track.style.transform = `translateX(-${currentIndex * 100}vw)`;
             indicator.textContent = `${currentIndex + 1} / ${totalSlides}`;
-            
+
             prevBtn.style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
             nextBtn.style.visibility = currentIndex === totalSlides - 1 ? 'hidden' : 'visible';
-            
+
             [prevBtn, nextBtn].forEach(btn => {
                 btn.classList.remove('blink');
                 void btn.offsetWidth;
@@ -561,15 +464,13 @@ Si después de leer todo esto estás lista para comprometerte:</div>
                     currentCard.scrollTo({ top: maxScroll, behavior: 'smooth' });
                     setTimeout(() => {
                         currentCard.scrollTo({ top: 0, behavior: 'smooth' });
-                    }, 500); 
+                    }, 500);
                 }
-            }, 300); 
+            }, 300);
         }
 
         nextBtn.addEventListener('click', () => { if (currentIndex < totalSlides - 1) { currentIndex++; updateSlider(); } });
         prevBtn.addEventListener('click', () => { if (currentIndex > 0) { currentIndex--; updateSlider(); } });
-
-        // SE ELIMINÓ EL SOPORTE PARA GESTOS TÁCTILES (SWIPE) PARA CUMPLIR CON LA NAVEGACIÓN EXCLUSIVA POR FLECHAS.
 
         updateSlider();
     </script>
