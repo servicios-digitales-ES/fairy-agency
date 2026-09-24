@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descubre cómo puedes ganar — Fairy Agency</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<a href="index.html" class="menu-link"><span class="bars">☰</span> GUÍA FAIRY AGENCY</a>
+<div class="header"><img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="logo-main"></div>
+
+<div class="nav-controls">
+  <div class="arrow is-hidden" id="prevBtn">‹</div>
+  <div class="arrow" id="nextBtn">›</div>
+</div>
+
+<div class="slide-page">
+  <div class="main-container">
+    <div class="slider-track" id="sliderTrack"></div>
+  </div>
+</div>
+
+<div class="page-indicator" id="pageIndicator">1 / 6</div>
+
+<script src="slides-data.js"></script>
+<script src="section.js"></script>
+<script>
+  initSection({
+    ids: [12, 13, 14, 15, 16],
+    sectionLabel: "C\u00d3MO PUEDES GANAR DINERO",
+    closingTitle: "Aprende a crecer",
+    closingText: "Ahora que conoces las formas de generar ingresos, descubre qu\u00e9 factores pueden ayudarte a crecer.",
+    nextLabel: "Aprender a crecer \u2192",
+    nextHref: "seccion-crecimiento.html"
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protege tu privacidad — Fairy Agency</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<a href="index.html" class="menu-link"><span class="bars">☰</span> GUÍA FAIRY AGENCY</a>
+<div class="header"><img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="logo-main"></div>
+
+<div class="nav-controls">
+  <div class="arrow is-hidden" id="prevBtn">‹</div>
+  <div class="arrow" id="nextBtn">›</div>
+</div>
+
+<div class="slide-page">
+  <div class="main-container">
+    <div class="slider-track" id="sliderTrack"></div>
+  </div>
+</div>
+
+<div class="page-indicator" id="pageIndicator">1 / 3</div>
+
+<script src="slides-data.js"></script>
+<script src="section.js"></script>
+<script>
+  initSection({
+    ids: [6, 17],
+    sectionLabel: "PRIVACIDAD AL TRABAJAR",
+    closingTitle: "Conoce lo que necesitas",
+    closingText: "Ahora que conoces c\u00f3mo protegerte, descubre qu\u00e9 necesitas para comenzar.",
+    nextLabel: "Conocer los requisitos \u2192",
+    nextHref: "seccion-requisitos.html"
+  });
+</script>
+</body>
+</html>

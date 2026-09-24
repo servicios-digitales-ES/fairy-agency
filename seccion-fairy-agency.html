@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al hacer el registro en nuestra agencia — Fairy Agency</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<a href="index.html" class="menu-link"><span class="bars">☰</span> GUÍA FAIRY AGENCY</a>
+<div class="header"><img src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency" class="logo-main"></div>
+
+<div class="nav-controls">
+  <div class="arrow is-hidden" id="prevBtn">‹</div>
+  <div class="arrow" id="nextBtn">›</div>
+</div>
+
+<div class="slide-page">
+  <div class="main-container">
+    <div class="slider-track" id="sliderTrack"></div>
+  </div>
+</div>
+
+<div class="page-indicator" id="pageIndicator">1 / 4</div>
+
+<script src="slides-data.js"></script>
+<script src="section.js"></script>
+<script>
+  initSection({
+    ids: [20, 21, 22],
+    sectionLabel: "AL REGISTRARTE EN LA AGENCIA",
+    closingTitle: "Descubre c\u00f3mo comenzar",
+    closingText: "Ahora que conoces el acompa\u00f1amiento que tendr\u00e1s, descubre c\u00f3mo puedes comenzar.",
+    nextLabel: "Descubrir c\u00f3mo comenzar \u2192",
+    nextHref: "seccion-registro.html"
+  });
+</script>
+</body>
+</html>
