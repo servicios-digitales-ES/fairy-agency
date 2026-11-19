@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Lector · Guía Fairy Agency</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#ffd700;--gold2:#ffb800;--bg:#0a0a0a;--card:#111;--dim:rgba(255,255,255,.34);--line:rgba(255,215,0,.2)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{height:100vh;height:100dvh;background:var(--bg);color:#fff;font-family:Inter,system-ui,sans-serif;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);position:relative}
+body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+body::before{width:420px;height:420px;background:rgba(255,215,0,.16);top:-160px;left:-120px}
+body::after{width:360px;height:360px;background:rgba(255,160,0,.10);bottom:60px;right:-140px}
+header,main,footer{position:relative;z-index:1}
+header{flex:none;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:10px}
+.back{color:var(--gold);text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.4px;white-space:nowrap}
+.logo{height:44px;width:auto}
+.modes{display:inline-flex;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:99px;padding:3px}
+.modes button{border:0;background:none;color:#fff;font:600 12.5px Inter,sans-serif;padding:7px 13px;border-radius:99px;cursor:pointer;opacity:.6}
+.modes button[aria-pressed=true]{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;opacity:1}
+#lyrics{flex:1;min-height:0;overflow-y:auto;padding:0 24px 46vh;scrollbar-width:none;mask-image:linear-gradient(transparent,#000 7%,#000 93%,transparent)}
+#lyrics::-webkit-scrollbar{display:none}
+#hero{min-height:56vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding-top:6px}
+#hero .brand{font-size:12px;letter-spacing:5px;color:var(--gold);font-weight:700}
+#hero h1{font-size:clamp(26px,7vw,36px);font-weight:800;line-height:1.2;max-width:520px}
+#hero em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#hero small{color:var(--dim);font-size:13px}
+#big{width:96px;height:96px;margin-top:6px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;font-size:40px;padding-left:7px;cursor:pointer;box-shadow:0 0 0 10px rgba(255,215,0,.14),0 14px 50px rgba(255,215,0,.3);animation:pulso 2s infinite}
+@keyframes pulso{50%{box-shadow:0 0 0 24px rgba(255,215,0,0),0 14px 50px rgba(255,215,0,.3)}}
+#lyrics p{font-size:25px;line-height:1.28;font-weight:700;color:var(--dim);margin-bottom:16px;cursor:pointer;transition:color .35s,transform .35s,text-shadow .35s;transform-origin:left}
+#lyrics p.b{font-size:21px;font-weight:600;padding-left:4px}
+#lyrics p.h{margin:44px 0 14px;font-size:30px;font-weight:800;color:rgba(255,215,0,.45);line-height:1.15}
+#lyrics p.h small{display:block;font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:6px;opacity:.9}
+#lyrics p.past:not(.h){color:rgba(255,255,255,.55)}
+#lyrics p.on{color:#fff;transform:scale(1.035);text-shadow:0 0 28px rgba(255,215,0,.35)}
+#lyrics p.h.on{color:var(--gold);text-shadow:0 0 30px rgba(255,215,0,.45)}
+#end{padding:40px 0 10px;display:flex;flex-direction:column;gap:12px}
+#end a{display:block;text-align:center;text-decoration:none;font-weight:800;border-radius:16px;padding:18px}
+#end .go{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;font-size:17px;box-shadow:0 10px 40px rgba(255,215,0,.25)}
+#end .menu{border:1px solid var(--line);color:var(--gold);font-size:14px}
+footer{flex:none;padding:10px 18px calc(12px + env(safe-area-inset-bottom));background:rgba(10,10,10,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+#chap{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:8px;font-weight:600}
+#chap b{color:var(--gold);font-weight:700;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar{height:4px;background:rgba(255,255,255,.1);border-radius:9px;overflow:hidden;margin-bottom:10px}
+#fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .3s}
+.ctl{display:flex;align-items:center;justify-content:center;gap:22px}
+.ctl button{border:0;background:none;color:#fff;font-size:24px;cursor:pointer;padding:6px}
+#play{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#111;font-size:22px}
+#spd{font:700 13px Inter,sans-serif;border:1px solid var(--line)!important;border-radius:99px;padding:6px 11px!important;color:var(--gold)!important}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){#lyrics p,#fill{transition:none}#big{animation:none}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="index.html">☰ Menú</a>
+  <img class="logo" src="https://i.postimg.cc/fLhtVJy2/1774069732194.png" alt="Fairy Agency">
+  <div class="modes" role="group" aria-label="Modo">
+    <button id="mL" aria-pressed="true">🔊 Escuchar</button>
+    <button id="mR" aria-pressed="false">📖 Leer</button>
+  </div>
+</header>
+<main id="lyrics">
+  <div id="hero">
+    <div class="brand">FAIRY AGENCY</div>
+    <h1>Conoce cómo funciona <em>tu oportunidad</em> como streamer</h1>
+    <button id="big" aria-label="Empezar">▶</button>
+    <small>Toca para escucharlo o leerlo</small>
+  </div>
+</main>
+<footer>
+  <div id="chap"><b id="ct">Guía completa</b><span id="cn">0 / 25</span></div>
+  <div class="bar"><div id="fill"></div></div>
+  <div class="ctl">
+    <button id="prev" aria-label="Anterior">⏮</button>
+    <button id="play" aria-label="Reproducir">▶</button>
+    <button id="next" aria-label="Siguiente">⏭</button>
+    <button id="spd" aria-label="Velocidad">1×</button>
+  </div>
+</footer>
+<script src="slides-data.js"></script>
+<script>
+const S=window.SLIDES,keys=Object.keys(S),TOT=keys.length,L=[];
+keys.forEach(k=>{const s=S[k];L.push({h:1,n:+k,t:s.title});s.body.split(/\n+/).filter(x=>x.trim()).forEach(x=>L.push({n:+k,t:x,b:/^•/.test(x.trim())}))});
+const $=q=>document.querySelector(q),box=$("#lyrics"),play=$("#play");
+const SS="speechSynthesis" in window;
+let i=0,on=false,listen=SS,tok=0,tm,rate=1;
+const P=L.map((o,k)=>{const p=document.createElement("p");
+  if(o.h){p.className="h";const sm=document.createElement("small");sm.textContent="SLIDE "+o.n+" / "+TOT;p.append(sm,o.t)}
+  else{p.textContent=o.t;if(o.b)p.className="b"}
+  p.onclick=()=>{on=true;ui();go(k)};box.appendChild(p);return p});
+const end=document.createElement("div");end.id="end";
+end.innerHTML='<a class="go" href="seccion-registro.html">Comenzar mi registro →</a><a class="menu" href="index.html">☰ Volver al menú principal</a>';
+box.appendChild(end);
+if(!SS){$("#mL").disabled=true;$("#mL").style.opacity=.3;$("#mL").setAttribute("aria-pressed","false");$("#mR").setAttribute("aria-pressed","true")}
+function voz(){const v=speechSynthesis.getVoices().filter(x=>x.lang.toLowerCase().startsWith("es"));return v.find(x=>/419|MX|US/i.test(x.lang))||v[0]}
+function say(o){let t=o.t.replace(/^•\s*/,"").replace(/→/g,", ").replace(/=/g," igual a ").replace(/\$(\d+)/g,"$1 dólares");return t}
+function show(){P.forEach((p,k)=>{p.classList.toggle("on",k===i);p.classList.toggle("past",k<i)});const p=P[i];
+  box.scrollTo({top:p.offsetTop-box.clientHeight*.36+p.offsetHeight/2,behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
+  $("#fill").style.width=((i+1)/L.length*100)+"%";const n=L[i].n;$("#cn").textContent=n+" / "+TOT;$("#ct").textContent=S[n].title}
+function ui(){play.textContent=on?"⏸":"▶"}
+function stop(){tok++;clearTimeout(tm);if(SS)speechSynthesis.cancel()}
+function go(k){
+  stop();if(k<0)k=0;
+  if(k>=L.length){on=false;ui();end.scrollIntoView({block:"center",behavior:"smooth"});return}
+  i=k;show();if(!on)return;
+  const o=L[i],h=!!o.h,t=tok,txt=h?o.t:say(o);
+  const nx=ms=>{tm=setTimeout(()=>{if(t===tok)go(i+1)},ms)};
+  if(listen){const u=new SpeechSynthesisUtterance(txt);u.lang="es-419";u.rate=(h?.92:1)*rate;const v=voz();if(v)u.voice=v;u.onend=()=>{if(t===tok)nx(h?700:120)};u.onerror=()=>{if(t===tok)nx(300)};speechSynthesis.speak(u)}
+  else nx((h?1400:900+txt.length*55)/rate);
+}
+function toggle(){on=!on;ui();go(i)}
+play.onclick=toggle;$("#big").onclick=toggle;
+$("#prev").onclick=()=>go(i-1);$("#next").onclick=()=>go(i+1);
+$("#spd").onclick=e=>{rate=rate===1?1.15:rate===1.15?1.3:1;e.target.textContent=rate+"×";if(on)go(i)};
+function modo(l){if(l&&!SS)return;listen=l;$("#mL").setAttribute("aria-pressed",l);$("#mR").setAttribute("aria-pressed",!l);if(on)go(i)}
+$("#mL").onclick=()=>modo(true);$("#mR").onclick=()=>modo(false);
+</script>
+</body>
+</html>
